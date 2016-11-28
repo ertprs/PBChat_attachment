@@ -188,62 +188,63 @@ FileUploadBase = class FileUploadBase {
 FileUpload.GridFS = class FileUploadGridFS extends FileUploadBase {
 	constructor(meta, file) {
 		super(meta, file);
-		this.handler = new UploadFS.Uploader({
-			store: new UploadFS.store.GridFS({
-    collection: RocketChat.models.Uploads.model,
-    name: 'rocketchat_uploads',
-    collectionName: 'rocketchat_uploads',
-    filter: new UploadFS.Filter({
-      onCheck: FileUpload.validateFileUpload
-    }),
-    transformWrite: function(readStream, writeStream, fileId, file) {
-      var identify, stream;
-      if (RocketChatFile.enabled === false || !/^image\/.+/.test(file.type)) {
-        return readStream.pipe(writeStream);
-      }
-      stream = void 0;
-      identify = function(err, data) {
-        var ref;
-        if (err != null) {
-          return stream.pipe(writeStream);
-        }
-        file.identify = {
-          format: data.format,
-          size: data.size
-        };
-        if ((data.Orientation != null) && ((ref = data.Orientation) !== '' && ref !== 'Unknown' && ref !== 'Undefined')) {
-          return RocketChatFile.gm(stream).autoOrient().stream().pipe(writeStream);
-        } else {
-          return stream.pipe(writeStream);
-        }
-      };
-      return stream = RocketChatFile.gm(readStream).identify(identify).stream();
-    },
-    onRead: function(fileId, file, req, res) {
-      var rawCookies, ref, token, uid;
-      if (RocketChat.settings.get('FileUpload_ProtectFiles')) {
-        if ((req != null ? (ref = req.headers) != null ? ref.cookie : void 0 : void 0) != null) {
-          rawCookies = req.headers.cookie;
-        }
-        if (rawCookies != null) {
-          uid = cookie.get('rc_uid', rawCookies);
-        }
-        if (rawCookies != null) {
-          token = cookie.get('rc_token', rawCookies);
-        }
-        if (uid == null) {
-          uid = req.query.rc_uid;
-          token = req.query.rc_token;
-        }
-        if (!(uid && token && RocketChat.models.Users.findOneByIdAndLoginToken(uid, token))) {
-          res.writeHead(403);
-          return false;
-        }
-      }
-      res.setHeader('content-disposition', "attachment; filename=\"" + (encodeURIComponent(file.name)) + "\"");
-      return true;
-    }
+        Meteor.fileStore = new UploadFS.store.GridFS({
+  collection: RocketChat.models.Uploads.model,
+  name: 'rocketchat_uploads',
+  collectionName: 'rocketchat_uploads',
+  filter: new UploadFS.Filter({
+    onCheck: FileUpload.validateFileUpload
   }),
+  transformWrite: function(readStream, writeStream, fileId, file) {
+    var identify, stream;
+    if (RocketChatFile.enabled === false || !/^image\/.+/.test(file.type)) {
+      return readStream.pipe(writeStream);
+    }
+    stream = void 0;
+    identify = function(err, data) {
+      var ref;
+      if (err != null) {
+        return stream.pipe(writeStream);
+      }
+      file.identify = {
+        format: data.format,
+        size: data.size
+      };
+      if ((data.Orientation != null) && ((ref = data.Orientation) !== '' && ref !== 'Unknown' && ref !== 'Undefined')) {
+        return RocketChatFile.gm(stream).autoOrient().stream().pipe(writeStream);
+      } else {
+        return stream.pipe(writeStream);
+      }
+    };
+    return stream = RocketChatFile.gm(readStream).identify(identify).stream();
+  },
+  onRead: function(fileId, file, req, res) {
+    var rawCookies, ref, token, uid;
+    if (RocketChat.settings.get('FileUpload_ProtectFiles')) {
+      if ((req != null ? (ref = req.headers) != null ? ref.cookie : void 0 : void 0) != null) {
+        rawCookies = req.headers.cookie;
+      }
+      if (rawCookies != null) {
+        uid = cookie.get('rc_uid', rawCookies);
+      }
+      if (rawCookies != null) {
+        token = cookie.get('rc_token', rawCookies);
+      }
+      if (uid == null) {
+        uid = req.query.rc_uid;
+        token = req.query.rc_token;
+      }
+      if (!(uid && token && RocketChat.models.Users.findOneByIdAndLoginToken(uid, token))) {
+        res.writeHead(403);
+        return false;
+      }
+    }
+    res.setHeader('content-disposition', "attachment; filename=\"" + (encodeURIComponent(file.name)) + "\"");
+    return true;
+  }
+});
+		this.handler = new UploadFS.Uploader({
+			store: Meteor.fileStore,
 			data: file,
 			file: meta,
 			onError: (err) => {
