@@ -172,6 +172,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/models/Rooms.js', 'server');
 	api.addFiles('server/models/LivechatExternalMessage.js', ['client', 'server']);
 	api.addFiles('server/models/LivechatCustomField.js', 'server');
+	api.addFiles('server/models/Uploads.coffee', 'server');
 	// api.addFiles('server/models/LivechatDepartment.js', 'server');
 	// api.addFiles('server/models/LivechatDepartmentAgents.js', 'server');
 	api.addFiles('server/models/LivechatPageVisited.js', 'server');
