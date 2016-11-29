@@ -32,16 +32,13 @@ Template.livechatCurrentChats.helpers({
 		return AgentUsers.find({}, { sort: { name: 1 } });
 	},
 	blocked() {		
-		if(BlockedVisitor.find({_id:this.v._id,blocked:true}).fetch().length === 0){
+		//if(BlockedVisitor.find({_id:this.v._id,blocked:true}).fetch().length === 0){
 			return 'Block';
-		}
-		else{
-			return 'Unblock';
-		}
-
+		//}
+		//else{
+		//	return 'Unblock';
+		//}
 	}
-	
-	// Meteor.users.find({}).fetch()
 });
 
 
@@ -95,10 +92,9 @@ Template.livechatCurrentChats.onCreated(function() {
 	this.blockedlist = new ReactiveVar();
 
 	this.subscribe('livechat:agents');
-	this.subscribe('livechat:BlockedVisitor');
+	//this.subscribe('livechat:BlockedVisitor');
 
 	this.autorun(() => {
-		// instance.blockedlist.set(Meteor.users.find({}).fetch()); 
 		this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get());
 	});
 });
