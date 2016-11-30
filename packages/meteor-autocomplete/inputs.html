@@ -9,29 +9,29 @@
 </template>
 
 <template name="_autocompleteContainer">
+    <!--{{#unless empty}}-->
     {{#if isShowing}}
-    <div class='-autocomplete-container'>
-        {{#if isLoaded}}
-            {{#unless empty}}
-            <ul class='-autocomplete-list'>
-                {{#each filteredList}}
-                <li class="-autocomplete-item">
-                    {{#with ../currentTemplate }}
-                        {{#with ..}}  {{! original 'data' context to itemTemplate}}
-                            {{> ..}}  {{! return value from itemTemplate }}
+        <div class='-autocomplete-container'>
+            {{#if isLoaded}}
+                {{#unless empty}}
+                <ul class='-autocomplete-list'>
+                    {{#each filteredList}}
+                    <li class="-autocomplete-item">
+                        {{#with ../currentTemplate }}
+                            {{#with ..}}  {{! original 'data' context to itemTemplate}}
+                                {{> ..}}  {{! return value from itemTemplate }}
+                            {{/with}}
                         {{/with}}
-                    {{/with}}
-                </li>
-                {{/each}}
-            </ul>
+                    </li>
+                    {{/each}}
+                </ul>  
+                {{/unless}}             
             {{else}}
-                {{> noMatchTemplate }}
-            {{/unless}}
-        {{else}}
-            {{> loading}}
-        {{/if}}
-    </div>
-    {{/if}}
+                {{> loading}}
+            {{/if}}
+        </div>
+    {{/if}}    
+    <!--{{/unless}}-->
 </template>
 
 <template name="_noMatch">

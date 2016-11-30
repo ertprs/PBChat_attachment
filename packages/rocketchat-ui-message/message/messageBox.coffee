@@ -95,6 +95,27 @@ Template.messageBox.helpers
 	showSandstorm: ->
 		return Meteor.settings.public.sandstorm
 
+	autocompleteSettings: ->
+		return {
+			position: "top"
+			limit: 10
+			# inputDelay: 300
+			rules: [
+				{
+					# @TODO maybe change this 'collection' and/or template
+					token: '@' 
+					collection: 'Shortcuts'
+					subscription: 'shortcutAutocomplete'
+					field: 'shortcut'
+					template: Template.shortcutSearch
+					noMatchTemplate: Template.shortcutSearchEmpty
+					matchAll: true
+					selector: (match) ->
+						return { term: match }
+					sort: 'shortcut'
+				}
+			]
+		}
 
 Template.messageBox.events
 	'click .join': (event) ->
@@ -110,9 +131,11 @@ Template.messageBox.events
 				RoomHistoryManager.getRoom(@_id).loaded = undefined
 				RoomManager.computation.invalidate()
 
-	'focus .input-message': (event, instance) ->
-		KonchatNotification.removeRoomNotification @_id
-		chatMessages[@_id].input = instance.find('.input-message')
+	'focus .input-message': (event,Template, instance) ->
+		# KonchatNotification.removeRoomNotification @_id
+		# chatMessages[@_id].input = instance.find('.input-message')
+		KonchatNotification.removeRoomNotification Session.get('openedRoom')
+		chatMessages[Session.get('openedRoom')].input = Template.find('.input-message')
 
 	'click .send-button': (event, instance) ->
 		input = instance.find('.input-message')
@@ -125,12 +148,14 @@ Template.messageBox.events
 		input.focus()
 
 	'keyup .input-message': (event, instance) ->
-		chatMessages[@_id].keyup(@_id, event, instance)
-		instance.isMessageFieldEmpty.set(chatMessages[@_id].isEmpty())
+		# chatMessages[@_id].keyup(@_id, event, instance)
+		# instance.isMessageFieldEmpty.set(chatMessages[@_id].isEmpty())
+		chatMessages[Session.get('openedRoom')].keyup(Session.get('openedRoom'), event)
+		#instance.isMessageFieldEmpty.set(chatMessages[Session.get('openedRoom')].isEmpty())
 
-	'paste .input-message': (e, instance) ->
+	'paste .input-message': (e,Templated, instance) ->
 		Meteor.setTimeout ->
-			input = instance.find('.input-message')
+			input = Template.find('.input-message')
 			input.updateAutogrow?()
 		, 50
 
@@ -150,24 +175,16 @@ Template.messageBox.events
 			fileUpload files
 
 	'keydown .input-message': (event) ->
-		if RocketChat.authz.hasRole(Meteor.userId(), "livechat-guest") 
-			chatMessages[@_id].keydown(@_id, event, Template.instance())
-		else 
-			agentId = Meteor.userId()
-			if(Session.get('Shortcuts') is "undefined"  || Session.get('Shortcuts') is null || Session.get('Shortcuts') is undefined)
-				Meteor.call 'getShortcuts', agentId, (error, result) ->
-					if error
-						return handleError(error)
-					else 						 
-						Session.set('Shortcuts',result)	
-			chatMessages[@_id].keydown(@_id, event, Template.instance())
+		chatMessages[Session.get('openedRoom')].keydown(Session.get('openedRoom'), event)
 
 	'input .input-message': (event) ->
-		chatMessages[@_id].valueChanged(@_id, event, Template.instance())
+		# chatMessages[@_id].valueChanged(@_id, event, Template.instance())
+		chatMessages[Session.get('openedRoom')].valueChanged(Session.get('openedRoom'), event)
 
 	'propertychange .input-message': (event) ->
 		if event.originalEvent.propertyName is 'value'
-			chatMessages[@_id].valueChanged(@_id, event, Template.instance())
+			# chatMessages[@_id].valueChanged(@_id, event, Template.instance())
+			chatMessages[Session.get('openedRoom')].valueChanged(Session.get('openedRoom'), event)
 
 	"click .editing-commands-cancel > button": (e) ->
 		chatMessages[@_id].clearEditing()
@@ -267,6 +284,16 @@ Template.messageBox.onCreated ->
 	@isMessageFieldEmpty = new ReactiveVar true
 	@showMicButton = new ReactiveVar false
 	@showVideoRec = new ReactiveVar false
+	
+	# if(Session.get('Shortcuts') is "undefined"  || Session.get('Shortcuts') is null || Session.get('Shortcuts') is undefined)
+	# 	Meteor.call 'getShortcuts', localStorage.getItem('DepartmentName'), (error, result) ->
+	# 		if error
+	# 			return handleError(error)
+	# 		else 						 
+	# 			console.log('success');
+	# 			Session.set('Shortcuts',result)
+
+	# this.subscribe 'Shortcuts', localStorage.getItem('DepartmentName')	
 
 	@autorun =>
 		videoRegex = /video\/webm|video\/\*/i
