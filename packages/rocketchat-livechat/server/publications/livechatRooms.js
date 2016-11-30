@@ -42,3 +42,4 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
 	}	
 	return RocketChat.models.Rooms.findLivechat(query, offset, limit);
 });
+

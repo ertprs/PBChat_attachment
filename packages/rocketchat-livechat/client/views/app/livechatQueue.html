@@ -7,15 +7,17 @@
 				<input type="checkbox" class="show-offline" id="show-offline-{{_id}}">)
 			</p>
 
-			<div class="rocket-form">
+			<div class="rocket-form" style="max-width: 100% !important">
 				<div class="list">
 					<table>
 						<thead>
 							<tr>
-								<th width="55%">{{_ "Agent"}}</th>
-								<th width="15%" class="text-right">{{_ "Count"}}</th>
-								<th width="15%" class="text-right">{{_ "Chat_Limit"}}</th>
-								<th width="15%" class="text-right">{{_ "Order"}}</th>
+								<th width="15%">{{_ "Agent"}}</th>
+								<th width="15%" class="text-right">{{_ "Openchat"}}</th>
+								<th width="20%" class="text-right">{{_ "AssignedChat"}}</th>
+								<th width="20%" class="text-right">{{_ "RespondedOn"}}</th>
+								<th width="20%" class="text-right">{{_ "Chat_Limit"}}</th>
+								<th width="10%" class="text-right">{{_ "Order"}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -23,6 +25,8 @@
 								<tr>
 									<td>{{username}}</td>
 									<td class="text-right">{{count}}</td>
+									<td class="text-right">{{assignedchat}}</td>
+									<td class="text-right">{{responded}}</td>
 									<td class="text-right">{{limit}}</td>
 									<td class="text-right">{{order}}</td>
 								</tr>
@@ -40,3 +44,4 @@
 		<p>{{_ "You_are_not_authorized_to_view_this_page"}}</p>
 	{{/if}}
 </template>
+
