@@ -330,15 +330,7 @@ class @ChatMessages
 		input = event.currentTarget
 		$input = $(input)
 		k = event.which
-		this.resize(input)
-		data = input.value
-		shortcut = data.split(" ").splice(-1)
-		if event.which is 186			
-			shortcut=shortcut.toString().toUpperCase()
-			console.log(shortcut)
-			phrase = Session.get('Shortcuts')[shortcut]
-			if phrase != undefined
-				input.value = phrase
+		this.resize(input)				
 				
 		if k is 13 and not event.shiftKey and not event.ctrlKey and not event.altKey # Enter without shift/ctrl/alt
 			event.preventDefault()

@@ -13,3 +13,7 @@ RocketChat.models.Users = _.extend {}, RocketChat.models.Users, Meteor.users
 RocketChat.models.Subscriptions = _.extend {}, RocketChat.models.Subscriptions, @ChatSubscription
 RocketChat.models.Rooms = _.extend {}, RocketChat.models.Rooms, @ChatRoom
 RocketChat.models.Messages = _.extend {}, RocketChat.models.Messages, @ChatMessage
+#added by PBChat for shortcuts
+@Shortcuts = new Meteor.Collection null
+# @Shortcuts = new Meteor.Collection 'rocketchat_Shortcuts'
+# RocketChat.models.Shortcuts = _.extend {}, RocketChat.models.Shortcuts, @Shortcuts

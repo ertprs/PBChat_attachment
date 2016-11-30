@@ -1,12 +1,12 @@
 <template name="messageBox">
 	{{#if subscribed}}
 		<form class="message-form" method="post" action="/">
-			{{> messagePopupConfig getPopupConfig}}
+			<!--{{> messagePopupConfig getPopupConfig}}-->
 			{{#if allowedToSend}}
 			<div class="message-input">
 				<div class="input-message-container">
-					<textarea dir="auto" name="msg" maxlength="{{maxMessageLength}}" class="input-message autogrow-short" placeholder="{{_ 'Message'}}"></textarea>
-
+					<!--<textarea dir="auto" name="msg" maxlength="{{maxMessageLength}}" class="input-message autogrow-short" placeholder="{{_ 'Message'}}"></textarea>-->
+					{{> textareaAutocomplete settings=autocompleteSettings dir="auto" name="msg" class="input-message autogrow-short" autocomplete="off" placeholder=(_ "Message")}}		
 					<div class="inner-left-toolbar">
 						<i class="emoji-picker-icon icon-people"></i>
 					</div>

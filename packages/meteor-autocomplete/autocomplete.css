@@ -6,6 +6,9 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     min-width: 180px;
     z-index: 1000;
+    height: 200px;
+    overflow: auto;
+    margin-bottom: 15px;
 }
 
 .-autocomplete-list {

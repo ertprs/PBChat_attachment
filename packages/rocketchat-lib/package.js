@@ -100,6 +100,7 @@ Package.onUse(function(api) {
 	//Added by PBChat
 	api.addFiles('server/models/LivechatDepartment.js', 'server');
 	api.addFiles('server/models/LivechatDepartmentAgents.js', 'server');
+	api.addFiles('server/models/Shortcuts.js', 'server');
 
 	// SERVER PUBLICATIONS
 	api.addFiles('server/publications/settings.coffee', 'server');
