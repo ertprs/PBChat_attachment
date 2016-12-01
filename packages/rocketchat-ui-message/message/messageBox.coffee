@@ -103,7 +103,7 @@ Template.messageBox.helpers
 			rules: [
 				{
 					# @TODO maybe change this 'collection' and/or template
-					token: '@' 
+					token: '#' 
 					collection: 'Shortcuts'
 					subscription: 'shortcutAutocomplete'
 					field: 'shortcut'
@@ -118,6 +118,9 @@ Template.messageBox.helpers
 		}
 
 Template.messageBox.events
+	'autocompleteselect textarea': (event,template,doc) ->          
+		event.currentTarget.value=doc.shortcut
+		
 	'click .join': (event) ->
 		event.stopPropagation()
 		event.preventDefault()
