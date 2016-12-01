@@ -4,10 +4,7 @@ RocketChat.models.Users = new class extends RocketChat.models._Base
 
 		@tryEnsureIndex { 'roles': 1 }, { sparse: 1 }
 		@tryEnsureIndex { 'name': 1 }
-		@tryEnsureIndex { 'lastLogin': 1 }
 		@tryEnsureIndex { 'status': 1 }
-		@tryEnsureIndex { 'active': 1 }, { sparse: 1 }
-		@tryEnsureIndex { 'statusConnection': 1 }, { sparse: 1 }
 		@tryEnsureIndex { 'type': 1 }
 
 
@@ -393,9 +390,7 @@ RocketChat.models.Users = new class extends RocketChat.models._Base
 			_id:
 				$in: usersIds
 			active: true
-			status: 'offline'
-			statusConnection:
-				$ne: 'online'
+			status: 'offline'			
 			'emails.verified': true
 
 		return @find query, { fields: { name: 1, username: 1, emails: 1, 'settings.preferences.emailNotificationMode': 1 } }

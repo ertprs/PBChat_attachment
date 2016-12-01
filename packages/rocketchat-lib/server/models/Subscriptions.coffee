@@ -2,19 +2,11 @@ RocketChat.models.Subscriptions = new class extends RocketChat.models._Base
 	constructor: ->
 		super('subscription')
 
-		@tryEnsureIndex { 'rid': 1, 'u._id': 1 }, { unique: 1 }
-		@tryEnsureIndex { 'rid': 1, 'alert': 1, 'u._id': 1 }
-		@tryEnsureIndex { 'rid': 1, 'roles': 1 }
-		@tryEnsureIndex { 'u._id': 1, 'name': 1, 't': 1 }
-		@tryEnsureIndex { 'u._id': 1, 'name': 1, 't': 1, 'code': 1 }, { unique: 1 }
-		@tryEnsureIndex { 'open': 1 }
-		@tryEnsureIndex { 'alert': 1 }
-		@tryEnsureIndex { 'unread': 1 }
+		@tryEnsureIndex { 'rid': 1, 'u._id': 1 }, { unique: 1 }			
+		# @tryEnsureIndex { 'u._id': 1, 'name': 1, 't': 1, 'code': 1 }, { unique: 1 }
+		@tryEnsureIndex { 'open': 1 }	
 		@tryEnsureIndex { 'ts': 1 }
 		@tryEnsureIndex { 'ls': 1 }
-		@tryEnsureIndex { 'desktopNotifications': 1 }, { sparse: 1 }
-		@tryEnsureIndex { 'mobilePushNotifications': 1 }, { sparse: 1 }
-		@tryEnsureIndex { 'emailNotifications': 1 }, { sparse: 1 }
 
 
 	# FIND ONE
