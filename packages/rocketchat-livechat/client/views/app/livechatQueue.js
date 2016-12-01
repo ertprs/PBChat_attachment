@@ -49,7 +49,75 @@ Template.livechatQueue.helpers({
 
 	responded(){
         return ChatRoom.find({ t: 'l','responseBy._id': this.agentId }).count();
-	}
+	},
+
+	AgentresponseTime(){
+		var chatcount = ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).count();
+		var responsetime  = 0.0 ;
+		var avgResposeTime  = 0.0 ;
+		if(chatcount != 0){
+			for (i = 0; i < chatcount; i++) { 
+				if(ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).fetch()[i].responseTime){
+					responsetime = responsetime + ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).fetch()[i].responseTime;	
+				}
+		};
+		avgResposeTime = responsetime/chatcount;
+		}
+		return Math.round(avgResposeTime);
+	},
+	totalChatCount(){
+        return ChatRoom.find({ t: 'l'}).count();
+	},
+
+	totalOpenChatCount(){
+        return ChatRoom.find({ t: 'l',open:true}).count();
+	},
+
+	totalrespondedChat(){
+        return ChatRoom.find({ t: 'l',responseTime:{$ne:null}}).count();
+	},
+	AvgResponseTime(){
+		var chatcount = ChatRoom.find({ t: 'l'}).count();
+		var responsetime  = 0.0 ;
+		var avgResposeTime  = 0.0 ;
+		if(chatcount != 0){
+			for (i = 0; i < chatcount; i++) {
+			if( ChatRoom.find({ t: 'l'}).fetch()[i].responseTime ){
+				responsetime = responsetime + ChatRoom.find({ t: 'l'}).fetch()[i].responseTime;
+			} 
+		};
+		avgResposeTime = responsetime/chatcount;
+		}
+		return Math.floor(avgResposeTime);
+	},
+
+	totalChatTime(){
+		var chatcount = ChatRoom.find({ t: 'l'}).count();
+		var totalChatTime  = 0 ;
+		if(chatcount != 0){
+			for (i = 0; i < chatcount; i++) { 
+				var a = moment(ChatRoom.find().fetch()[i].lm);
+				var b = moment(ChatRoom.find().fetch()[i].ts);
+				totalChatTime = totalChatTime + a.diff(b, 'seconds');
+			}
+		}
+		var days =  Math.floor(totalChatTime / (3600*24));
+		var hours = Math.floor((totalChatTime - days*24*3600) / 3600);
+		var minute = Math.floor((totalChatTime - hours*60*60 - days*24*3600) / 60);
+		var seconds = Math.floor((totalChatTime - hours*60*60 - minute*60 - days*24*3600) / 60);
+		if(days == 0 && hours == 0 && minute ==0){
+			return  seconds + ' sec';
+		}
+		else if(days == 0 && hours == 0){
+			return  minute + ' min ' + seconds + ' sec';
+		}
+		else if(days == 0){
+			return  hours + ' hrs ' + minute + ' min ' + seconds + ' sec';
+		}
+		else{
+			return  days + ' days ' + hours + ' hrs ' + minute + ' min ' + seconds + ' sec';
+		}
+	},
 });
 
 Template.livechatQueue.events({
@@ -64,7 +132,6 @@ Template.livechatQueue.events({
 
 Template.livechatQueue.onCreated(function() {
 	this.showOffline = new ReactiveVar({});
-    this.limit = new ReactiveVar(20);
 	this.filter = new ReactiveVar({});
     var Today = new Date();
 	var StartDate = Today.getFullYear().toString() + '-' + (Today.getMonth()+1).toString() + '-' + Today.getDate().toString();
@@ -72,17 +139,18 @@ Template.livechatQueue.onCreated(function() {
     var numberOfDaysToAdd = 1;
     nextday.setDate(nextday.getDate() + numberOfDaysToAdd); 
 	var EndDate = nextday.getFullYear().toString() + '-' + (nextday.getMonth()+1).toString() + '-' + nextday.getDate().toString();
-	limit = 2000;
 	let filter1 = {};
 	filter1['From'] = StartDate;
 	filter1['To'] = EndDate;
+	filter1['department'] = localStorage.getItem('DepartmentId');
     this.filter.set(filter1);
 	this.subscribe('livechat:queue');
 	this.subscribe('livechat:agents');
 	this.subscribe('livechat:departments');
     this.autorun(() => {
-		this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get());
+		this.subscribe('livechat:rooms', this.filter.get(), 0, 5000);
 	});
 });
+
 
 

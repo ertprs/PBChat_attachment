@@ -12,11 +12,12 @@
 					<table>
 						<thead>
 							<tr>
-								<th width="15%">{{_ "Agent"}}</th>
+								<th width="10%">{{_ "Agent"}}</th>
 								<th width="15%" class="text-right">{{_ "Openchat"}}</th>
-								<th width="20%" class="text-right">{{_ "AssignedChat"}}</th>
-								<th width="20%" class="text-right">{{_ "RespondedOn"}}</th>
-								<th width="20%" class="text-right">{{_ "Chat_Limit"}}</th>
+								<th width="15%" class="text-right">{{_ "AssignedChat"}}</th>
+								<th width="15%" class="text-right">{{_ "RespondedOn"}}</th>
+								<th width="20%" class="text-right">{{_ "AvgResponseTime(sec)"}}</th>
+								<th width="15%" class="text-right">{{_ "Chat_Limit"}}</th>
 								<th width="10%" class="text-right">{{_ "Order"}}</th>
 							</tr>
 						</thead>
@@ -27,6 +28,7 @@
 									<td class="text-right">{{count}}</td>
 									<td class="text-right">{{assignedchat}}</td>
 									<td class="text-right">{{responded}}</td>
+									<td class="text-right">{{AgentresponseTime}}</td>
 									<td class="text-right">{{limit}}</td>
 									<td class="text-right">{{order}}</td>
 								</tr>
@@ -40,8 +42,34 @@
 				</div>
 			</div>
 		{{/each}}
+
+			<div class="rocket-form" style="max-width: 100% !important">
+				<div class="list">
+					<table>
+						<thead>
+							<tr>
+								<th width="10%">{{_ "TotalChats"}}</th>
+								<th width="20%" class="text-right">{{_ "Openchat"}}</th>
+								<th width="20%" class="text-right">{{_ "Responded"}}</th>
+								<th width="20%" class="text-right">{{_ "AvgResponseTime(sec)"}}</th>
+								<th width="30%" class="text-right">{{_ "TotalChatTime"}}</th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr>
+									<td>{{totalChatCount}}</td>
+									<td class="text-right">{{totalOpenChatCount}}</td>
+									<td class="text-right">{{totalrespondedChat}}</td>
+									<td class="text-right">{{AvgResponseTime}}</td>
+									<td class="text-right">{{totalChatTime}}</td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 	{{else}}
 		<p>{{_ "You_are_not_authorized_to_view_this_page"}}</p>
 	{{/if}}
 </template>
+
 
