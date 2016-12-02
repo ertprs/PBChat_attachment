@@ -57,7 +57,9 @@ Template.livechatQueue.helpers({
 		var avgResposeTime  = 0.0 ;
 		if(responcedChat != 0){
 			for (i = 0; i < responcedChat; i++) { 
+				if(ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch()[i].responseTime){
 					responsetime = responsetime + ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch()[i].responseTime;
+				}
 		};
 		avgResposeTime = responsetime/responcedChat;
 		}
@@ -80,7 +82,9 @@ Template.livechatQueue.helpers({
 		var avgResposeTime  = 0.0 ;
 		if(responcedChat != 0){
 			for (i = 0; i < responcedChat; i++) { 
+				if(ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch()[i].responseTime){
 					responsetime = responsetime + ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch()[i].responseTime;
+				}
 		};
 		avgResposeTime = responsetime/responcedChat;
 		}
