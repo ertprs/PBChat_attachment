@@ -1,6 +1,10 @@
 Template.livechatDepartments.helpers({
 	departments() {
-		return LivechatDepartment.find();
+		if(localStorage.getItem("IsAdmin") === "true"){
+			return LivechatDepartment.find();
+		}else{
+			return LivechatDepartment.find({_id: localStorage.getItem('DepartmentId')});	
+		}
 	}
 });
 

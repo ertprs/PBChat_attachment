@@ -10,6 +10,11 @@ Meteor.methods({
 			throw new Meteor.Error('error-not-allowed', 'Inquiry already taken', { method: 'livechat:takeInquiry' });
 		}
 
+		const room = RocketChat.models.Rooms.findOneById(inquiry.rid);
+		if (room.usernames.length === 2) {
+			throw new Meteor.Error('error-not-allowed', 'Inquiry already taken', { method: 'livechat:takeInquiry' });
+		}
+
 		const user = RocketChat.models.Users.findOneById(Meteor.userId());
 
 		const agent = {
@@ -36,7 +41,6 @@ Meteor.methods({
 		};
 		RocketChat.models.Subscriptions.insert(subscriptionData);
 
-		const room = RocketChat.models.Rooms.findOneById(inquiry.rid);
 		const usernames = room.usernames.concat(agent.username);
 
 		RocketChat.models.Rooms.changeAgentByRoomId(inquiry.rid, usernames, agent);

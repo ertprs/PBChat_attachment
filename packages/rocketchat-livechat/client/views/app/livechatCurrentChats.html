@@ -36,9 +36,16 @@
 					<input type="text" class="form-control" id="From" name="From" >
 						<span class="input-group-addon">to</span>
 					<input type="text" class="form-control" id="To" name="To">
-
+			<div class="form-group">
+				<label for="responded">{{_ "WaitingResponse"}}</label>
+				<select name="waitingResponse">
+					<option value=""></option>
+					<option value="true">{{_ "WaitingResponse"}}</option>
+					<option value="false">{{_ "Responded"}}</option>					
+				</select>
+			</div>	
 					<button class="button">{{_ "Filter"}}</button>
-				</div>		
+				</div>					
 			<!--Added by Deepankar-->
 			
 		</form>

@@ -48,20 +48,18 @@ Template.livechatQueue.helpers({
 	},
 
 	responded(){
-        return ChatRoom.find({ t: 'l','responseBy._id': this.agentId }).count();
+        return ChatRoom.find({ t: 'l','responseBy._id': this.agentId, responseTime:{$ne:null} }).count();
 	},
 
 	AgentresponseTime(){
-		var chatcount = ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).count();
+		var responcedChat = ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).count(); 
 		var responsetime  = 0.0 ;
 		var avgResposeTime  = 0.0 ;
-		if(chatcount != 0){
-			for (i = 0; i < chatcount; i++) { 
-				if(ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).fetch()[i].responseTime){
-					responsetime = responsetime + ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId}).fetch()[i].responseTime;	
-				}
+		if(responcedChat != 0){
+			for (i = 0; i < responcedChat; i++) { 
+					responsetime = responsetime + ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch()[i].responseTime;
 		};
-		avgResposeTime = responsetime/chatcount;
+		avgResposeTime = responsetime/responcedChat;
 		}
 		return Math.round(avgResposeTime);
 	},
@@ -77,18 +75,16 @@ Template.livechatQueue.helpers({
         return ChatRoom.find({ t: 'l',responseTime:{$ne:null}}).count();
 	},
 	AvgResponseTime(){
-		var chatcount = ChatRoom.find({ t: 'l'}).count();
+		var responcedChat = ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).count(); 
 		var responsetime  = 0.0 ;
 		var avgResposeTime  = 0.0 ;
-		if(chatcount != 0){
-			for (i = 0; i < chatcount; i++) {
-			if( ChatRoom.find({ t: 'l'}).fetch()[i].responseTime ){
-				responsetime = responsetime + ChatRoom.find({ t: 'l'}).fetch()[i].responseTime;
-			} 
+		if(responcedChat != 0){
+			for (i = 0; i < responcedChat; i++) { 
+					responsetime = responsetime + ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch()[i].responseTime;
 		};
-		avgResposeTime = responsetime/chatcount;
+		avgResposeTime = responsetime/responcedChat;
 		}
-		return Math.floor(avgResposeTime);
+		return Math.round(avgResposeTime);
 	},
 
 	totalChatTime(){

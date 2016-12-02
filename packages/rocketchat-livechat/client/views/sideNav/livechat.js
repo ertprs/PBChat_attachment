@@ -94,11 +94,14 @@ Template.livechat.helpers({
 
 Template.livechat.events({
 	'click .livechat-status'() {
-		Meteor.call('livechat:changeLivechatStatus', (err /*, results*/) => {
-			if (err) {
-				return handleError(err);
-			}
-		});
+		if( localStorage.getItem('DepartmentName') === "TermLife" || localStorage.getItem('DepartmentName') === "Investments" ){
+				Meteor.call('livechat:changeLivechatStatus', (err /*, results*/) => {
+					if (err) {
+						return handleError(err);
+					}
+				});
+		}
+		
 	},
 
 	'click .inquiries .open-room'(event) {

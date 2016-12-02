@@ -8,8 +8,8 @@ Meteor.methods({
 			email: email,
 			department: department,
 			loginToken: hashStampedToken,
-			username: name,
-			//username: name + '-' + leadid,
+			//username: name,
+			username: name + '-' + custid,
 			custid: custid
 		});
 		// update visited page history to not expire

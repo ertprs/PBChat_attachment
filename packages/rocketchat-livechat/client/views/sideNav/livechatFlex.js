@@ -4,6 +4,14 @@ Template.livechatFlex.helpers({
 		if (routes.indexOf(FlowRouter.current().route.name) !== -1) {
 			return 'active';
 		}
+	},
+
+	showLinks(){
+		if(localStorage.getItem("IsAdmin") === "true"){
+			return true;
+		}else{
+			return false;
+		}
 	}
 });
 
