@@ -128,17 +128,18 @@ Template.loginForm.events
 						return
 					#Added by PBChat
 					agentid = Meteor.userId()
-					Meteor.call 'logoutPreviousTokens' ,  agentid, (error) ->	
+					Meteor.call 'logoutPreviousTokens' ,  agentid,localStorage.getItem('DepartmentName'), (error) ->	
 						if error?
 							toastr.error t 'Error logging off'
 					Meteor.call 'getuserdepartment' ,  agentid, (error,result) ->
 						if result != 'null'
 							localStorage.setItem('DepartmentId', result._id)
 							localStorage.setItem('DepartmentName',  result.name);
-					localStorage.setItem('IsAdmin', RocketChat.authz.hasRole(Meteor.userId(), 'admin'))
+					localStorage.setItem('IsAdmin', RocketChat.authz.hasRole(Meteor.userId(), 'admin'))					
 					#Added by PBChat					
 					localStorage.setItem('userLanguage', Meteor.user()?.language)
 					setLanguage(Meteor.user()?.language)
+					Meteor.call 'createLoginHistory' ,  agentid,localStorage.getItem('DepartmentName'),'login'
 
 	'click .register': ->
 		Template.instance().state.set 'register'

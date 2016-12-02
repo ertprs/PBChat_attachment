@@ -40,6 +40,7 @@ Template.accountBox.events
 			Meteor.call('logoutCleanUp', user)
 			Meteor.call('changeUserStatus', user._id)
 			FlowRouter.go 'home'
+		Meteor.call 'createLoginHistory' ,  user._id,localStorage.getItem('DepartmentName'),'logout'	
 
 	'click #avatar': (event) ->
 		FlowRouter.go 'changeAvatar'

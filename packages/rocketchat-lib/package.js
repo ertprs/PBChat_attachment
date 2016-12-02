@@ -101,6 +101,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/models/LivechatDepartment.js', 'server');
 	api.addFiles('server/models/LivechatDepartmentAgents.js', 'server');
 	api.addFiles('server/models/Shortcuts.js', 'server');
+	api.addFiles('server/models/LoginHistory.js', 'server');
 
 	// SERVER PUBLICATIONS
 	api.addFiles('server/publications/settings.coffee', 'server');
@@ -138,6 +139,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/methods/getuserdepartment.js', 'server');
 	api.addFiles('server/methods/logoutPreviousTokens.js', 'server');
 	api.addFiles('server/methods/changeUserStatus.js', 'server');
+	api.addFiles('server/methods/createLoginHistory.js', 'server');
 	//Added by PBChat
 	api.addFiles('server/methods/filterATAllTag.js', 'server');
 	api.addFiles('server/methods/getDepartmentAgents.js', 'server'); // Added by PBChat
