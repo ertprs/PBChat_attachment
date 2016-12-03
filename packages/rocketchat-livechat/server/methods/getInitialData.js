@@ -94,6 +94,20 @@ Meteor.methods({
             info.online = RocketChat.models.Users.findOnlineAgents().count() > 0;
         }
 
+        var openingtime = RocketChat.settings.get('Livechat_Widget_OpeningTiming_' + info.custinfo.departmentname);
+		
+		var closingtime = RocketChat.settings.get('Livechat_Widget_ClosingTiming_' + info.custinfo.departmentname);
+		
+		if(openingtime && closingtime){
+			var currentTime = moment.utc(moment().utc().format('HH:mm'), 'HH:mm');
+			var start = moment.utc(openingtime, 'HH:mm');
+		    var finish = moment.utc(closingtime, 'HH:mm');
+			if (finish.isBefore(start)) {
+			     finish.add(1, 'days');
+		    }
+			info.online = currentTime.isBetween(start, finish);
+		}
+
 		return info;
 	}
 });
