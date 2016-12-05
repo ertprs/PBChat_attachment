@@ -29,7 +29,14 @@ Template.livechatCurrentChats.helpers({
 		return this.open ? t('Opened') : t('Closed');
 	},
 	agents() {
-		return AgentUsers.find({}, { sort: { name: 1 } });
+		return LivechatDepartmentAgents.find({}, { sort: { username: 1 } });
+	},
+	pickupTime() {
+		if(this.responseTime){
+			return Math.round(this.responseTime);
+		}else{
+			return '';
+		}
 	},
 	blocked() {		
 		//if(BlockedVisitor.find({_id:this.v._id,blocked:true}).fetch().length === 0){
@@ -92,6 +99,7 @@ Template.livechatCurrentChats.onCreated(function() {
 	this.blockedlist = new ReactiveVar();
 
 	this.subscribe('livechat:agents');
+	this.subscribe('livechat:departmentAgents',localStorage.getItem("DepartmentId"));
 	//this.subscribe('livechat:BlockedVisitor');
 
 	this.autorun(() => {

@@ -68,13 +68,14 @@
 			<thead>
 				<tr>
 					<th width="15%">{{_ "Name"}}</th>
-					<th width="13%">{{_ "LeadID"}}</th>
-					<th width="12%">{{_ "Department"}}</th>
-					<th width="10%">{{_ "Served_By"}}</th>
-					<th width="15%">{{_ "Active_Since"}}</th>
-					<th width="15%">{{_ "Last_Message_At"}}</th>
+					<th width="10%">{{_ "LeadID"}}</th>
+					<th width="10%">{{_ "Department"}}</th>
+					<th width="10%">{{_ "ServedBy"}}</th>
+					<th width="15%">{{_ "PickupTime(sec)"}}</th>
+					<th width="10%">{{_ "ActiveSince"}}</th>
+					<th width="15%">{{_ "LastMessageAt"}}</th>
 					<th width="10%">{{_ "Status"}}</th>
-					<th width="10%">{{_ "Block Customer"}}</th>
+					<th width="5%">{{_ "Block"}}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -84,7 +85,7 @@
 						<td class="row-link" style=" cursor:pointer;">{{leadid}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{departmentname}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{servedBy}}</td>
-						<!--<td class="row-link" style=" cursor:pointer;">{{startedAt}}</td>-->
+						<td class="row-link" style=" cursor:pointer;">{{pickupTime}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{ActiveSince}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{lastMessage}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{status}}</td>
