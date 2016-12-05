@@ -96,6 +96,7 @@ monbro:mongodb-mapreduce-aggregation@1.0.1
 mongo@1.1.14
 mongo-id@1.0.6
 mongo-livedata@1.0.12
+mrt:bootstrap-3@0.3.8
 mrt:moment@2.8.1
 mrt:moment-timezone@0.2.1
 mrt:reactive-store@0.0.1
