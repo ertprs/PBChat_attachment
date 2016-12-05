@@ -6,6 +6,9 @@ RocketChat.QueueMethods = {
 	 */
 	'Least_Amount' : function(guest, message, roomInfo,custinfo) {	//custinfo added by PBChat
 		const agent = RocketChat.Livechat.getNextAgent(guest.department);
+		if(agent === 'Guest_Pool'){
+             room = RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
+		}else{
 		var date = new Date();
 		if (!agent) {
 			throw new Meteor.Error('no-agent-online', 'Sorry, no online agents');
@@ -79,6 +82,7 @@ RocketChat.QueueMethods = {
 
 		RocketChat.models.Rooms.insert(room);
 		RocketChat.models.Subscriptions.insert(subscriptionData);
+		}
 
 		return room;
 	},

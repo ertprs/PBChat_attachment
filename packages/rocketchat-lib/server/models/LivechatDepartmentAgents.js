@@ -71,13 +71,13 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
 				username: agent.value.username
 			};
 		} else {
-			console.log('no agent found');
-			var LivechatManager = RocketChat.models.Users.findLivechatManagerFromList(_.pluck(agents, 'username'));
-			console.log( 'LivechatManager' + LivechatManager.agentId);
-			return {
-				agentId: LivechatManager.agentId,
-				username: LivechatManager.username
-			};
+			// var LivechatManager = RocketChat.models.Users.findLivechatManagerFromList(_.pluck(agents, 'username'));
+			// console.log( 'LivechatManager' + LivechatManager.agentId);
+			// return {
+			// 	agentId: LivechatManager.agentId,
+			// 	username: LivechatManager.username
+			// };
+			return 'Guest_Pool';
 		}
 	}
 
