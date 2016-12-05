@@ -20,7 +20,7 @@ Template.livechatCurrentChats.helpers({
 		}
 	},
 	lastMessage() {
-		return moment(this.lm).format('L LTS');
+		return moment(this.lm).fromNow();
 	},
 	servedBy() {
 		return this.servedBy && this.servedBy.username;
@@ -29,7 +29,7 @@ Template.livechatCurrentChats.helpers({
 		return this.open ? t('Opened') : t('Closed');
 	},
 	agents() {
-		return LivechatDepartmentAgents.find({}, { sort: { username: 1 } });
+		return LivechatDepartmentAgents.find({}, { sort: { name: 1 } });
 	},
 	pickupTime() {
 		if(this.responseTime){
