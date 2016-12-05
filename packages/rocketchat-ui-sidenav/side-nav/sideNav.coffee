@@ -56,7 +56,11 @@ Template.sideNav.events
 
 Template.sideNav.onRendered ->
 	SideNav.init()
-	menu.init()
-
+	menu.init()	
 	Meteor.defer ->
 		menu.updateUnreadBars()
+	#get shortcuts and store in local collection	
+	Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->		
+		if result != 'null'										
+			result.forEach (shortcut) ->
+				Shortcuts.insert shortcut				

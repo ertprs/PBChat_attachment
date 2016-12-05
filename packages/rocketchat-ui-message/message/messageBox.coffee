@@ -98,21 +98,21 @@ Template.messageBox.helpers
 	autocompleteSettings: ->
 		return {
 			position: "top"
-			limit: 10
+			limit: 20
 			# inputDelay: 300
 			rules: [
 				{
 					# @TODO maybe change this 'collection' and/or template
-					token: '#' 
-					collection: 'Shortcuts'
-					subscription: 'shortcutAutocomplete'
+					#token: '#' 
+					collection: Shortcuts #'Shortcuts'
+					#subscription: 'shortcutAutocomplete'
 					field: 'shortcut'
 					template: Template.shortcutSearch
 					noMatchTemplate: Template.shortcutSearchEmpty
 					matchAll: true
-					selector: (match) ->
-						return { term: match }
-					sort: 'shortcut'
+					# selector: (match) ->
+					# 	return { term: match }
+					# sort: 'shortcut'
 				}
 			]
 		}
@@ -288,15 +288,11 @@ Template.messageBox.onCreated ->
 	@showMicButton = new ReactiveVar false
 	@showVideoRec = new ReactiveVar false
 	
-	# if(Session.get('Shortcuts') is "undefined"  || Session.get('Shortcuts') is null || Session.get('Shortcuts') is undefined)
-	# 	Meteor.call 'getShortcuts', localStorage.getItem('DepartmentName'), (error, result) ->
-	# 		if error
-	# 			return handleError(error)
-	# 		else 						 
-	# 			console.log('success');
-	# 			Session.set('Shortcuts',result)
-
-	# this.subscribe 'Shortcuts', localStorage.getItem('DepartmentName')	
+	if(Shortcuts.find().count() ==0)		
+		Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->		
+		if result != 'null'										
+			result.forEach (shortcut) ->
+				Shortcuts.insert shortcut					
 
 	@autorun =>
 		videoRegex = /video\/webm|video\/\*/i
