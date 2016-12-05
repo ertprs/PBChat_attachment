@@ -29,7 +29,18 @@ Template.livechatCurrentChats.helpers({
 		return this.open ? t('Opened') : t('Closed');
 	},
 	agents() {
-		return LivechatDepartmentAgents.find({}, { sort: { name: 1 } });
+		if(localStorage.getItem("IsAdmin") == "true"){
+			return AgentUsers.find({}, { sort: { name: 1 } });
+		}else{
+			return LivechatDepartmentAgents.find({}, { sort: { name: 1 } });
+		}
+	},
+	IsAdmin(){
+		if(localStorage.getItem("IsAdmin") == "true"){
+			return true;
+		}else{
+			return false;
+		}
 	},
 	pickupTime() {
 		if(this.responseTime){

@@ -18,7 +18,11 @@
 				<select name="agent">
 					<option value="">{{_ "Select"}}</option>
 					{{#each agents}}
-						<option value="{{agentId}}">{{username}}</option>
+						{{#if IsAdmin}}
+							<option value="{{_id}}">{{username}}</option>
+						{{else}}
+							<option value="{{agentId}}">{{username}}</option>
+						{{/if}}
 					{{/each}}
 				</select>
 			</div>
