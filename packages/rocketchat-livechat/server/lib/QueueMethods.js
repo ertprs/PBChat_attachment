@@ -7,84 +7,84 @@ RocketChat.QueueMethods = {
 	'Least_Amount' : function(guest, message, roomInfo,custinfo) {	//custinfo added by PBChat
 		const agent = RocketChat.Livechat.getNextAgent(guest.department);
 		if(agent === 'Guest_Pool'){
-             room = RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
-		}else{
-		var date = new Date();
-		if (!agent) {
-			throw new Meteor.Error('no-agent-online', 'Sorry, no online agents');
+			 return RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
 		}
-		//Added By PBChat
 		else
-        {                       
-            var url=RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
-            StartDate = (date.getMonth()+1).toString() + '/' + date.getDate().toString()+ '/' + date.getFullYear().toString()+' '+ date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();    
-            HTTP.call("POST", url,
-            {data: {"item":{"Data":{"LeadId":custinfo.leadid,"CustId":custinfo.custid,"StartDate":StartDate,"IntractionType":"1"}}}
-                            ,headers:{"Authorization":"cG9saWN5 YmF6YWFy"}},                    
-            function (error, result) {
-                if (!error) {
-                }
-            });         
-        }
-		let options = {
-			sort: { _id : 1}
-		};
+		{
+			var date = new Date();
+			if (!agent) {
+				throw new Meteor.Error('no-agent-online', 'Sorry, no online agents');
+			}
+			//Added By PBChat
+			else
+			{                       
+				var url=RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
+				StartDate = (date.getMonth()+1).toString() + '/' + date.getDate().toString()+ '/' + date.getFullYear().toString()+' '+ date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();    
+				HTTP.call("POST", url,
+				{data: {"item":{"Data":{"LeadId":custinfo.leadid,"CustId":custinfo.custid,"StartDate":StartDate,"IntractionType":"1"}}}
+								,headers:{"Authorization":"cG9saWN5 YmF6YWFy"}},                    
+				function (error, result) {
+					if (!error) {
+					}
+				});         
+			}
+			let options = {
+				sort: { _id : 1}
+			};
 
-        var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
-		var departmentname = Departmentinfo.name;
-		//Added By PBChat
+			var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
+			var departmentname = Departmentinfo.name;
+			//Added By PBChat
 
-		const roomCode = RocketChat.models.Rooms.getNextLivechatRoomCode();
+			const roomCode = RocketChat.models.Rooms.getNextLivechatRoomCode();
 
-		const room = _.extend({
-			_id: message.rid,
-			msgs: 1,
-			lm: new Date(),
-			code: roomCode,
-			label: guest.name || guest.username,
-			usernames: [agent.username, guest.username],
-			t: 'l',
-			ts: date,
-			v: {
-				_id: guest._id,
-				token: message.token
-			},
-			servedBy: {
-				_id: agent.agentId,
-				username: agent.username
-			},
-			cl: false,
-			open: true,
-			waitingResponse: true, 
-			//Added By PBChat         
-            leadid: custinfo.leadid,
-            custid: custinfo.custid,
-			department: guest.department,
-			departmentname: departmentname,
-			//Added By PBChat 	
-		}, roomInfo);
-		let subscriptionData = {
-			rid: message.rid,
-			name: guest.name || guest.username,
-			alert: true,
-			open: true,
-			unread: 1,
-			code: roomCode,
-			u: {
-				_id: agent.agentId,
-				username: agent.username
-			},
-			t: 'l',
-			desktopNotifications: 'all',
-			mobilePushNotifications: 'all',
-			emailNotifications: 'all'
-		};
-
-		RocketChat.models.Rooms.insert(room);
-		RocketChat.models.Subscriptions.insert(subscriptionData);
-		}
-
-		return room;
+			const room = _.extend({
+				_id: message.rid,
+				msgs: 1,
+				lm: new Date(),
+				code: roomCode,
+				label: guest.name || guest.username,
+				usernames: [agent.username, guest.username],
+				t: 'l',
+				ts: date,
+				v: {
+					_id: guest._id,
+					token: message.token
+				},
+				servedBy: {
+					_id: agent.agentId,
+					username: agent.username
+				},
+				cl: false,
+				open: true,
+				waitingResponse: true, 
+				//Added By PBChat         
+				leadid: custinfo.leadid,
+				custid: custinfo.custid,
+				department: guest.department,
+				departmentname: departmentname,
+				//Added By PBChat 	
+			}, roomInfo);
+			let subscriptionData = {
+				rid: message.rid,
+				name: guest.name || guest.username,
+				alert: true,
+				open: true,
+				unread: 1,
+				code: roomCode,
+				u: {
+					_id: agent.agentId,
+					username: agent.username
+				},
+				t: 'l',
+				desktopNotifications: 'all',
+				mobilePushNotifications: 'all',
+				emailNotifications: 'all'
+			};
+			RocketChat.models.Rooms.insert(room);
+			RocketChat.models.Subscriptions.insert(subscriptionData);
+			return room;
+		}		
 	},
 	/* Guest Pool Queuing Method:
 	 *

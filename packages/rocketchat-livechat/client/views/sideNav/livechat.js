@@ -121,6 +121,8 @@ Template.livechat.events({
 				Meteor.call('livechat:takeInquiry', this._id, (error, result) => {
 					if (!error) {
 						FlowRouter.go(RocketChat.roomTypes.getRouteLink(result.t, result));
+					}else{
+						return handleError(error);
 					}
 				});
 			}

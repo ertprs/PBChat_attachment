@@ -11,7 +11,7 @@ Meteor.methods({
 		}
 
 		const room = RocketChat.models.Rooms.findOneById(inquiry.rid);
-		if (room.usernames.length === 2) {
+		if (room.servedBy && room.servedBy._id) {
 			throw new Meteor.Error('error-not-allowed', 'Inquiry already taken', { method: 'livechat:takeInquiry' });
 		}
 

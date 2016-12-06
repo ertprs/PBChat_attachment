@@ -187,6 +187,18 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
 		};
 
 		return this.find(query,options);				
+	}
+
+	updateLivechatCountAtDayend(departmentid,agentlist){
+		var query = {
+			departmentId: departmentid
+		};
+		const update = {
+			$set: {
+				"count": 0
+			}
+		};
+		this.update(query,update,{ multi: true });
 	}	
 }
 

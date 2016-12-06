@@ -247,3 +247,23 @@ RocketChat.models.Users.getNextVisitorUsername = function() {
 
 	return 'guest-' + (livechatCount.value.value + 1);
 };
+
+/**
+ * Logout User on Day end.(delete login token and set status offline.)
+ */
+RocketChat.models.Users.logoutDayend = function(agentList) {
+	const query = {
+		_id: {
+				$in: agentList
+			},
+		roles: 'livechat-agent'
+	};
+
+	const update = {
+		$set: {
+			"services.resume.loginTokens" : [],
+            "status":"offline"
+		}
+	};
+    return RocketChat.models.Users.update(query,update,{ multi: true });
+};

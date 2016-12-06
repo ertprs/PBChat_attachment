@@ -118,8 +118,8 @@ Template.messageBox.helpers
 		}
 
 Template.messageBox.events
-	'autocompleteselect textarea': (event,template,doc) ->          
-		event.currentTarget.value=doc.shortcut
+	# 'autocompleteselect textarea': (event,template,doc) ->          
+	# 	event.currentTarget.value=doc.shortcut
 		
 	'click .join': (event) ->
 		event.stopPropagation()

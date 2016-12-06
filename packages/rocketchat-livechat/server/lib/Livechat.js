@@ -52,7 +52,6 @@ RocketChat.Livechat = {
 			//const routingMethod = RocketChat.settings.get('Livechat_Routing_Method');
 			const routingMethod = RocketChat.settings.get('Livechat_Routing_Method_' + custinfo.departmentname);
 			room = RocketChat.QueueMethods[routingMethod](guest, message, roomInfo, custinfo);
-
 			newRoom = true;
 		} else {
 			room = Meteor.call('canAccessRoom', message.rid, guest._id);
@@ -122,7 +121,6 @@ RocketChat.Livechat = {
 
 			userId = existingUser._id;
 		} else {
-			console.log('false');
 			updateUser.$set.name = name;
 
 			var userData = {

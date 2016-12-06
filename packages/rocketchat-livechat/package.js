@@ -137,6 +137,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/methods/findblockedcustomers.js', 'server');
     api.addFiles('server/methods/getRoom.js', 'server');
 	api.addFiles('server/methods/IsCustomerBlocked.js', 'server');
+	api.addFiles('server/methods/isLogoutTime.js', 'server');
 	api.addFiles('server/methods/getMatrixUrl.js', 'server');	
     //added a new api method jitendra PBChat
 	api.addFiles('server/methods/pageVisited.js', 'server');

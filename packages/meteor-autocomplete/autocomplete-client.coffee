@@ -58,7 +58,7 @@ class @AutoComplete
   @KEYS: [
     40, # DOWN
     38, # UP
-    13, # ENTER
+    #13, # ENTER
     27, # ESCAPE
     9   # TAB
   ]
