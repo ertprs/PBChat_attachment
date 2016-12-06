@@ -19,6 +19,7 @@ Meteor.setInterval(function() {
 				}
 			});
 			if (Islogout) {
+				console.log( 'Cron run for ' + department.name );
 				var agents = RocketChat.models.LivechatDepartmentAgents.findByDepartmentId(department._id).fetch();
 				RocketChat.models.Users.logoutDayend(_.pluck(agents, 'agentId'));
 				RocketChat.models.LivechatDepartmentAgents.updateLivechatCountAtDayend(department._id);
