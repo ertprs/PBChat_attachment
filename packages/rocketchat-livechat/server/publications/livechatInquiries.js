@@ -8,5 +8,5 @@ Meteor.publish('livechat:inquiry', function() {
 	}
 
 
-	return RocketChat.models.LivechatInquiry.find();
+	return RocketChat.models.LivechatInquiry.find({status: 'open'});
 });

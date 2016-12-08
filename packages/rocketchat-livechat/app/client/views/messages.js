@@ -13,8 +13,11 @@ Template.messages.helpers({
 			}
 		});
 	},
+	// customername(){
+	// 	return 'Hi ' + Session.get('custinfo').name + ',';
+	// },
 	welcomeMessage() {		
-		return Livechat.welcome;
+		return 'Hi ' + Session.get('custinfo').name + Livechat.welcome;
 	},
 	showOptions() {
 		if (Template.instance().showOptions.get()) {
@@ -45,16 +48,71 @@ Template.messages.events({
 	},
 	//Changes by PBChat
 	'keydown .input-message': function(event, instance) {
-		Meteor.call( 'IsCustomerBlocked', (error, result) => {
-			if (result == true){
-				localStorage.clear()
-				alert('Sorry for the inconvenience, You have been blocked!')
+		if(!Meteor.userId()){
+				//Added By PBChat
+			if(!localStorage.visitorToken){
+				localStorage.visitorToken=visitor.getToken();           
+			}       
+			var $email, $name,$custid,departmentname,departmentId;
+			if(Session.get('custinfo')!=null && Session.get('custinfo').leadid!=null)
+			{
+				$name = Session.get('custinfo').name;
+				$email =  Session.get('custinfo').email;            
+				$custid = Session.get('custinfo').custid;
+				departmentId = Session.get('custinfo').departmentid;
+				leadid = Session.get('custinfo').leadid;
 			}
-			else{
-				$(".welcome").hide();
-				return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+			else
+			{
+				return instance.showError(error.reason);
 			}
-		});	
+			if (!($name.trim() && !$email.trim()) && !$custid) {
+				return instance.showError(TAPi18n.__('Please_fill_name_and_email'));
+			} else {
+				if (!departmentId) {
+					var department = Department.findOne();
+					if (department) {
+						departmentId = department._id;
+					}
+				}
+
+				var guest = {
+					token: visitor.getToken(),
+					name: $name,
+					email: $email,
+					department: departmentId,
+					custid:$custid,
+					leadid:leadid
+				};
+				Meteor.call('livechat:registerGuest', guest, function(error, result) {
+					if (error != null) {
+						return instance.showError(error.reason);
+					}
+					Meteor.loginWithToken(result.token, function(error) {
+						if (error) {
+							return instance.showError(error.reason);
+						}
+						// start();
+						else{
+							$(".welcome").hide();
+							return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+						}
+					});
+				});
+			}
+		}
+		else{
+			Meteor.call( 'IsCustomerBlocked', (error, result) => {
+				if (result == true){
+					localStorage.clear()
+					alert('Sorry for the inconvenience, You have been blocked!')
+				}
+				else{
+					$(".welcome").hide();
+					return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+				}
+			});
+		}	
 	},
 	//Changes by PBChat
 	'click .send-button': function(event, instance) {
@@ -62,7 +120,6 @@ Template.messages.events({
 		let sent = instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
 		input.focus();
 		instance.updateMessageInputHeight(input);
-
 		return sent;
 	},
 	'click .new-message': function(event, instance) {

@@ -64,6 +64,7 @@ class @ChatMessages
 			this.input.value = this.editing.saved or ""
 		else
 			this.editing.saved = this.input.value
+
 	#Changes by PBchat custid field addition multiple places
 	send: (rid, input,custinfo) ->
 		if s.trim(input.value) isnt ''
@@ -158,6 +159,7 @@ class @ChatMessages
 
 		unless k in keyCodes
 			this.startTyping(rid, input)
+			
 	#Changes by PBChat custid 
 	keydown: (rid, event, instance, custinfo) ->
 		input = event.currentTarget

@@ -17,10 +17,11 @@ Template.livechatWindow.helpers({
 		return Session.get('sound');
 	},
 	showRegisterForm() {
-		if (Meteor.userId()) {
-			return false;
-		}
-		return Livechat.registrationForm;
+		// if (Meteor.userId()) {
+		// 	return false;
+		// }
+		// return Livechat.registrationForm;
+		return false;
 	},
 	livechatStarted() {
 		return Livechat.online !== null;

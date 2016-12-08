@@ -52,8 +52,7 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
 		};
 		var sort = {
 			count: 1,
-			order: 1,
-			username: 1
+			order: 1
 		};
 		var update = {
 			$inc: {

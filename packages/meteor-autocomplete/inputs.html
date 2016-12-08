@@ -9,7 +9,7 @@
 </template>
 
 <template name="_autocompleteContainer">
-    <!--{{#unless empty}}-->
+    {{#unless empty}}
     {{#if isShowing}}
         <div class='-autocomplete-container'>
             {{#if isLoaded}}
@@ -31,7 +31,7 @@
             {{/if}}
         </div>
     {{/if}}    
-    <!--{{/unless}}-->
+    {{/unless}}
 </template>
 
 <template name="_noMatch">
