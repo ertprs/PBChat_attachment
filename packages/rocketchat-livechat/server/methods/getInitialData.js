@@ -52,7 +52,8 @@ Meteor.methods({
 
 		const initSettings = RocketChat.Livechat.getInitSettings();
 		//Added by PBChat
-		info.welcome = initSettings.Livechat_WelcomeMessage;		
+		//info.welcome = initSettings.Livechat_WelcomeMessage;
+		info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname);		
 		//Added by PBChat
 		info.title = initSettings.Livechat_title;
 		info.color = initSettings.Livechat_title_color;

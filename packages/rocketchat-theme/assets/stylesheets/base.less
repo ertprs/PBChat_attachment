@@ -1308,8 +1308,10 @@ label.required:after {
 				}
 			}
 			&.has-alert {
+					animation: animate1 1s infinite;
 				.name {
 					font-weight: bold;
+					color: rgba(0,0,0,1);
 				}
 			}
 			&.has-enquery {
@@ -1321,6 +1323,10 @@ label.required:after {
 			}
 		}
 		@keyframes animate{
+				0% {background: #ffc72f;}
+				100% {background: #ffe08b;}
+			}
+		@keyframes animate1{
 				0% {background: #ffc72f;}
 				100% {background: #ffe08b;}
 			}

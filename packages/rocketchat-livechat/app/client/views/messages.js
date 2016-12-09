@@ -13,11 +13,13 @@ Template.messages.helpers({
 			}
 		});
 	},
-	// customername(){
-	// 	return 'Hi ' + Session.get('custinfo').name + ',';
-	// },
-	welcomeMessage() {		
-		return 'Hi ' + Session.get('custinfo').name + Livechat.welcome;
+	 customername(){		
+		var name =  (Session.get('custinfo').name).trim();
+		var array = name.split(/\s+/);
+	 	return 'Hi ' + array[0] + ' !';
+	 },
+	welcomeMessage() {
+		return Livechat.welcome;
 	},
 	showOptions() {
 		if (Template.instance().showOptions.get()) {
@@ -102,16 +104,23 @@ Template.messages.events({
 			}
 		}
 		else{
-			Meteor.call( 'IsCustomerBlocked', (error, result) => {
-				if (result == true){
-					localStorage.clear()
-					alert('Sorry for the inconvenience, You have been blocked!')
-				}
-				else{
-					$(".welcome").hide();
-					return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
-				}
-			});
+			var k = event.which;
+			if(k == 13){
+				Meteor.call( 'IsCustomerBlocked', (error, result) => {
+					if (result == true){
+						localStorage.clear();
+						alert('Sorry for the inconvenience, You have been blocked!')
+					}
+					else{
+						$(".welcome").hide();
+						return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+					}
+				});
+			}else{
+				$(".welcome").hide();
+				return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+			}
+			
 		}	
 	},
 	//Changes by PBChat

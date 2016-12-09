@@ -40,8 +40,17 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
 		var StartDate = new Date(filter.From);
 		var EndDate = new Date(filter.To);
 		query["ts"] ={$gte: StartDate,$lte:EndDate};
-
-	}	
+	}else{
+		var Today = new Date();
+		var Date1 = Today.getFullYear().toString() + '-' + (Today.getMonth()+1).toString() + '-' + (Today.getDate()-1).toString();
+		var StartDate = new Date(Date1);
+		var nextday = new Date();
+		var numberOfDaysToAdd = 1;
+		nextday.setDate(nextday.getDate() + numberOfDaysToAdd); 
+		var Date2 = nextday.getFullYear().toString() + '-' + (nextday.getMonth()+1).toString() + '-' + nextday.getDate().toString();
+		var EndDate = new Date(Date2);
+		query["ts"] ={$gte: StartDate,$lte:EndDate};
+	}
 	if (filter.department) {
 		query["department"] = filter.department;
 	}

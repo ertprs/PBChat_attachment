@@ -263,7 +263,7 @@ RocketChat.Livechat = {
 			//Added by PBChat for livechat Transcript
 			'Livechat_enable_transcript',
 			'Livechat_transcript_message',
-			'Livechat_WelcomeMessage'
+			//'Livechat_WelcomeMessage'
 			//Added by PBChat for livechat Transcript
 		]).forEach((setting) => {
 			settings[setting._id] = setting.value;

@@ -36,7 +36,7 @@ Template.livechatQueue.helpers({
 		return users;
 	},
 	isOffline(){
-		if(Meteor.users.find({_id:this.agentId,status: 'online'}).count() > 0){
+		if(Meteor.users.find({_id:this.agentId,status: 'online',statusLivechat: 'available'}).count() > 0){
 			return false;
 		}else{
 			return true;
