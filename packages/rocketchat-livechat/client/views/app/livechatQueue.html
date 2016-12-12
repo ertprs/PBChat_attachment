@@ -9,30 +9,32 @@
 
 			<div class="rocket-form" style="max-width: 100% !important">
 				<div class="list">
-					<table>
-						<thead>
+					<table class="currentchat">
+						<thead style = "background-color:#afafaf">
 							<tr>
-								<th width="10%">{{_ "Agent"}}</th>
-								<th width="15%" class="text-right">{{_ "Openchat"}}</th>
-								<th width="15%" class="text-right">{{_ "AssignedChat"}}</th>
-								<th width="15%" class="text-right">{{_ "WaitingResponse"}}</th>
-								<th width="15%" class="text-right">{{_ "RespondedOn"}}</th>
-								<th width="20%" class="text-right">{{_ "AvgPickupTime(sec)"}}</th>
-								<th width="10%" class="text-right">{{_ "Chat_Limit"}}</th>
-								<!--<th width="5%" class="text-right">{{_ "Order"}}</th>-->
+								<th width="8%">{{_ "Agent"}}</th>
+								<th width="10%" >{{_ "Openchat"}}</th>
+								<th width="10%" >{{_ "Assigned"}}</th>
+								<th width="12%" >{{_ "WaitingResponse"}}</th>
+								<th width="10%" >{{_ "Responded"}}</th>
+								<th width="20%" >{{_ "AvgPickupTime(sec)"}}</th>
+								<th width="10%" >{{_ "ChatLimit"}}</th>
+								<th width="20%" >{{_ "Availability"}}</th>
+								<!--<th width="5%" >{{_ "Order"}}</th>-->
 							</tr>
 						</thead>
 						<tbody>
 							{{#each users}}
-								<tr style="{{#if isOffline}}background-color:#afafaf{{/if}}">
+								<tr style="{{#if isOffline}}background-color:#afafaf{{/if}}{{#if waitingResponsing != 0}}background-color: #ceabd0;{{/if}}">
 									<td>{{username}}</td>
-									<td class="text-right">{{count}}</td>
-									<td class="text-right">{{assignedchat}}</td>
-									<td class="text-right">{{waitingResponsing}}</td>
-									<td class="text-right">{{responded}}</td>
-									<td class="text-right">{{AgentresponseTime}}</td>
-									<td class="text-right">{{limit}}</td>
-									<!--<td class="text-right">{{order}}</td>-->
+									<td >{{count}}</td>
+									<td >{{assignedchat}}</td>
+									<td >{{waitingResponsing}}</td>
+									<td >{{responded}}</td>
+									<td >{{AgentresponseTime}}</td>
+									<td >{{limit}}</td>
+									<td >{{availability}}</td>
+									<!--<td >{{order}}</td>-->
 								</tr>
 							{{else}}
 							<tr>
@@ -44,28 +46,28 @@
 				</div>
 			</div>
 		{{/each}}
-
+			<h1><strong>{{_ "Incoming Chat Count For the Day:"}}</strong></h1>
 			<div class="rocket-form" style="max-width: 100% !important">
 				<div class="list">
-					<table>
-						<thead>
+					<table class="currentchat">
+						<thead style = "background-color:#afafaf">
 							<tr>
 								<th width="10%">{{_ "TotalChats"}}</th>
-								<th width="20%" class="text-right">{{_ "Openchat"}}</th>
-								<th width="20%" class="text-right">{{_ "WaitingResponse"}}</th>
-								<th width="20%" class="text-right">{{_ "Responded"}}</th>
-								<th width="20%" class="text-right">{{_ "AvgPickupTime(sec)"}}</th>
-								<!--<th width="30%" class="text-right">{{_ "TotalChatTime"}}</th>-->
+								<th width="20%" >{{_ "Openchat"}}</th>
+								<th width="20%" >{{_ "WaitingResponse"}}</th>
+								<th width="20%" >{{_ "Responded"}}</th>
+								<th width="20%" >{{_ "AvgPickupTime(sec)"}}</th>
+								<!--<th width="30%" >{{_ "TotalChatTime"}}</th>-->
 							</tr>
 						</thead>
 						<tbody>
 								<tr>
 									<td>{{totalChatCount}}</td>
-									<td class="text-right">{{totalOpenChatCount}}</td>
-									<td class="text-right">{{totalresponsewaiting}}</td>
-									<td class="text-right">{{totalrespondedChat}}</td>
-									<td class="text-right">{{AvgResponseTime}}</td>
-									<!--<td class="text-right">{{totalChatTime}}</td>-->
+									<td >{{totalOpenChatCount}}</td>
+									<td >{{totalresponsewaiting}}</td>
+									<td >{{totalrespondedChat}}</td>
+									<td >{{AvgResponseTime}}</td>
+									<!--<td >{{totalChatTime}}</td>-->
 								</tr>
 						</tbody>
 					</table>

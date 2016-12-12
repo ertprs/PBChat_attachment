@@ -36,10 +36,17 @@ Template.livechatQueue.helpers({
 		return users;
 	},
 	isOffline(){
-		if(Meteor.users.find({_id:this.agentId,status: 'online',statusLivechat: 'available'}).count() > 0){
+		if(Meteor.users.findOne({_id:this.agentId,status: 'online'})){
 			return false;
 		}else{
 			return true;
+		}
+	},
+	availability(){
+		if(Meteor.users.findOne({_id:this.agentId,status: 'online'})){
+			return 'Online';
+		}else{
+			return 'Offline';
 		}
 	},
 	hasPermission() {
@@ -52,11 +59,11 @@ Template.livechatQueue.helpers({
 	},
 
 	waitingResponsing(){
-		return ChatRoom.find({ t: 'l','responseBy._id': this.agentId, waitingResponse:true }).count();
+		return ChatRoom.find({ t: 'l','servedBy._id': this.agentId, waitingResponse:true }).count();
 	},
 
 	responded(){
-        return ChatRoom.find({ t: 'l','responseBy._id': this.agentId, responseTime:{$ne:null} }).count();
+        return ChatRoom.find({ t: 'l','servedBy._id': this.agentId, responseTime:{$ne:null} }).count();
 	},
 
 	AgentresponseTime(){
