@@ -32,13 +32,13 @@ function ShowMobilechat(leadid) {
                 w.RocketChat._ = [];
                 w.RocketChat.url = u;
                 var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-                //j.async = true; j.src = 'http://10.0.56.50:3000/packages/rocketchat_livechat/assets/rocket-livechat-mobile.js';
-                j.async = true; j.src = 'http://10.0.10.167:3000/packages/rocketchat_livechat/assets/rocket-livechat-mobile.js';
+                j.async = true; j.src = 'http://10.0.56.50:3000/packages/rocketchat_livechat/assets/rocket-livechat-mobile.js';
+                //j.async = true; j.src = 'http://10.0.10.167:3000/packages/rocketchat_livechat/assets/rocket-livechat-mobile.js';
                 h.parentNode.insertBefore(j, h);
             }
         )
-        //(window, document, 'script', 'http://10.0.56.50:3000/livechat?leadid='+leadid);
-        (window, document, 'script', 'http://10.0.10.167:3000/livechat?leadid='+leadid);
+        (window, document, 'script', 'http://10.0.56.50:3000/livechat?leadid='+leadid);
+        //(window, document, 'script', 'http://10.0.10.167:3000/livechat?leadid='+leadid);
     }
     if(document.getElementsByClassName('rocketchat-widget')[0] != undefined){
         document.getElementsByClassName('rocketchat-widget')[0].style.display = "inline";

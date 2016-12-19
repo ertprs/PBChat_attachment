@@ -96,7 +96,7 @@ Template.messages.events({
 						}
 						// start();
 						else{
-							$(".welcome").hide();
+							//$(".welcome").hide();
 							return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
 						}
 					});
@@ -112,12 +112,12 @@ Template.messages.events({
 						alert('Sorry for the inconvenience, You have been blocked!')
 					}
 					else{
-						$(".welcome").hide();
+						//$(".welcome").hide();
 						return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
 					}
 				});
 			}else{
-				$(".welcome").hide();
+				//$(".welcome").hide();
 				return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
 			}
 			
