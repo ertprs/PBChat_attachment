@@ -1,31 +1,69 @@
 <template name="livechatQueue">
 	{{#if hasPermission}}
 		{{#each departments}}
-			<p class="queue-department">
+			<!--<p class="queue-department">
 				{{_ "Department"}}: <strong>{{name}}</strong>
 				( <label for="show-offline-{{_id}}">{{_ "show_offline_users"}}</label>
 				<input type="checkbox" class="show-offline" id="show-offline-{{_id}}">)
-			</p>
-
+			<div class="foo blue"></div>
+			<div class="foo purple"></div>
+			<div class="foo wine"></div>
+			</p>-->
+			<div class="" style="
+			display: table;
+			vertical-align: middle;
+			margin: 0;
+			width: 100%;
+			">
+			<div style="display:table-cell;vertical-align: middle;font-size: 12px;width: 67%;">		
+			{{_ "Department"}}: <strong>{{name}}</strong>
+				( <label for="show-offline-{{_id}}">{{_ "show_offline_users"}}</label>
+				<input type="checkbox" class="show-offline" id="show-offline-{{_id}}">)
+			</div>
+			<div style="display: table-cell;font-size: 12px;font-weight: normal;">
+			<div style="display: inline-block;text-align: center;clear: both;margin: 0 10px;">
+			<span class="loginstatus" style="display: inline-block;margin: 0;"></span>
+			<label style="display: block;font-weight: normal;font-size: 11px;">Login</label>
+			</div>
+			<div style="display: inline-block;text-align: center;clear: both;margin: 0 10px;">
+			<span class="Logoutstatus" style="display: inline-block;margin: 0;"></span>
+			<label style="display: block;font-weight: normal;font-size: 11px;">Logout</label>
+			</div>
+			<div style="
+			display: inline-block;
+			text-align: center;
+			clear: both;
+			margin: 0 10px;
+			"><span class="WaitingResponsestatus" style="
+			display: inline-block;
+			margin: 0;
+			"></span><label style="
+			display: block;
+			font-weight: normal;
+			font-size: 11px;
+			">WaitingResponse</label>
+			</div>
+			</div>
+			</div>
 			<div class="rocket-form" style="max-width: 100% !important">
 				<div class="list">
 					<table class="currentchat">
-						<thead style = "background-color:#afafaf">
+						<thead style = "background-color:#afafaf;color: white;">
 							<tr>
-								<th width="8%">{{_ "Agent"}}</th>
-								<th width="10%" >{{_ "Openchat"}}</th>
-								<th width="10%" >{{_ "Assigned"}}</th>
-								<th width="12%" >{{_ "WaitingResponse"}}</th>
-								<th width="10%" >{{_ "Responded"}}</th>
-								<th width="20%" >{{_ "AvgPickupTime(sec)"}}</th>
-								<th width="10%" >{{_ "ChatLimit"}}</th>
-								<th width="20%" >{{_ "Availability"}}</th>
-								<!--<th width="5%" >{{_ "Order"}}</th>-->
+								<th width="13%" style="color: white;">{{_ "Agent"}}</th>
+								<th width="10%" style="color: white;" >{{_ "Openchat"}}</th>
+								<th width="10%" style="color: white;">{{_ "Assigned"}}</th>
+								<th width="12%" style="color: white;" >{{_ "WaitingResponse"}}</th>
+								<th width="10%" style="color: white;" >{{_ "Responded"}}</th>
+								<th width="20%" style="color: white;">{{_ "AvgPickupTime(sec)"}}</th>
+								<th width="10%" style="color: white;">{{_ "ChatLimit"}}</th>
+								<th width="15%" style="color: white;">{{_ "Availability"}}</th>
+								<!--<th width="5%" style="color: white;">{{_ "Order"}}</th>-->
 							</tr>
 						</thead>
 						<tbody>
 							{{#each users}}
-								<tr style="{{#if isOffline}}background-color:#afafaf{{/if}}{{#if waitingResponsing != 0}}background-color: #ceabd0;{{/if}}">
+								<tr style="color: white;{{#if isOffline}}background-color:#ACB5C3{{else}}{{#if waitingResponsing != 0}}background-color: #e7505a;color: white;{{else}}background-color:#337ab7{{/if}}{{/if}}">
 									<td>{{username}}</td>
 									<td >{{count}}</td>
 									<td >{{assignedchat}}</td>
@@ -52,12 +90,12 @@
 					<table class="currentchat">
 						<thead style = "background-color:#afafaf">
 							<tr>
-								<th width="10%">{{_ "TotalChats"}}</th>
-								<th width="20%" >{{_ "Openchat"}}</th>
-								<th width="20%" >{{_ "WaitingResponse"}}</th>
-								<th width="20%" >{{_ "Responded"}}</th>
-								<th width="20%" >{{_ "AvgPickupTime(sec)"}}</th>
-								<!--<th width="30%" >{{_ "TotalChatTime"}}</th>-->
+								<th width="10%" style="color: white;">{{_ "TotalChats"}}</th>
+								<th width="20%" style="color: white;">{{_ "Openchat"}}</th>
+								<th width="20%" style="color: white;">{{_ "WaitingResponse"}}</th>
+								<th width="20%" style="color: white;">{{_ "Responded"}}</th>
+								<th width="20%" style="color: white;">{{_ "AvgPickupTime(sec)"}}</th>
+								<!--<th width="30%" style="color: white;">{{_ "TotalChatTime"}}</th>-->
 							</tr>
 						</thead>
 						<tbody>

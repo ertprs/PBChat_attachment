@@ -1,4 +1,5 @@
 Meteor.startup ->
+	console.log('presence.coffee')
 	instance =
 		host: 'localhost'
 		port: process.env.PORT
@@ -10,4 +11,4 @@ Meteor.startup ->
 	# InstanceStatus.activeLogs()
 	UserPresence.start()
 	# UserPresence.activeLogs()
-	UserPresenceMonitor.start()
+	#UserPresenceMonitor.start()
