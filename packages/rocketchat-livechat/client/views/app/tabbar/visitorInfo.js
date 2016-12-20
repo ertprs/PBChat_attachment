@@ -119,9 +119,10 @@ Template.visitorInfo.helpers({
 	},
 
 	guestPool() {
-		var departmentname =  localStorage.getItem('DepartmentName');
-		return RocketChat.settings.get('Livechat_Routing_Method_' + departmentname) === 'Guest_Pool';
+		//var departmentname =  localStorage.getItem('DepartmentName');
+		//return RocketChat.settings.get('Livechat_Routing_Method_' + departmentname) === 'Guest_Pool';
 		//return RocketChat.settings.get('Livechat_Routing_Method') === 'Guest_Pool';
+		return false;
 	},
 
 	showDetail() {
