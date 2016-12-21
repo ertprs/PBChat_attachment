@@ -4,8 +4,10 @@ var api = {
 		if (info.change === 'url') {
 			Triggers.processRequest(info);
 		}
-
-		Meteor.call('livechat:pageVisited', visitor.getToken(), info);
+		if(Meteor.userId()) // changed by PB -jitendra only save the history for customer created 
+		{
+			Meteor.call('livechat:pageVisited', visitor.getToken(), info);
+		}
 	},
 
 	setCustomField: function(key, value) {

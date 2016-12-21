@@ -21,7 +21,9 @@ Meteor.methods({
                     email: null,
                     custid: null,
                     leadid: null,
-                    departmentid: null 
+                    departmentid: null ,
+					departmentname: null,
+					subproduct: null
                 }
 			//Added by PBChat
 		};
@@ -49,11 +51,17 @@ Meteor.methods({
         info.custinfo.leadid = leaddata.LeadID;
         info.custinfo.departmentid = leaddata.ChatDepartmentID;
 		info.custinfo.departmentname = leaddata.ProductName;
-
+		if(info.custinfo.departmentname == 'Investments' ){
+			info.custinfo.subproduct = leaddata.InvestmentType;
+		}
 		const initSettings = RocketChat.Livechat.getInitSettings();
 		//Added by PBChat
 		//info.welcome = initSettings.Livechat_WelcomeMessage;
-		info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname);		
+		if(info.custinfo.departmentname == 'Investments' && (info.custinfo.subproduct == 'CHILD' || info.custinfo.subproduct == 'GROWTH' || info.custinfo.subproduct == 'RETIREMENT')){
+			info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname + '_' + info.custinfo.subproduct);
+		}else{
+			info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname);
+		}		
 		//Added by PBChat
 		info.title = initSettings.Livechat_title;
 		info.color = initSettings.Livechat_title_color;

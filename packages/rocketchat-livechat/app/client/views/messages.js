@@ -16,10 +16,22 @@ Template.messages.helpers({
 	 customername(){		
 		var name =  (Session.get('custinfo').name).trim();
 		var array = name.split(/\s+/);
-	 	return 'Hi ' + array[0] + ' !';
+	 	return 'Hi ' + array[0] + ' ! ';
 	 },
 	welcomeMessage() {
 		return Livechat.welcome;
+	},
+	greeting(){
+		var dt = new Date().getHours();
+		var greeting;
+		if (dt >= 0 && dt <= 11){
+			greeting = 'Good Morning';
+		}else if (dt >= 12 && dt <= 16){
+			greeting = 'Good Afternoon';
+		}else {
+			greeting = 'Good Evening';
+		}
+		return greeting;
 	},
 	showOptions() {
 		if (Template.instance().showOptions.get()) {
