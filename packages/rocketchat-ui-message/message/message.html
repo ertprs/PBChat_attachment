@@ -25,7 +25,9 @@
 			{{/if}}
 		{{/if}}
 		{{#if alias}}
-			<button type="button" class="user user-card-message" data-username="{{u.username}}" tabindex="1">{{alias}} <span class="message-alias">@{{u.username}}</span></button>
+			<button type="button" class="user user-card-message" data-username="{{u.username}}" tabindex="1">{{alias}}
+				<!--<span class="message-alias">@{{u.username}}</span>-->
+				</button>
 		{{else}}
 			<button type="button" class="user user-card-message" data-username="{{u.username}}" tabindex="1">{{u.username}}</button>
 		{{/if}}
