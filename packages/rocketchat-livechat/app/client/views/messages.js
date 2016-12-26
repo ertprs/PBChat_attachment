@@ -125,8 +125,9 @@ Template.messages.events({
 					}
 					else{
 						//$(".welcome").hide();
+						localStorage.setItem('currentTime',new Date());
 						return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
-					}
+				}
 				});
 			}else{
 				//$(".welcome").hide();

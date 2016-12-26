@@ -86,7 +86,9 @@ RocketChat.Livechat = {
 				profile: {
 					guest: true,
 					token: token
-				}
+				},
+				status : "online", 
+				statusConnection : "online"
 			}
 		};
 

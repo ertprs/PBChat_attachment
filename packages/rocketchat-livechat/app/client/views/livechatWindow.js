@@ -93,7 +93,15 @@ Template.livechatWindow.onCreated(function() {
 				Triggers.setDisabled();
 				return parentCall('removeWidget');
 			}
-
+			if( !result.online && localStorage.getItem('currentTime')){
+				var lastTime = new Date(localStorage.getItem('currentTime'));
+				var now = new Date;
+				var diff = ((now - lastTime)/1000)/60;
+				if( diff < 120){
+					result.online = true;	
+				}
+			}
+			
 			if (!result.online) {
 				Triggers.setDisabled();
 				Livechat.title = result.offlineTitle;
