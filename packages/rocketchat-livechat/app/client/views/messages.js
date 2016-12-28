@@ -67,7 +67,7 @@ Template.messages.events({
 			if(!localStorage.visitorToken){
 				localStorage.visitorToken=visitor.getToken();           
 			}       
-			var $email, $name,$custid,departmentname,departmentId;
+			var $email, $name,$custid,departmentname,departmentId,leadid,country;
 			if(Session.get('custinfo')!=null && Session.get('custinfo').leadid!=null)
 			{
 				$name = Session.get('custinfo').name;
@@ -75,6 +75,7 @@ Template.messages.events({
 				$custid = Session.get('custinfo').custid;
 				departmentId = Session.get('custinfo').departmentid;
 				leadid = Session.get('custinfo').leadid;
+				country = Session.get('custinfo').country;
 			}
 			else
 			{
@@ -96,7 +97,8 @@ Template.messages.events({
 					email: $email,
 					department: departmentId,
 					custid:$custid,
-					leadid:leadid
+					leadid:leadid,
+					country: country
 				};
 				Meteor.call('livechat:registerGuest', guest, function(error, result) {
 					if (error != null) {

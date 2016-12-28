@@ -69,13 +69,8 @@ RocketChat.Livechat = {
 		}
 		return _.extend(RocketChat.sendMessage(guest, message, room), { newRoom: newRoom });
 	},
-	registerGuest({ token, name, email, department, phone, loginToken, username, custid } = {}) {
+	registerGuest({ token, name, email, department, phone, loginToken, username, custid, country } = {}) {
 		check(token, String);
-		// const user = RocketChat.models.Users.getVisitorByToken(token, { fields: { _id: 1 } });
-
-		// if (user) {
-		// 	throw new Meteor.Error('token-already-exists', 'Token already exists');
-		// }
 
 		if (!username) {
 			username = RocketChat.models.Users.getNextVisitorUsername();
@@ -86,9 +81,10 @@ RocketChat.Livechat = {
 				profile: {
 					guest: true,
 					token: token
-				},
-				status : "online", 
-				statusConnection : "online"
+				}
+				// ,
+				// status : "online", 
+				// statusConnection : "online"
 			}
 		};
 
@@ -130,7 +126,8 @@ RocketChat.Livechat = {
 				globalRoles: ['livechat-guest'],
 				department: department,
 				type: 'visitor',
-                custid:custid
+                custid:custid,
+				country: country
 			};
 
 			if (this.connection) {

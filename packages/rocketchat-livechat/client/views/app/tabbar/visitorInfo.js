@@ -27,18 +27,6 @@ Template.visitorInfo.helpers({
 	joinTags() {
 		return this.tags && this.tags.join(', ');
 	},
-	// country(){
-	// 	var location = null;
-	// 	//Meteor.http.call("GET","http://freegeoip.net/json/" + this.ip,function(error,result){
-	// 	Meteor.http.call("GET","http://freegeoip.net/json/50.93.203.13",function(error,result){
-    //  		 location = result;
-	// 	});
-	// 	if(location){
-	// 		return location.content;
-	// 	}else{
-	// 		return 'India';
-	// 	}
-	// },
 	customFields() {
 		let fields = [];
 		let livechatData = {};

@@ -23,7 +23,8 @@ Meteor.methods({
                     leadid: null,
                     departmentid: null ,
 					departmentname: null,
-					subproduct: null
+					subproduct: null,
+					country: null
                 }
 			//Added by PBChat
 		};
@@ -54,6 +55,7 @@ Meteor.methods({
 		if(info.custinfo.departmentname == 'Investments' ){
 			info.custinfo.subproduct = leaddata.InvestmentType;
 		}
+		info.custinfo.country = leaddata.Country;
 		const initSettings = RocketChat.Livechat.getInitSettings();
 		//Added by PBChat
 		//info.welcome = initSettings.Livechat_WelcomeMessage;
