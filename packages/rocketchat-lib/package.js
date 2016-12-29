@@ -102,7 +102,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/models/LivechatDepartmentAgents.js', 'server');
 	api.addFiles('server/models/Shortcuts.js', 'server');
 	api.addFiles('server/models/LoginHistory.js', 'server');
-
+	api.addFiles('server/models/OfflineMessage.js', 'server');
 	// SERVER PUBLICATIONS
 	api.addFiles('server/publications/settings.coffee', 'server');
 

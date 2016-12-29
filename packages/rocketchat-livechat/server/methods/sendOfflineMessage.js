@@ -42,6 +42,8 @@ Meteor.methods({
 			RocketChat.callbacks.run('livechat.offlineMessage', data);
 		});
 
+		RocketChat.models.OfflineMessage.createOfflineMessage(data);
+
 		return true;
 	}
 });
