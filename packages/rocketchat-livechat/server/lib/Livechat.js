@@ -160,7 +160,22 @@ RocketChat.Livechat = {
 		}
 		
 		Meteor.users.update(userId, updateUser);
-
+		//added for saving country and city based on ip of customer. Start
+		// var userinfo = Meteor.users.findOne({_id:userId});
+		// var result = HTTP.call("GET", "http://freegeoip.net/json/" + userinfo.ip);
+		// if(result && JSON.parse(result.content).country_name){
+		// 	var pinpoint = JSON.parse(result.content);
+		// 	var country_name = pinpoint.country_name;
+		// 	var city = pinpoint.city;
+		// 	let updatecountryUser = {
+		// 		$set: {
+		// 			country_name : country_name,
+		// 			city :  city
+		// 		}
+		// 	};
+		// Meteor.users.update(userId, updatecountryUser);
+		// }
+		//added for saving country and city based on ip of customer. END
 		return userId;
 	},
 
