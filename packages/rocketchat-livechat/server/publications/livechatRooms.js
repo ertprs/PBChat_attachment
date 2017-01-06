@@ -40,7 +40,7 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
 		var StartDate = new Date(filter.From);
 		var EndDate = new Date(filter.To);
 		query["ts"] ={$gte: StartDate,$lte:EndDate};
-	}else{
+	}else if(!filter.name &&  !filter.leadid && !filter.agent && !filter.status && !filter.waitingResponse){
 		var Today = new Date();
 		var Date1 = Today.getFullYear().toString() + '-' + (Today.getMonth()+1).toString() + '-' + (Today.getDate()-1).toString();
 		var StartDate = new Date(Date1);
