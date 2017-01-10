@@ -67,16 +67,16 @@ Template.livechatQueue.helpers({
 	},
 
 	AgentresponseTime(){
-		var responcedChat = ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).count(); 
+		var responcedChat = ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch(); 
 		var responsetime  = 0.0 ;
 		var avgResposeTime  = 0.0 ;
-		if(responcedChat != 0){
-			for (i = 0; i < responcedChat; i++) { 
-				if(ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch()[i].responseTime){
-					responsetime = responsetime + ChatRoom.find({ t: 'l', 'servedBy._id': this.agentId, waitingResponse: {$ne:true}}).fetch()[i].responseTime;
+		if(responcedChat.length != 0){
+			for (i = 0; i < responcedChat.length; i++) { 
+				if(responcedChat[i].responseTime){
+					responsetime = responsetime + responcedChat[i].responseTime;
 				}
 		};
-		avgResposeTime = responsetime/responcedChat;
+		avgResposeTime = responsetime/responcedChat.length;
 		}
 		return Math.round(avgResposeTime);
 	},
@@ -95,47 +95,19 @@ Template.livechatQueue.helpers({
         return ChatRoom.find({ t: 'l',waitingResponse: {$ne:true}}).count();
 	},
 	AvgResponseTime(){
-		var responcedChat = ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).count(); 
+		var responcedChat = ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch(); 
 		var responsetime  = 0.0 ;
 		var avgResposeTime  = 0.0 ;
-		if(responcedChat != 0){
-			for (i = 0; i < responcedChat; i++) { 
-				if(ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch()[i].responseTime){
-					responsetime = responsetime + ChatRoom.find({ t: 'l', waitingResponse: {$ne:true}}).fetch()[i].responseTime;
+		if(responcedChat.length != 0){
+			for (i = 0; i < responcedChat.length; i++) { 
+				if(responcedChat[i].responseTime){
+					responsetime = responsetime + responcedChat[i].responseTime;
 				}
 		};
-		avgResposeTime = responsetime/responcedChat;
+		avgResposeTime = responsetime/responcedChat.length;
 		}
 		return Math.round(avgResposeTime);
-	},
-
-	// totalChatTime(){
-	// 	var chatcount = ChatRoom.find({ t: 'l'}).count();
-	// 	var totalChatTime  = 0 ;
-	// 	if(chatcount != 0){
-	// 		for (i = 0; i < chatcount; i++) { 
-	// 			var a = moment(ChatRoom.find().fetch()[i].lm);
-	// 			var b = moment(ChatRoom.find().fetch()[i].ts);
-	// 			totalChatTime = totalChatTime + a.diff(b, 'seconds');
-	// 		}
-	// 	}
-	// 	var days =  Math.floor(totalChatTime / (3600*24));
-	// 	var hours = Math.floor((totalChatTime - days*24*3600) / 3600);
-	// 	var minute = Math.floor((totalChatTime - hours*60*60 - days*24*3600) / 60);
-	// 	var seconds = Math.floor((totalChatTime - hours*60*60 - minute*60 - days*24*3600) / 60);
-	// 	if(days == 0 && hours == 0 && minute ==0){
-	// 		return  seconds + ' sec';
-	// 	}
-	// 	else if(days == 0 && hours == 0){
-	// 		return  minute + ' min ' + seconds + ' sec';
-	// 	}
-	// 	else if(days == 0){
-	// 		return  hours + ' hrs ' + minute + ' min ' + seconds + ' sec';
-	// 	}
-	// 	else{
-	// 		return  days + ' days ' + hours + ' hrs ' + minute + ' min ' + seconds + ' sec';
-	// 	}
-	// },
+	}
 });
 
 Template.livechatQueue.events({
