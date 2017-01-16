@@ -92,7 +92,11 @@
 						<td class="row-link" style=" cursor:pointer;">{{pickupTime}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{ActiveSince}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{lastMessage}}</td>
+						{{#if isOpen }}
+						<td><button class='button close-livechat button-block'><span>{{status}}</span></button></td>
+						{{else}}
 						<td class="row-link" style=" cursor:pointer;">{{status}}</td>
+						{{/if}}
 						<td><button name="block" class="block-customer">{{blocked}}</button></td>
 					</tr>
 				{{/each}}
@@ -103,4 +107,3 @@
 		<button class="button load-more lightblue">{{_ "Load_more"}}</button>
 	</div>
 </template>
-
