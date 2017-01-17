@@ -24,7 +24,7 @@ Template.livechatCurrentChats.helpers({
         return this.servedBy && this.servedBy.username;
     },
     status() {
-        return this.open ? t('Opened') : t('Closed');
+        return this.open ? t('Close') : t('Closed');
     },
     agents() {
         if (localStorage.getItem("IsAdmin") == "true") {
