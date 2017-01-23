@@ -291,11 +291,12 @@ Template.messageBox.onCreated ->
 	@showMicButton = new ReactiveVar false
 	@showVideoRec = new ReactiveVar false
 	
-	if(Shortcuts.find().count() ==0)		
-		Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->		
-		if result != 'null'										
+	if(Shortcuts.find().count() == 0)		
+		Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->	
+		if result
 			result.forEach (shortcut) ->
-				Shortcuts.insert shortcut					
+				Shortcuts.insert shortcut			
+								
 
 	@autorun =>
 		videoRegex = /video\/webm|video\/\*/i
