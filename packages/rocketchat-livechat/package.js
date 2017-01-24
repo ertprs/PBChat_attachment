@@ -67,7 +67,7 @@ Package.onUse(function(api) {
 	api.addFiles('client/collections/livechatOfficeHour.js', 'client');	
 	api.addFiles('client/methods/changeLivechatStatus.js', 'client');
 	api.addFiles('client/collections/BlockedVisitor.js', 'client');//PbChat
-
+	
 	// client views
 	api.addFiles('client/views/app/livechatAppearance.html', 'client');
 	api.addFiles('client/views/app/livechatAppearance.js', 'client');
@@ -185,6 +185,8 @@ Package.onUse(function(api) {
 	api.addFiles('server/lib/Livechat.js', 'server');
 	api.addFiles('server/lib/QueueMethods.js', 'server');
 	api.addFiles('server/lib/OfficeClock.js', 'server');
+	api.addFiles('server/lib/CloseRoomByAdmin.js', 'server');
+
 
 	api.addFiles('server/sendMessageBySMS.js', 'server');
 	api.addFiles('server/unclosedLivechats.js', 'server');
