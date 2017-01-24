@@ -13,7 +13,10 @@ Template.messageBox.helpers
 		if roomData.t is 'd'
 			return ChatSubscription.findOne({ rid: this._id }, { fields: { name: 1 } })?.name
 		else
-			return roomData.name
+			if roomData && roomData.name
+				return roomData.name
+			else 
+				return ''
 	showMarkdown: ->
 		return RocketChat.Markdown
 	showMarkdownCode: ->
@@ -118,11 +121,12 @@ Template.messageBox.helpers
 		}
 
 Template.messageBox.events
-	'autocompleteselect textarea': (event,template,doc) ->        
-		instance.find('.input-message').focus()		
+	'autocompleteselect textarea': (event,template,doc) ->
+		document.getElementById('short').focus()
+		#instance.find('.input-message').focus()		
 		
-	'click autocompleteselect textarea': (event,template,doc) ->        
-		instance.find('.input-message').focus()
+	'click autocompleteselect textarea': (event,template,doc) -> 
+	    instance.find('.input-message').focus()
 
 	'click .join': (event) ->
 		event.stopPropagation()
@@ -149,7 +153,8 @@ Template.messageBox.events
 			# fixes https://github.com/RocketChat/Rocket.Chat/issues/3037
 			# at this point, the input is cleared and ready for autogrow
 			input.updateAutogrow()
-			instance.isMessageFieldEmpty.set(chatMessages[@_id].isEmpty())
+			if chatMessages[@_id] && chatMessages[@_id].isEmpty()
+				instance.isMessageFieldEmpty.set(chatMessages[@_id].isEmpty())
 		)
 		input.focus()
 
@@ -292,10 +297,13 @@ Template.messageBox.onCreated ->
 	@showVideoRec = new ReactiveVar false
 	
 	if(Shortcuts.find().count() == 0)		
-		Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->	
-		if result
-			result.forEach (shortcut) ->
-				Shortcuts.insert shortcut			
+		Meteor.call 'getShortcuts' , localStorage.getItem('DepartmentName'),(error,result) ->
+			if error
+				console.error error
+			else	
+				if result 
+					result.forEach (shortcut) ->
+							Shortcuts.insert shortcut			
 								
 
 	@autorun =>
