@@ -186,6 +186,8 @@ Package.onUse(function(api) {
     api.addFiles('server/lib/Livechat.js', 'server');
     api.addFiles('server/lib/QueueMethods.js', 'server');
     api.addFiles('server/lib/OfficeClock.js', 'server');
+    api.addFiles('server/lib/CloseRoomByAdmin.js', 'server');
+
 
     api.addFiles('server/sendMessageBySMS.js', 'server');
     api.addFiles('server/unclosedLivechats.js', 'server');

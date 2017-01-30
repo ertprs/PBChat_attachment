@@ -6,8 +6,8 @@
 			<div class="message-input">
 				<div class="input-message-container">
 					<!--<textarea dir="auto" name="msg" maxlength="{{maxMessageLength}}" class="input-message autogrow-short" placeholder="{{_ 'Message'}}"></textarea>-->
-					{{> textareaAutocomplete settings=autocompleteSettings dir="auto" name="msg" class="input-message autogrow-short" autocomplete="off" placeholder=(_ "Type Your Message") style="height:90px"}}		
-					<div class="inner-left-toolbar">
+					{{> textareaAutocomplete settings=autocompleteSettings id="short" dir="auto" autofocus="autofocus" name="msg" class="input-message autogrow-short" autocomplete="off" placeholder=(_ "Type Your Message") style="height:90px"}}		
+					<div class="inner-left-toolbar"> 
 						<i class="emoji-picker-icon icon-people"></i>
 					</div>
 				</div>

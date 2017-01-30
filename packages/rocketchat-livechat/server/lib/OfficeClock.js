@@ -11,7 +11,8 @@ Meteor.setInterval(function() {
 	departments.forEach((department) => {
 		if (RocketChat.settings.get('Livechat_Agent_LogoutTime_'+ department.name)) {
 			var Islogout = null;
-			Meteor.call('livechat:isLogoutTime', department.name,(err, result) => {     
+			var closingtime = RocketChat.settings.get('Livechat_Agent_LogoutTime_' + department.name);
+			Meteor.call('livechat:isLogoutTime', closingtime,(err, result) => {     
 				if (err) {
 					console.error(err);
 				} else {
