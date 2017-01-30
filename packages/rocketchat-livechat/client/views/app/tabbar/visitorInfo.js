@@ -1,255 +1,269 @@
 import UAParser from 'ua-parser-js';
 
 Template.visitorInfo.helpers({
-	user() {
-		const user = Template.instance().user.get();
-		if (user && user.userAgent) {
-			var ua = new UAParser();
-			ua.setUA(user.userAgent);
+    user() {
+        const user = Template.instance().user.get();
+        const cardetails = Template.instance().cardetails.get();
+        if (user && user.userAgent) {
+            var ua = new UAParser();
+            ua.setUA(user.userAgent);
 
-			user.os = ua.getOS().name + ' ' + ua.getOS().version;
-			if (['Mac OS', 'iOS'].indexOf(ua.getOS().name) !== -1) {
-				user.osIcon = 'icon-apple';
-			} else {
-				user.osIcon = 'icon-' + ua.getOS().name.toLowerCase();
-			}
-			user.browser = ua.getBrowser().name + ' ' + ua.getBrowser().version;
-			user.browserIcon = 'icon-' + ua.getBrowser().name.toLowerCase();
-			user.leadid=ChatRoom.findOne({ _id: this.rid }).leadid;			
-		}
+            user.os = ua.getOS().name + ' ' + ua.getOS().version;
+            if (['Mac OS', 'iOS'].indexOf(ua.getOS().name) !== -1) {
+                user.osIcon = 'icon-apple';
+            } else {
+                user.osIcon = 'icon-' + ua.getOS().name.toLowerCase();
+            }
+            user.browser = ua.getBrowser().name + ' ' + ua.getBrowser().version;
+            user.browserIcon = 'icon-' + ua.getBrowser().name.toLowerCase();
+            user.leadid = ChatRoom.findOne({ _id: this.rid }).leadid;
+            if (cardetails && cardetails.ModelName && cardetails.MakeName && cardetails.PreviousPolicyExpiryDate) {
+                user.carMake = cardetails.ModelName;
+                user.carModel = cardetails.MakeName;
+                user.Expiry = cardetails.PreviousPolicyExpiryDate;
+            }
+        }
 
-		return user;
-	},
-	room() {
-		return ChatRoom.findOne({ _id: this.rid });
-	},
-	
-	joinTags() {
-		return this.tags && this.tags.join(', ');
-	},
-	customFields() {
-		let fields = [];
-		let livechatData = {};
-		const user = Template.instance().user.get();
-		if (user) {
-			livechatData = _.extend(livechatData, user.livechatData);
-		}
+        return user;
+    },
+    room() {
+        return ChatRoom.findOne({ _id: this.rid });
+    },
 
-		let data = Template.currentData();
-		if (data && data.rid) {
-			let room = RocketChat.models.Rooms.findOne(data.rid);
-			if (room) {
-				livechatData = _.extend(livechatData, room.livechatData);
-			}
-		}
+    joinTags() {
+        return this.tags && this.tags.join(', ');
+    },
+    customFields() {
+        let fields = [];
+        let livechatData = {};
+        const user = Template.instance().user.get();
+        if (user) {
+            livechatData = _.extend(livechatData, user.livechatData);
+        }
 
-		if (!_.isEmpty(livechatData)) {
-			for (let _id in livechatData) {
-				if (livechatData.hasOwnProperty(_id)) {
-					let customFields = Template.instance().customFields.get();
-					if (customFields) {
-						let field = _.findWhere(customFields, { _id: _id });
-						if (field && field.visibility !== 'hidden') {
-							fields.push({ label: field.label, value: livechatData[_id] });
-						}
-					}
-				}
-			}
-			return fields;
-		}
-	},
+        let data = Template.currentData();
+        if (data && data.rid) {
+            let room = RocketChat.models.Rooms.findOne(data.rid);
+            if (room) {
+                livechatData = _.extend(livechatData, room.livechatData);
+            }
+        }
 
-	createdAt() {
-		if (!this.createdAt) {
-			return '';
-		}
-		return moment(this.createdAt).format('L LTS');
-	},
+        if (!_.isEmpty(livechatData)) {
+            for (let _id in livechatData) {
+                if (livechatData.hasOwnProperty(_id)) {
+                    let customFields = Template.instance().customFields.get();
+                    if (customFields) {
+                        let field = _.findWhere(customFields, { _id: _id });
+                        if (field && field.visibility !== 'hidden') {
+                            fields.push({ label: field.label, value: livechatData[_id] });
+                        }
+                    }
+                }
+            }
+            return fields;
+        }
+    },
 
-	lastLogin() {
-		if (!this.lastLogin) {
-			return '';
-		}
-		return moment(this.lastLogin).format('L LTS');
-	},
+    createdAt() {
+        if (!this.createdAt) {
+            return '';
+        }
+        return moment(this.createdAt).format('L LTS');
+    },
 
-	editing() {
-		return Template.instance().action.get() === 'edit';
-	},
+    lastLogin() {
+        if (!this.lastLogin) {
+            return '';
+        }
+        return moment(this.lastLogin).format('L LTS');
+    },
 
-	forwarding() {
-		return Template.instance().action.get() === 'forward';
-	},
+    editing() {
+        return Template.instance().action.get() === 'edit';
+    },
 
-	editDetails() {
-		const instance = Template.instance();
-		const user = instance.user.get();
-		return {
-			visitorId: user ? user._id : null,
-			roomId: this.rid,
-			save() {
-				instance.action.set();
-			},
-			cancel() {
-				instance.action.set();
-			}
-		};
-	},
+    forwarding() {
+        return Template.instance().action.get() === 'forward';
+    },
 
-	forwardDetails() {
-		const instance = Template.instance();
-		const user = instance.user.get();
-		return {
-			visitorId: user ? user._id : null,
-			roomId: this.rid,
-			save() {
-				instance.action.set();
-			},
-			cancel() {
-				instance.action.set();
-			}
-		};
-	},
+    editDetails() {
+        const instance = Template.instance();
+        const user = instance.user.get();
+        return {
+            visitorId: user ? user._id : null,
+            roomId: this.rid,
+            save() {
+                instance.action.set();
+            },
+            cancel() {
+                instance.action.set();
+            }
+        };
+    },
 
-	roomOpen() {
-		const room = ChatRoom.findOne({ _id: this.rid });
+    forwardDetails() {
+        const instance = Template.instance();
+        const user = instance.user.get();
+        return {
+            visitorId: user ? user._id : null,
+            roomId: this.rid,
+            save() {
+                instance.action.set();
+            },
+            cancel() {
+                instance.action.set();
+            }
+        };
+    },
 
-		return room.open;
-	},
+    roomOpen() {
+        const room = ChatRoom.findOne({ _id: this.rid });
 
-	guestPool() {
-		//var departmentname =  localStorage.getItem('DepartmentName');
-		//return RocketChat.settings.get('Livechat_Routing_Method_' + departmentname) === 'Guest_Pool';
-		//return RocketChat.settings.get('Livechat_Routing_Method') === 'Guest_Pool';
-		return false;
-	},
+        return room.open;
+    },
 
-	showDetail() {
-		if (Template.instance().action.get()) {
-			return 'hidden';
-		}
-	},
+    guestPool() {
+        //var departmentname =  localStorage.getItem('DepartmentName');
+        //return RocketChat.settings.get('Livechat_Routing_Method_' + departmentname) === 'Guest_Pool';
+        //return RocketChat.settings.get('Livechat_Routing_Method') === 'Guest_Pool';
+        return false;
+    },
 
-	canSeeButtons() {
-		if (RocketChat.authz.hasRole(Meteor.userId(), 'livechat-manager')) {
-			return true;
-		}
+    showDetail() {
+        if (Template.instance().action.get()) {
+            return 'hidden';
+        }
+    },
 
-		const data = Template.currentData();
-		if (data && data.rid) {
-			const subscription = RocketChat.models.Subscriptions.findOne({ rid: data.rid });
-			return subscription !== undefined;
-		}
-		return false;
-	}
+    canSeeButtons() {
+        if (RocketChat.authz.hasRole(Meteor.userId(), 'livechat-manager')) {
+            return true;
+        }
+
+        const data = Template.currentData();
+        if (data && data.rid) {
+            const subscription = RocketChat.models.Subscriptions.findOne({ rid: data.rid });
+            return subscription !== undefined;
+        }
+        return false;
+    }
 });
 
 Template.visitorInfo.events({
-	'click .edit-livechat'(event, instance) {
-		event.preventDefault();
-		Meteor.call('livechat:getMatrixUrl', this.rid, function(error, result) {
-				if (error) {
-					console.log(error);
-				} else {
-					if(result){
-						window.open(result);
-					}
-				}
-			});
-		// instance.action.set('edit');
-	},
-	'click .close-livechat'(event) {
-		event.preventDefault();
+    'click .edit-livechat' (event, instance) {
+        event.preventDefault();
+        Meteor.call('livechat:getMatrixUrl', this.rid, function(error, result) {
+            if (error) {
+                console.log(error);
+            } else {
+                if (result) {
+                    window.open(result);
+                }
+            }
+        });
+        // instance.action.set('edit');
+    },
+    'click .close-livechat' (event) {
+        event.preventDefault();
 
-		swal({
-			title: t('Closing_chat'),
-			type: 'input',
-			inputPlaceholder: t('Please_add_a_comment'),
-			showCancelButton: true,
-			closeOnConfirm: false
-		}, (inputValue) => {
-			if (!inputValue) {
-				swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
-				return false;
-			}
+        swal({
+            title: t('Closing_chat'),
+            type: 'input',
+            inputPlaceholder: t('Please_add_a_comment'),
+            showCancelButton: true,
+            closeOnConfirm: false
+        }, (inputValue) => {
+            if (!inputValue) {
+                swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                return false;
+            }
 
-			if (s.trim(inputValue) === '') {
-				swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
-				return false;
-			}
+            if (s.trim(inputValue) === '') {
+                swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                return false;
+            }
 
-			Meteor.call('livechat:closeRoom', this.rid, inputValue, function(error/*, result*/) {
-				if (error) {
-					return handleError(error);
-				}
-				swal({
-					title: t('Chat_closed'),
-					text: t('Chat_closed_successfully'),
-					type: 'success',
-					timer: 1000,
-					showConfirmButton: false
-				});
-			});
-		});
-	},
+            Meteor.call('livechat:closeRoom', this.rid, inputValue, function(error /*, result*/ ) {
+                if (error) {
+                    return handleError(error);
+                }
+                swal({
+                    title: t('Chat_closed'),
+                    text: t('Chat_closed_successfully'),
+                    type: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            });
+        });
+    },
 
-	'click .return-inquiry'(event) {
-		event.preventDefault();
+    'click .return-inquiry' (event) {
+        event.preventDefault();
 
-		swal({
-			title: t('Would_you_like_to_return_the_inquiry'),
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: t('Yes')
-		}, () => {
-			Meteor.call('livechat:returnAsInquiry', this.rid, function(error/*, result*/) {
-				if (error) {
-					console.log(error);
-				} else {
-					Session.set('openedRoom');
-					FlowRouter.go('/home');
-				}
-			});
-		});
-	},
+        swal({
+            title: t('Would_you_like_to_return_the_inquiry'),
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: t('Yes')
+        }, () => {
+            Meteor.call('livechat:returnAsInquiry', this.rid, function(error /*, result*/ ) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    Session.set('openedRoom');
+                    FlowRouter.go('/home');
+                }
+            });
+        });
+    },
 
-	'click .forward-livechat'(event, instance) {
-		event.preventDefault();
+    'click .forward-livechat' (event, instance) {
+        event.preventDefault();
 
-		instance.action.set('forward');
-	}
+        instance.action.set('forward');
+    }
 });
 
 Template.visitorInfo.onCreated(function() {
-	this.visitorId = new ReactiveVar(null);
-	this.customFields = new ReactiveVar([]);
-	this.action = new ReactiveVar();
-	this.user = new ReactiveVar();
+    this.visitorId = new ReactiveVar(null);
+    this.customFields = new ReactiveVar([]);
+    this.action = new ReactiveVar();
+    this.user = new ReactiveVar();
+    this.cardetails = new ReactiveVar();
 
-	Meteor.call('livechat:getCustomFields', (err, customFields) => {
-		if (customFields) {
-			this.customFields.set(customFields);
-		}
-	});
+    Meteor.call('livechat:getCustomFields', (err, customFields) => {
+        if (customFields) {
+            this.customFields.set(customFields);
+        }
+    });
 
-	var currentData = Template.currentData();
+    var currentData = Template.currentData();
 
-	if (currentData && currentData.rid) {
-		this.autorun(() => {
-			let room = ChatRoom.findOne(currentData.rid);
-			if (room && room.v && room.v._id) {
-				this.visitorId.set(room.v._id);
-			} else {
-				this.visitorId.set();
-			}
-		});
-
-		this.subscribe('livechat:visitorInfo', { rid: currentData.rid });
-	}
-
-	this.autorun(() => {
-		this.user.set(Meteor.users.findOne({ '_id': this.visitorId.get() }));
-	});
+    if (currentData && currentData.rid) {
+        this.autorun(() => {
+            let room = ChatRoom.findOne(currentData.rid);
+            if (room && room.v && room.v._id) {
+                this.visitorId.set(room.v._id);
+            } else {
+                this.visitorId.set();
+            }
+            var roomdetails = ChatRoom.findOne({ _id: currentData.rid })
+            var departmentname = localStorage.getItem('DepartmentName');
+            if (departmentname == 'NewCar') {
+                Meteor.call('livechat:getCarDetails', roomdetails.leadid, (err, result) => {
+                    if (result) {
+                        this.cardetails.set(result);
+                    }
+                });
+            }
+        });
+        this.subscribe('livechat:visitorInfo', { rid: currentData.rid });
+    }
+    this.autorun(() => {
+        this.user.set(Meteor.users.findOne({ '_id': this.visitorId.get() }));
+    });
 });

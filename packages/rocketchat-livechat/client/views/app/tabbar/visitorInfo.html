@@ -11,7 +11,13 @@
 				{{#with user}}
 					<div class="info">
 						<h3 title="{{username}}"><i class="status-{{status}}"></i> {{username}}</h3>
-						<h3>{{leadid}}</h3>
+						<h3>{{_ "Leadid - "}}{{leadid}}</h3>
+						{{#if carMake}}
+							{{#if carModel}}
+								<div><b>{{_ "Make- "}}</b>{{carMake}}<b>{{_ "   Model- "}}</b>{{carModel}}</div>
+							{{/if}}
+						{{/if}}
+						{{#if Expiry}}<div><b>{{_ "ExpiryDate- "}}</b>{{Expiry}}</div>{{/if}}
 						{{#if country}}<p><b>{{_ "Country - "}}{{country}}</b></p>{{/if}}
 						<p>{{name}}</p>
 
