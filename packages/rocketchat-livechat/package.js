@@ -187,6 +187,7 @@ Package.onUse(function(api) {
     api.addFiles('server/lib/QueueMethods.js', 'server');
     api.addFiles('server/lib/OfficeClock.js', 'server');
     api.addFiles('server/lib/CloseRoomByAdmin.js', 'server');
+    api.addFiles('server/lib/CloseChatRealTime.js', 'server');
 
 
     api.addFiles('server/sendMessageBySMS.js', 'server');

@@ -87,15 +87,16 @@ class @ChatMessages
 						visitor.setRoom(result.rid)
 
 			if not Meteor.userId()
-				Meteor.call 'livechat:registerGuest', { token: visitor.getToken() }, (error, result) ->
-					if error?
-						return showError error.reason
+				console.log('if not Meteor.userId()')
+				# Meteor.call 'livechat:registerGuest', { token: visitor.getToken() }, (error, result) ->
+				# 	if error?
+				# 		return showError error.reason
 
-					Meteor.loginWithToken result.token, (error) ->
-						if error
-							return showError error.reason
+				# 	Meteor.loginWithToken result.token, (error) ->
+				# 		if error
+				# 			return showError error.reason
 
-						sendMessage()
+				# 		sendMessage()
 			else
 				sendMessage()
 

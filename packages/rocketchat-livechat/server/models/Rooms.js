@@ -129,6 +129,15 @@ RocketChat.models.Rooms.findiOpenRoomForToday = function(departmentname, lastday
     return this.find(query);
 };
 
+RocketChat.models.Rooms.findOpenBetweeninterval = function(departmentname, starttime, endtime) {
+    const query = {
+        open: true,
+        departmentname: departmentname,
+        lm: { $gte: starttime, $lte: endtime }
+    };
+    return this.find(query);
+};
+
 RocketChat.models.Rooms.setResponseByRoomId = function(roomId, response) {
     return this.update({
         _id: roomId
