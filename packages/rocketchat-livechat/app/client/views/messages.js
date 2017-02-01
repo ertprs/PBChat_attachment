@@ -64,6 +64,7 @@ Template.messages.events({
     'keydown .input-message': function(event, instance) {
         if (!Meteor.userId()) {
             //Added By PBChat
+
             if (!localStorage.visitorToken) {
                 localStorage.visitorToken = visitor.getToken();
             }
@@ -87,7 +88,6 @@ Template.messages.events({
                         departmentId = department._id;
                     }
                 }
-
                 var guest = {
                     token: visitor.getToken(),
                     name: $name,
@@ -97,21 +97,24 @@ Template.messages.events({
                     leadid: leadid,
                     country: country
                 };
-                Meteor.call('livechat:registerGuest', guest, function(error, result) {
-                    if (error != null) {
-                        return instance.showError(error.reason);
-                    }
-                    Meteor.loginWithToken(result.token, function(error) {
-                        if (error) {
+                var k = event.which;
+                if (k == 13) {
+                    Meteor.call('livechat:registerGuest', guest, function(error, result) {
+                        if (error != null) {
                             return instance.showError(error.reason);
                         }
-                        // start();
-                        else {
-                            //$(".welcome").hide();
-                            return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
-                        }
+                        Meteor.loginWithToken(result.token, function(error) {
+                            if (error) {
+                                return instance.showError(error.reason);
+                            }
+                            // start();
+                            else {
+                                //$(".welcome").hide();
+                                return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
+                            }
+                        });
                     });
-                });
+                }
             }
         } else {
             var k = event.which;

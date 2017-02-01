@@ -71,7 +71,7 @@ RocketChat.Livechat = {
     },
     registerGuest({ token, name, email, department, phone, loginToken, username, custid, country } = {}) {
         check(token, String);
-
+        console.log('registerGuest called for ' + custid);
         if (!username) {
             username = RocketChat.models.Users.getNextVisitorUsername();
         }
