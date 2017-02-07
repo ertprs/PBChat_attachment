@@ -55,5 +55,6 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
     } else if (filter.waitingResponse == "false") {
         query["waitingResponse"] = null;
     }
+
     return RocketChat.models.Rooms.findLivechat(query, offset, limit);
 });
