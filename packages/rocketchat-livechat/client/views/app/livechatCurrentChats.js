@@ -141,7 +141,11 @@ Template.livechatCurrentChats.onCreated(function() {
     this.limit = new ReactiveVar(20);
     this.filter = new ReactiveVar({});
     this.blockedlist = new ReactiveVar();
-
+    if (!localStorage.getItem('IsAdmin')) {
+        let filter1 = {};
+        filter1['department'] = localStorage.getItem('DepartmentId');
+        this.filter.set(filter1);
+    }
     this.subscribe('livechat:agents');
     this.subscribe('livechat:departmentAgents', localStorage.getItem("DepartmentId"));
     //this.subscribe('livechat:BlockedVisitor');

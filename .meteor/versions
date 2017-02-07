@@ -80,7 +80,9 @@ mdg:validation-error@0.5.1
 meteor@1.6.0
 meteor-base@1.0.4
 meteor-developer@1.1.10
+meteorhacks:aggregate@1.3.0
 meteorhacks:cluster@1.6.9
+meteorhacks:collection-utils@1.2.0
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.30.3
 meteorhacks:meteorx@1.4.1
