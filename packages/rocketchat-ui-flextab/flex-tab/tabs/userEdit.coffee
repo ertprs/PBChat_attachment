@@ -52,6 +52,7 @@ Template.userEdit.onCreated ->
 		userData.username = s.trim(this.$("#username").val())
 		userData.email = s.trim(this.$("#email").val())		
 		userData.manager=s.trim(this.$("#manager").val())
+		userData.employeeId=s.trim(this.$("#employeeId").val())
 		userData.verified = this.$("#verified:checked").length > 0
 		userData.password = s.trim(this.$("#password").val())
 		userData.requirePasswordChange = this.$("#changePassword:checked").length > 0

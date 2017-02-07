@@ -98,7 +98,7 @@ Template.messages.events({
                     country: country
                 };
                 var k = event.which;
-                if (k == 13) {
+                if (k == 13 && !Session.get('firstEnter')) {
                     Meteor.call('livechat:registerGuest', guest, function(error, result) {
                         if (error != null) {
                             return instance.showError(error.reason);
@@ -110,6 +110,7 @@ Template.messages.events({
                             // start();
                             else {
                                 //$(".welcome").hide();
+                                Session.set('firstEnter', true);
                                 return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
                             }
                         });

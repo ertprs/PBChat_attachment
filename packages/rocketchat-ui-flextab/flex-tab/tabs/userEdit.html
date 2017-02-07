@@ -26,6 +26,10 @@
 					<input type="text" id="manager" autocomplete="off" value="{{user.manager}}">
 				</div>
 				<div class="input-line">
+					<label for="employeeId">{{_ "EmployeeId (Emp Code)"}}</label>
+					<input type="text" id="employeeId" autocomplete="off" value="{{user.employeeId}}">
+				</div>
+				<div class="input-line">
 					<label for="verified">
 						<input type="checkbox" id="verified" value="1" checked="{{user.emails.[0].verified}}">
 						{{_ "Verified"}}

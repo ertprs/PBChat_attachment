@@ -79,6 +79,7 @@ Template.livechatCurrentChats.events({
         });
         instance.filter.set(filter);
         instance.limit.set(20);
+        //Method Call for count
     },
     'click .block-customer' () {
         var Isblock = false;
