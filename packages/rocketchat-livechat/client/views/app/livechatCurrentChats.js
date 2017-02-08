@@ -139,19 +139,17 @@ Template.livechatCurrentChats.events({
 
 Template.livechatCurrentChats.onCreated(function() {
     this.limit = new ReactiveVar(20);
+    var departmentid = null;
     this.filter = new ReactiveVar({});
     this.blockedlist = new ReactiveVar();
     this.subscribe('livechat:agents');
     this.subscribe('livechat:departmentAgents', localStorage.getItem("DepartmentId"));
     //this.subscribe('livechat:BlockedVisitor');
-
+    if (localStorage.getItem('IsAdmin') == "false") {
+        departmentid = localStorage.getItem('DepartmentId');
+    }
     this.autorun(() => {
-        if (localStorage.getItem('IsAdmin') === "false") {
-            let filter1 = {};
-            filter1['department'] = localStorage.getItem('DepartmentId');
-            this.filter.set(filter1);
-        }
-        this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get());
+        this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get(), departmentid);
     });
 });
 

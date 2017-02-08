@@ -1,4 +1,4 @@
-Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
+Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20, departmentid = null) {
     if (!this.userId) {
         return this.error(new Meteor.Error('error-not-authorized', 'Not authorized', { publish: 'livechat:rooms' }));
     }
@@ -49,12 +49,13 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20) {
     }
     if (filter.department) {
         query["department"] = filter.department;
+    } else if (departmentid) {
+        query["department"] = departmentid;
     }
     if (filter.waitingResponse == "true") {
         query["waitingResponse"] = true;
     } else if (filter.waitingResponse == "false") {
         query["waitingResponse"] = null;
     }
-
     return RocketChat.models.Rooms.findLivechat(query, offset, limit);
 });
