@@ -59,8 +59,6 @@ Template.livechatCurrentChats.helpers({
         return this.open;
     }
 });
-
-
 Template.livechatCurrentChats.events({
     'click .row-link' () {
         FlowRouter.go('live', { code: this.code });
@@ -79,7 +77,19 @@ Template.livechatCurrentChats.events({
         });
         instance.filter.set(filter);
         instance.limit.set(20);
+
         //Method Call for count
+        Meteor.call('livechat:getFilteredCount', filter, localStorage.getItem("DepartmentId"), function(error, result) {
+            if (error) {
+                console.log('inside error');
+                return handleError(error);
+            } else {
+                if (result) {
+                    console.log('inside result');
+                    document.getElementById('chatcount').value = "Chat Count - " + result;
+                }
+            }
+        });
     },
     'click .block-customer' () {
         var Isblock = false;

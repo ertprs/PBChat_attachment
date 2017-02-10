@@ -17,6 +17,9 @@ Template.visitorInfo.helpers({
             user.browser = ua.getBrowser().name + ' ' + ua.getBrowser().version;
             user.browserIcon = 'icon-' + ua.getBrowser().name.toLowerCase();
             user.leadid = ChatRoom.findOne({ _id: this.rid }).leadid;
+            if (user && user.country == '392') {
+                user.country = 'India';
+            }
             if (cardetails && cardetails.ModelName && cardetails.MakeName && cardetails.PreviousPolicyExpiryDate) {
                 user.carMake = cardetails.ModelName;
                 user.carModel = cardetails.MakeName;

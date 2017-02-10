@@ -123,6 +123,7 @@ Template.livechatQueue.events({
 Template.livechatQueue.onCreated(function() {
     this.showOffline = new ReactiveVar({});
     this.filter = new ReactiveVar({});
+    // this.agentdata = new ReactiveVar({});
     var Today = new Date();
     var StartDate = Today.getFullYear().toString() + '-' + (Today.getMonth() + 1).toString() + '-' + Today.getDate().toString();
     var nextday = new Date();
@@ -141,3 +142,14 @@ Template.livechatQueue.onCreated(function() {
         this.subscribe('livechat:rooms', this.filter.get(), 0, 5000);
     });
 });
+
+// Template.livechatQueue.onRendered(function() {
+//     var rooms = ChatRoom.find();
+//     rooms.forEach(function(room) {
+//         if (room && room.servedBy && room.servedBy._id) {
+
+//         } else {
+
+//         }
+//     })
+// });

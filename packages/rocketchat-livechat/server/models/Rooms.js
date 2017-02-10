@@ -31,11 +31,20 @@ RocketChat.models.Rooms.updateLivechatDataByToken = function(token, key, value) 
     return this.update(query, update);
 };
 
+RocketChat.models.Rooms.findLivechatCount = function(filter = {}) {
+    const query = _.extend(filter, {
+        t: 'l'
+    });
+    var r = this.find(query, { sort: { ts: -1 } });
+    return r.count();
+};
+
 RocketChat.models.Rooms.findLivechat = function(filter = {}, offset = 0, limit = 20) {
     const query = _.extend(filter, {
         t: 'l'
     });
     return this.find(query, { sort: { ts: -1 }, offset: offset, limit: limit });
+
 };
 
 RocketChat.models.Rooms.findLivechatByCode = function(code, fields) {

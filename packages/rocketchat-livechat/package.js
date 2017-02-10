@@ -140,6 +140,7 @@ Package.onUse(function(api) {
     api.addFiles('server/methods/isLogoutTime.js', 'server');
     api.addFiles('server/methods/getMatrixUrl.js', 'server');
     api.addFiles('server/methods/getCarDetails.js', 'server');
+    api.addFiles('server/methods/getFilteredCount.js', 'server');
     //added a new api method jitendra PBChat
     api.addFiles('server/methods/pageVisited.js', 'server');
     api.addFiles('server/methods/registerGuest.js', 'server');
