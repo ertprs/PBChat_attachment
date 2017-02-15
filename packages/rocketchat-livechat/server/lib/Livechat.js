@@ -205,6 +205,7 @@ RocketChat.Livechat = {
         return ret;
     },
 
+
     closeRoom({ user, room, comment }) {
         let now = new Date();
         RocketChat.models.Rooms.closeByRoomId(room._id, {
@@ -213,7 +214,7 @@ RocketChat.Livechat = {
                 username: user.username
             },
             closedAt: now,
-            chatDuration: (now.getTime() - room.ts) / 1000
+            chatDuration: (room.lm - room.ts) / 1000
         });
 
         //Added by PBChat
@@ -233,7 +234,7 @@ RocketChat.Livechat = {
         RocketChat.models.Subscriptions.hideByRoomIdAndUserId(room._id, user._id);
 
         //Added by PBChat for Livechat Transcript
-        RocketChat.models.Messages.createCommandWithRoomIdAndUser('promptTranscript', room._id, user);
+        //RocketChat.models.Messages.createCommandWithRoomIdAndUser('promptTranscript', room._id, user);
         //Added by PBChat for Livechat Transcript
 
         Meteor.defer(() => {

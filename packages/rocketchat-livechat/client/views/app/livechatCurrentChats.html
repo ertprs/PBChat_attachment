@@ -15,7 +15,7 @@
 
 			<div class="form-group">
 				<label for="agent">{{_ "Served_By"}}</label>
-				<select name="agent">
+				<select name="agent" id="agent">
 					<option value="">{{_ "Select"}}</option>
 					{{#each agents}}
 						{{#if IsAdmin}}
@@ -29,7 +29,7 @@
 
 			<div class="form-group">
 				<label for="status">{{_ "Status"}}</label>
-				<select name="status">
+				<select name="status" id="status">
 					<option value="">{{_ "Select"}}</option>
 					<option value="opened">{{_ "Opened"}}</option>
 					<option value="closed">{{_ "Closed"}}</option>
@@ -57,7 +57,7 @@
 				<span class="input-group-addon">
 					<div class="form-group">
 						<label for="responded">{{_ "WaitingResponse"}}</label>
-						<select name="waitingResponse">
+						<select name="waitingResponse" id="waitingResponse">
 								<option value="">{{_ "Select"}}</option>
 								<option value="true">{{_ "WaitingResponse"}}</option>
 								<option value="false">{{_ "Responded"}}</option>					

@@ -17,6 +17,10 @@
 							{{#if carMake}}<li>{{_ "Make -    "}}<input type="text" value={{carMake}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
 							{{#if carModel}}<li>{{_ "Model -   "}} <input type="text" value={{carModel}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
 							{{#if Expiry}}<li>{{_ "ExpiryDate - "}} <input type="text" value={{Expiry}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
+							{{#if MobileNo}}<li>{{_ "MobileNo -    "}}<input type="text" value={{MobileNo}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
+							{{#if City}}<li>{{_ "City -    "}}<input type="text" value={{City}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
+							{{#if AnnualIncome}}<li>{{_ "AnnualIncome -    "}}<input type="text" value={{AnnualIncome}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
+							{{#if AgeOfAllMembers}}<li>{{_ "AgeOfAllMembers -    "}}<input type="text" value={{AgeOfAllMembers}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
 							{{#each emails}} <li><i class="icon-mail"> {{_ " EmailId - "}}</i><input type="text" value={{address}} style="width: 200px;height: 30px;" readonly> {{#if verified}}&nbsp;<i class="icon-ok"></i>{{/if}}</li> {{/each}}
 							{{#if country}}<li>{{_ "Country- "}} <input type="text" value={{country}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
 							{{#if utc}}<li><i class="icon-clock"></i><input type="text" value={{userTime}} style="width: 200px;height: 30px;" readonly> (UTC {{utc}})</li>{{/if}}

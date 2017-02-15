@@ -85,8 +85,9 @@ Template.livechatCurrentChats.events({
                 return handleError(error);
             } else {
                 if (result) {
-                    console.log('inside result');
                     document.getElementById('chatcount').value = "Chat Count - " + result;
+                } else {
+                    document.getElementById('chatcount').value = "Chat Count - 0";
                 }
             }
         });
@@ -164,9 +165,30 @@ Template.livechatCurrentChats.onCreated(function() {
 });
 
 Template.livechatCurrentChats.onRendered(function() {
-    $('#datetimepicker6').datetimepicker();
+    //var Today = new Date();
+    // Today.setTime(0);
+    var Today = moment().utcOffset(0);
+    Today.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+    Today.toISOString()
+    Today.format()
+        //var StartDate = Today.getFullYear().toString() + '-' + (Today.getMonth() + 1).toString() + '-' + Today.getDate().toString();
+    var nextday = new Date();
+    // var numberOfDaysToAdd = 1;
+    // nextday.setDate(nextday.getDate() + numberOfDaysToAdd);
+    // var EndDate = nextday.getFullYear().toString() + '-' + (nextday.getMonth() + 1).toString() + '-' + nextday.getDate().toString();
+
+    $('#datetimepicker6').datetimepicker({
+        toolbarPlacement: 'bottom',
+        showClose: true,
+        sideBySide: true,
+        defaultDate: Today
+    });
     $('#datetimepicker7').datetimepicker({
-        useCurrent: false //Important! See issue #1075
+        useCurrent: false, //Important! See issue #1075
+        toolbarPlacement: 'bottom',
+        showClose: true,
+        sideBySide: true,
+        defaultDate: nextday
     });
     $("#datetimepicker6").on("dp.change", function(e) {
         $('#datetimepicker7').data("DateTimePicker").minDate(e.date);

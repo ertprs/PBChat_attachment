@@ -4,6 +4,7 @@ Template.visitorInfo.helpers({
     user() {
         const user = Template.instance().user.get();
         const cardetails = Template.instance().cardetails.get();
+        const healthdetails = Template.instance().healthdetails.get();
         if (user && user.userAgent) {
             var ua = new UAParser();
             ua.setUA(user.userAgent);
@@ -20,10 +21,20 @@ Template.visitorInfo.helpers({
             if (user && user.country == '392') {
                 user.country = 'India';
             }
-            if (cardetails && cardetails.ModelName && cardetails.MakeName && cardetails.PreviousPolicyExpiryDate) {
-                user.carMake = cardetails.ModelName;
-                user.carModel = cardetails.MakeName;
-                user.Expiry = cardetails.PreviousPolicyExpiryDate;
+            var departmentname = localStorage.getItem('DepartmentName');
+            if (departmentname == 'NewCar') {
+                if (cardetails && cardetails.ModelName && cardetails.MakeName && cardetails.PreviousPolicyExpiryDate) {
+                    user.carMake = cardetails.ModelName;
+                    user.carModel = cardetails.MakeName;
+                    user.Expiry = cardetails.PreviousPolicyExpiryDate;
+                }
+            } else if (departmentname == 'Health') {
+                if (healthdetails && healthdetails.MobileNo && healthdetails.AnnualIncome && healthdetails.City && healthdetails.AgeOfAllMembers) {
+                    user.MobileNo = healthdetails.MobileNo;
+                    user.City = healthdetails.City;
+                    user.AgeOfAllMembers = healthdetails.AgeOfAllMembers;
+                    user.AnnualIncome = healthdetails.AnnualIncome;
+                }
             }
         }
 
@@ -237,6 +248,7 @@ Template.visitorInfo.onCreated(function() {
     this.action = new ReactiveVar();
     this.user = new ReactiveVar();
     this.cardetails = new ReactiveVar();
+    this.healthdetails = new ReactiveVar();
 
     Meteor.call('livechat:getCustomFields', (err, customFields) => {
         if (customFields) {
@@ -256,10 +268,16 @@ Template.visitorInfo.onCreated(function() {
             }
             var roomdetails = ChatRoom.findOne({ _id: currentData.rid })
             var departmentname = localStorage.getItem('DepartmentName');
-            if (departmentname == 'NewCar') {
+            if (roomdetails.departmentname == 'NewCar') {
                 Meteor.call('livechat:getCarDetails', roomdetails.leadid, (err, result) => {
                     if (result) {
                         this.cardetails.set(result);
+                    }
+                });
+            } else if (roomdetails.departmentname == 'Health') {
+                Meteor.call('livechat:getHealthDetails', roomdetails.leadid, (err, result) => {
+                    if (result) {
+                        this.healthdetails.set(result);
                     }
                 });
             }
