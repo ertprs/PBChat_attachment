@@ -165,18 +165,15 @@ Template.livechatCurrentChats.onCreated(function() {
 });
 
 Template.livechatCurrentChats.onRendered(function() {
-    //var Today = new Date();
-    // Today.setTime(0);
     var Today = moment().utcOffset(0);
     Today.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
     Today.toISOString()
     Today.format()
-        //var StartDate = Today.getFullYear().toString() + '-' + (Today.getMonth() + 1).toString() + '-' + Today.getDate().toString();
-    var nextday = new Date();
-    // var numberOfDaysToAdd = 1;
-    // nextday.setDate(nextday.getDate() + numberOfDaysToAdd);
-    // var EndDate = nextday.getFullYear().toString() + '-' + (nextday.getMonth() + 1).toString() + '-' + nextday.getDate().toString();
-
+    var nextday = moment().utcOffset(0);
+    nextday.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+    nextday.add('days', 1);
+    nextday.toISOString()
+    nextday.format()
     $('#datetimepicker6').datetimepicker({
         toolbarPlacement: 'bottom',
         showClose: true,
