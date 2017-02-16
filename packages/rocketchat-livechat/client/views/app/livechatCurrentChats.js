@@ -73,6 +73,13 @@ Template.livechatCurrentChats.events({
         $(':input', event.currentTarget).each(function() {
             if (this.name) {
                 filter[this.name] = $(this).val();
+                if (this.name == 'agent' || this.name == 'status' || this.name == 'waitingResponse') {
+                    var elementid = this.name;
+                    Session.set(this.name, document.getElementById(elementid).selectedIndex);
+                } else if (this.name == 'From' || this.name == 'To') {
+                    var elementid = this.name;
+                    Session.set(this.name, document.getElementById(elementid).value);
+                }
             }
         });
         instance.filter.set(filter);
@@ -171,7 +178,7 @@ Template.livechatCurrentChats.onRendered(function() {
     Today.format()
     var nextday = moment().utcOffset(0);
     nextday.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-    nextday.add('days', 1);
+    nextday.add(1, 'days');
     nextday.toISOString()
     nextday.format()
     $('#datetimepicker6').datetimepicker({
@@ -193,4 +200,21 @@ Template.livechatCurrentChats.onRendered(function() {
     $("#datetimepicker7").on("dp.change", function(e) {
         $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
     });
+    Meteor.setTimeout(function() {
+        if (Session.get('agent') && document.getElementById("agent")) {
+            document.getElementById("agent").selectedIndex = Session.get('agent');
+        }
+        if (Session.get('status') && document.getElementById("status")) {
+            document.getElementById("status").selectedIndex = Session.get('status');
+        }
+        if (Session.get('waitingResponse') && document.getElementById("waitingResponse")) {
+            document.getElementById("waitingResponse").selectedIndex = Session.get('waitingResponse');
+        }
+        if (Session.get('From') && document.getElementById("From")) {
+            document.getElementById("From").value = Session.get('From');
+        }
+        if (Session.get('To') && document.getElementById("To")) {
+            document.getElementById("To").selectedIndex = Session.get('To');
+        }
+    }, 500);
 });

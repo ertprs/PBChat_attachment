@@ -142,7 +142,7 @@ Package.onUse(function(api) {
     api.addFiles('server/methods/getCarDetails.js', 'server');
     api.addFiles('server/methods/getFilteredCount.js', 'server');
     api.addFiles('server/methods/getHealthDetails.js', 'server');
-
+    api.addFiles('server/methods/assignToMatrixAgent.js', 'server');
     //added a new api method jitendra PBChat
     api.addFiles('server/methods/pageVisited.js', 'server');
     api.addFiles('server/methods/registerGuest.js', 'server');
