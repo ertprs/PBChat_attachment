@@ -11,7 +11,6 @@
         //widget.style.height = '30px';
         //document.getElementsByTagName('body')[0].removeChild(widget);
         widget.style.display = 'none';
-        callHook('widgetClosed');
     };
 
     var openWidget = function() {
