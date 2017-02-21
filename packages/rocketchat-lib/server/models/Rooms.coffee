@@ -345,7 +345,7 @@ RocketChat.models.Rooms = new class extends RocketChat.models._Base
 
 		return @update query, update
 
-	incMsgCountAndSetLastMessageTimestampById: (_id, inc=1, lastMessageTimestamp) ->
+	incMsgCountAndSetLastMessageTimestampById: (_id, inc=1, lastMessageTimestamp, agentcount) ->
 		query =
 			_id: _id
 
@@ -354,7 +354,8 @@ RocketChat.models.Rooms = new class extends RocketChat.models._Base
 				lm: lastMessageTimestamp
 			$inc:
 				msgs: inc
-
+				agentmsgs: agentcount
+		
 		return @update query, update
 
 	replaceUsername: (previousUsername, username) ->
