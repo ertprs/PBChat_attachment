@@ -14,9 +14,13 @@ Template.messages.helpers({
         });
     },
     customername() {
-        var name = (Session.get('custinfo').name).trim();
-        var array = name.split(/\s+/);
-        return 'Hi ' + array[0] + ' ! ';
+        if (Session.get('custinfo') && Session.get('custinfo').name) {
+            var name = (Session.get('custinfo').name).trim();
+            var array = name.split(/\s+/);
+            return 'Hi ' + array[0] + ' ! ';
+        } else {
+            return '';
+        }
     },
     welcomeMessage() {
         return Livechat.welcome;
