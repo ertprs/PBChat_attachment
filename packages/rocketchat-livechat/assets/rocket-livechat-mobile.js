@@ -5,18 +5,32 @@
     var iframe;
     var hookQueue = [];
     var ready = false;
+    //Added for iphone bug resolution
+    var smallScreen = false;
+    var bodyStyle;
+    var scrollPosition;
+    //Added for iphone bug resolution
 
     var closeWidget = function() {
         //widget.dataset.state = 'closed';
         //widget.style.height = '30px';
         //document.getElementsByTagName('body')[0].removeChild(widget);
         widget.style.display = 'none';
+        if (smallScreen) {
+            document.body.style.cssText = bodyStyle;
+            document.body.scrollTop = scrollPosition;
+        }
     };
 
     var openWidget = function() {
         //widget.style.display = 'inline';
+        if (smallScreen) {
+            scrollPosition = document.body.scrollTop;
+            bodyStyle = document.body.style.cssText;
+            document.body.style.cssText += 'overflow: hidden; height: 100%; width: 100%; position: fixed; top:' + scrollPosition + 'px;';
+        }
         widget.dataset.state = 'opened';
-        widget.style.height = '300px';
+        widget.style.height = '345px';
         callHook('widgetOpened');
     };
 
@@ -135,6 +149,7 @@
 
         var mediaqueryresponse = function(mql) {
             if (mql.matches) {
+                smallScreen = true;
                 chatWidget.style.left = '0';
                 chatWidget.style.right = '0';
                 chatWidget.style.width = '100%';
@@ -145,7 +160,8 @@
             }
         };
 
-        var mql = window.matchMedia('screen and (max-device-width: 480px) and (orientation: portrait)');
+        //var mql = window.matchMedia('screen and (max-device-width: 480px) and (orientation: portrait)');
+        var mql = window.matchMedia('screen and (max-device-width: 480px)');
         mediaqueryresponse(mql);
         mql.addListener(mediaqueryresponse);
 

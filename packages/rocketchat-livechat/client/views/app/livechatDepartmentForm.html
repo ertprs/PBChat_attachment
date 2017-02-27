@@ -16,12 +16,21 @@
 							<input type="text" name="name" value="{{department.name}}" placeholder="{{_ "Name"}}" />
 						</div>
 					</div>
+					{{#if allowEdit}}
 					<div class="input-line">
 						<label>{{_ "Description"}}</label>
 						<div>
 							<textarea name="description" rows="6">{{department.description}}</textarea>
 						</div>
 					</div>
+					{{else}}
+					<div class="input-line">
+						<label>{{_ "Description"}}</label>
+						<div>
+							<textarea name="description" rows="6" readonly>{{department.description}}</textarea>
+						</div>
+					</div>
+					{{/if}}
 					<hr />
 					<h2>{{_ "Agents"}}</h2>
 

@@ -10,11 +10,12 @@ RocketChat.QueueMethods = {
             return RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
         } else {
             var date = new Date();
-            if (!agent) {
-                throw new Meteor.Error('no-agent-online', 'Sorry, no online agents');
-            }
-            //Added By PBChat
-            else {
+            var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
+            var departmentname = Departmentinfo.name;
+            var IsService = departmentname.match("_Service");
+            if (IsService) {
+                var response = 'service chat';
+            } else {
                 var url = RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
                 StartDate = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString() + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();
                 HTTP.call("POST", url, {
@@ -28,10 +29,6 @@ RocketChat.QueueMethods = {
             let options = {
                 sort: { _id: 1 }
             };
-
-            var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
-            var departmentname = Departmentinfo.name;
-            //Added By PBChat
 
             const roomCode = RocketChat.models.Rooms.getNextLivechatRoomCode();
 
@@ -113,25 +110,29 @@ RocketChat.QueueMethods = {
         if (agents.count() === 0 && RocketChat.settings.get('Livechat_guest_pool_with_no_agents')) {
             agents = RocketChat.Livechat.getAgents(guest.department);
         }
-
+        var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
+        var departmentname = Departmentinfo.name;
+        var IsService = departmentname.match("_Service");
         if (agents.count() === 0) {
             throw new Meteor.Error('no-agent-online', 'Sorry, no online agents');
         } else {
-            var url = RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
-            StartDate = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString() + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();
-            HTTP.call("POST", url, {
-                    data: { "item": { "Data": { "LeadId": custinfo.leadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
-                    headers: { "Authorization": "cG9saWN5 YmF6YWFy" }
-                },
-                function(error, result) {
-                    if (!error) {}
-                });
+            if (IsService) {
+                var response = 'Service chat';
+            } else {
+                var url = RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
+                StartDate = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString() + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();
+                HTTP.call("POST", url, {
+                        data: { "item": { "Data": { "LeadId": custinfo.leadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
+                        headers: { "Authorization": "cG9saWN5 YmF6YWFy" }
+                    },
+                    function(error, result) {
+                        if (!error) {}
+                    });
+            }
         }
         let options = {
             sort: { _id: 1 }
         };
-        var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
-        var departmentname = Departmentinfo.name;
         //Added By PBChat
         const roomCode = RocketChat.models.Rooms.getNextLivechatRoomCode();
 

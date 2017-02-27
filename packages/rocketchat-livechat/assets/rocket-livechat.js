@@ -22,7 +22,7 @@
     var openWidget = function() {
         Ispopup = true;
         widget.dataset.state = 'opened';
-        widget.style.height = '300px';
+        widget.style.height = '335px';
         callHook('widgetOpened');
     };
 
