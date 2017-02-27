@@ -17,7 +17,9 @@ Template.livechatWindow.helpers({
         return Session.get('sound');
     },
     showRegisterForm() {
-        if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
+        if (Meteor.userId()) {
+            return false;
+        } else if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
             return Livechat.registrationForm;
         } else {
             return false;
@@ -81,7 +83,8 @@ Template.livechatWindow.onCreated(function() {
         let lng = window.navigator.userLanguage || window.navigator.language || 'en';
         let regexp = /([a-z]{2}-)([a-z]{2})/;
         if (regexp.test(lng)) {
-            lng = lng.replace(regexp, function(match, ...parts) {
+            http: //localhost:3000/livechat?service=1
+                lng = lng.replace(regexp, function(match, ...parts) {
                 return parts[0] + parts[1].toUpperCase();
             });
         }

@@ -44,6 +44,7 @@ Template.register.helpers({
 
 Template.register.events({
     'submit #livechat-registration' (e, instance) {
+        document.getElementById('btnEntrar').setAttribute('disabled', true);
         if (!localStorage.visitorToken) {
             localStorage.visitorToken = visitor.getToken();
         }
@@ -74,8 +75,10 @@ Template.register.events({
         departmentname = instance.$('select[name=department] option:selected').text();
 
         if (!($name.trim() && $email.trim() && mobilenumber.trim() && departmentId.trim())) {
+            document.getElementById('btnEntrar').removeAttribute('disabled');
             return instance.showError('Please fill Name,Email,Mobile number and concerned Department!');
         } else if (!(mobilenumber.match(/^[0-9]+$/) != null)) {
+            document.getElementById('btnEntrar').removeAttribute('disabled');
             return instance.showError('Mobile number should contain digits only(exclude country code)! ');
         } else {
             custinfo.name = $name;
@@ -129,6 +132,7 @@ Template.register.events({
                 });
             });
         }
+        document.getElementById('btnEntrar').removeAttribute('disabled');
     },
     'click .error' (e, instance) {
         return instance.hideError();
