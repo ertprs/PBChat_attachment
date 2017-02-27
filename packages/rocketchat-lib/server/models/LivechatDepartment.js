@@ -2,77 +2,82 @@
  * Livechat Department model
  */
 class LivechatDepartment extends RocketChat.models._Base {
-	constructor() {
-		super('livechat_department');
-	}
+    constructor() {
+        super('livechat_department');
+    }
 
-	// FIND
-	findOneById(_id, options) {
-		const query = { _id: _id };
+    // FIND
+    findOneById(_id, options) {
+        const query = { _id: _id };
 
-		return this.findOne(query, options);
-	}
+        return this.findOne(query, options);
+    }
+    findOneByName(name, options) {
+        const query = { name: name };
 
-	findByDepartmentId(_id, options) {
-		const query = { _id: _id };
+        return this.findOne(query, options);
+    }
 
-		return this.find(query, options);
-	}
+    findByDepartmentId(_id, options) {
+        const query = { _id: _id };
 
-	createOrUpdateDepartment(_id, enabled, name, description, agents, extraData) {
-		agents = [].concat(agents);
+        return this.find(query, options);
+    }
 
-		var record = {
-			enabled: enabled,
-			name: name,
-			description: description,
-			numAgents: agents.length
-		};
+    createOrUpdateDepartment(_id, enabled, name, description, agents, extraData) {
+        agents = [].concat(agents);
 
-		_.extend(record, extraData);
+        var record = {
+            enabled: enabled,
+            name: name,
+            description: description,
+            numAgents: agents.length
+        };
 
-		if (_id) {
-			this.update({ _id: _id }, { $set: record });
-		} else {
-			_id = this.insert(record);
-		}
+        _.extend(record, extraData);
 
-		var savedAgents = _.pluck(RocketChat.models.LivechatDepartmentAgents.findByDepartmentId(_id).fetch(), 'agentId');
-		var agentsToSave = _.pluck(agents, 'agentId');
+        if (_id) {
+            this.update({ _id: _id }, { $set: record });
+        } else {
+            _id = this.insert(record);
+        }
 
-		// remove other agents
-		_.difference(savedAgents, agentsToSave).forEach((agentId) => {
-			RocketChat.models.LivechatDepartmentAgents.removeByDepartmentIdAndAgentId(_id, agentId);
-		});
+        var savedAgents = _.pluck(RocketChat.models.LivechatDepartmentAgents.findByDepartmentId(_id).fetch(), 'agentId');
+        var agentsToSave = _.pluck(agents, 'agentId');
 
-		agents.forEach((agent) => {
-			RocketChat.models.LivechatDepartmentAgents.saveAgent({
-				agentId: agent.agentId,
-				departmentId: _id,
-				username: agent.username,
-				count: agent.count ? parseInt(agent.count) : 0,
-				order: agent.order ? parseInt(agent.order) : 0,
-				limit: agent.limit ? parseInt(agent.limit) : 0
-			});
-		});
+        // remove other agents
+        _.difference(savedAgents, agentsToSave).forEach((agentId) => {
+            RocketChat.models.LivechatDepartmentAgents.removeByDepartmentIdAndAgentId(_id, agentId);
+        });
 
-		return _.extend(record, { _id: _id });
-	}
+        agents.forEach((agent) => {
+            RocketChat.models.LivechatDepartmentAgents.saveAgent({
+                agentId: agent.agentId,
+                departmentId: _id,
+                username: agent.username,
+                count: agent.count ? parseInt(agent.count) : 0,
+                order: agent.order ? parseInt(agent.order) : 0,
+                limit: agent.limit ? parseInt(agent.limit) : 0
+            });
+        });
 
-	// REMOVE
-	removeById(_id) {
-		const query = { _id: _id };
+        return _.extend(record, { _id: _id });
+    }
 
-		return this.remove(query);
-	}
+    // REMOVE
+    removeById(_id) {
+        const query = { _id: _id };
 
-	findEnabledWithAgents() {
-		var query = {
-			numAgents: { $gt: 0 },
-			enabled: true
-		};
-		return this.find(query);
-	}
+        return this.remove(query);
+    }
+
+    findEnabledWithAgents() {
+        var query = {
+            numAgents: { $gt: 0 },
+            enabled: true
+        };
+        return this.find(query);
+    }
 }
 
 RocketChat.models.LivechatDepartment = new LivechatDepartment();

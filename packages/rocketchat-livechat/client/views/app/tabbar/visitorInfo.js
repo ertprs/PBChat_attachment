@@ -47,6 +47,18 @@ Template.visitorInfo.helpers({
     joinTags() {
         return this.tags && this.tags.join(', ');
     },
+    service() {
+        var departmentname = localStorage.getItem('DepartmentName');
+        var IsService = departmentname.match("_Service");
+        const room = Template.instance().currentroom.get();
+        if (IsService) {
+            return true;
+        } else if (departmentname != room.departmentname) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     customFields() {
         let fields = [];
         let livechatData = {};
@@ -239,6 +251,26 @@ Template.visitorInfo.events({
         event.preventDefault();
 
         instance.action.set('forward');
+    },
+
+    'click .stack' (event, instance) {
+        event.preventDefault();
+        var leadid = document.getElementById('leadid').value;
+        const room = Template.instance().currentroom.get();
+        var departmentname = localStorage.getItem('DepartmentName');
+        if (!(leadid.trim())) {
+            alert('Please fill valid Leadid!');
+            return true;
+        } else if (!(leadid.match(/^[0-9]+$/) != null)) {
+            alert('Leadid should contain digits only! ');
+            return true;
+        } else {
+            Meteor.call('livechat:stackChatToLead', room._id, parseInt(leadid), room.leadid, departmentname, function(error) {
+                if (error) {
+                    console.log(error);
+                }
+            });
+        }
     }
 });
 
@@ -249,6 +281,7 @@ Template.visitorInfo.onCreated(function() {
     this.user = new ReactiveVar();
     this.cardetails = new ReactiveVar();
     this.healthdetails = new ReactiveVar();
+    this.currentroom = new ReactiveVar();
 
     Meteor.call('livechat:getCustomFields', (err, customFields) => {
         if (customFields) {
@@ -268,6 +301,7 @@ Template.visitorInfo.onCreated(function() {
             }
             var roomdetails = ChatRoom.findOne({ _id: currentData.rid })
             var departmentname = localStorage.getItem('DepartmentName');
+            this.currentroom.set(roomdetails);
             if (roomdetails.departmentname == 'NewCar') {
                 Meteor.call('livechat:getCarDetails', roomdetails.leadid, (err, result) => {
                     if (result) {

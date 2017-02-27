@@ -3,8 +3,8 @@
 		<div class="error">
 			<span>{{{error}}}</span>
 		</div>
-
 		<p class="welcome" style="padding:20px">
+			<p>{{greeting}}</p>
 			{{{welcomeMessage}}}
 		</p>
 		<form id="livechat-registration">
@@ -12,6 +12,7 @@
 			{{#if HasLead}}
 			<input type="text" name="name" id="guestName" placeholder="{{_ "Name"}}">
 			<input type="email" name="email" id="guestEmail" placeholder="{{_ "Email"}}">
+			<input type="mobilenumber" name="mobilenumber" id="mobilenumber" placeholder="{{_ "Mobile Number"}}" maxlength="10">
 			{{/if}}
 
 			{{#if hasDepartments}}
@@ -19,7 +20,7 @@
 					<select name="department">
 						<option value="">{{_ "Select_a_department"}}</option>
 						{{#each departments}}
-							<option value="{{_id}}">{{name}}</option>
+							<option value="{{_id}}">{{description}}</option>
 						{{/each}}
 					</select>
 				{{/if}}

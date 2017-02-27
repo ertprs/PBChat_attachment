@@ -225,3 +225,18 @@ RocketChat.models.Rooms.saveCRMDataByRoomId = function(roomId, crmData) {
 
     return this.update(query, update);
 };
+
+RocketChat.models.Rooms.changeLeadidtByRoomId = function(roomId, newleadid, previousleadid, departmentid, departmentname) {
+    const query = {
+        _id: roomId
+    };
+    const update = {
+        $set: {
+            leadid: newleadid,
+            previousleadid: previousleadid,
+            department: departmentid,
+            departmentname: departmentname
+        }
+    }
+    this.update(query, update);
+};

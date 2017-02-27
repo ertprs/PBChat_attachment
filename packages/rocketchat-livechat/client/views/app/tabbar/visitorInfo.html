@@ -11,6 +11,13 @@
 				{{#with user}}
 					<div class="info">
 						<h3 title="{{username}}"><i class="status-{{status}}"></i> {{username}}</h3>
+						{{#if service}}
+						<li> 
+							{{_ "Stack Chat To Leadid: "}}
+							<input type="text" id="leadid" value={{leadid}} style="width: 100px;height: 34px;">
+							<button type="submit" class='button stack'><span>{{_ "Stack"}}</span></button>	
+						</li>
+						{{/if}}
 						<ul>
 							{{#if leadid}}<li>{{_ "Leadid - "}}<input type="text" value={{leadid}} style="width: 200px;height: 30px;" readonly></li>{{/if}}		
 							{{#if name}}<li>{{_ "Name -   "}}<input type="text" value={{name}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
@@ -21,10 +28,10 @@
 							{{#if City}}<li>{{_ "City -    "}}<input type="text" value={{City}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
 							{{#if AnnualIncome}}<li>{{_ "AnnualIncome -    "}}<input type="text" value={{AnnualIncome}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
 							{{#if AgeOfAllMembers}}<li>{{_ "AgeOfAllMembers -    "}}<input type="text" value={{AgeOfAllMembers}} style="width: 200px;height: 30px;" readonly> </li>{{/if}}
-							{{#each emails}} <li><i class="icon-mail"> {{_ " EmailId - "}}</i><input type="text" value={{address}} style="width: 200px;height: 30px;" readonly> {{#if verified}}&nbsp;<i class="icon-ok"></i>{{/if}}</li> {{/each}}
+							{{#each emails}} <li>{{_ " EmailId "}}<i class="icon-mail"></i><input type="text" value={{address}} style="width: 200px;height: 30px;" readonly> {{#if verified}}&nbsp;<i class="icon-ok"></i>{{/if}}</li> {{/each}}
 							{{#if country}}<li>{{_ "Country- "}} <input type="text" value={{country}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
 							{{#if utc}}<li><i class="icon-clock"></i><input type="text" value={{userTime}} style="width: 200px;height: 30px;" readonly> (UTC {{utc}})</li>{{/if}}
-							{{#each phone}} <li><i class="icon-phone"></i> <input type="text" value={{phoneNumber}} style="width: 200px;height: 30px;" readonly></li> {{/each}}
+							{{#if mobile}} <li>{{_ " Mobile No "}}<i class="icon-phone"></i> <input type="text" value={{mobile}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
 							{{#if lastLogin}} <li><i class="icon-calendar"></i> {{_ "Created_at"}}: <input type="text" value={{createdAt}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
 							{{#if lastLogin}} <li><i class="icon-calendar"></i> {{_ "Last_login"}}: <input type="text" value={{lastLogin}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
 							{{#if ip}}<li><i class="icon-laptop"></i><span>{{ip}}</span></li>{{/if}}

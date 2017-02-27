@@ -17,11 +17,11 @@ Template.livechatWindow.helpers({
         return Session.get('sound');
     },
     showRegisterForm() {
-        // if (Meteor.userId()) {
-        // 	return false;
-        // }
-        // return Livechat.registrationForm;
-        return false;
+        if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
+            return Livechat.registrationForm;
+        } else {
+            return false;
+        }
     },
     livechatStarted() {
         return Livechat.online !== null;
@@ -52,7 +52,7 @@ Template.livechatWindow.events({
     'click .title' () {
         parentCall('toggleWindow');
     },
-    //Changes by PBChat
+
     'click .popout' (event) {
         var token = visitor.getRoom();
         Meteor.call('livechat:getRoom', token, (err, result) => {
@@ -65,14 +65,16 @@ Template.livechatWindow.events({
             }
         });
     },
-    //Changes by PBChat
+
     'click .sound' (event) {
         event.stopPropagation();
         Session.set({ sound: !Session.get('sound') });
     }
+
 });
 
 Template.livechatWindow.onCreated(function() {
+
     Session.set({ sound: true });
 
     const defaultAppLanguage = () => {
@@ -85,13 +87,23 @@ Template.livechatWindow.onCreated(function() {
         }
         return lng;
     };
-    //Changes by PBChat
-    // get all needed live chat info for the user
-    Meteor.call('livechat:getInitialData', visitor.getToken(), FlowRouter.getQueryParam('leadid'), (err, result) => {
-        Session.set('custinfo', result.custinfo);
+
+    if (FlowRouter.getQueryParam('service')) {
+        var service = 1;
+    } else {
+        var service = 0;
+    }
+    if (FlowRouter.getQueryParam('leadid')) {
+        var leadid = FlowRouter.getQueryParam('leadid');
+    } else {
+        var leadid = 0;
+    }
+
+    Meteor.call('livechat:getInitialData', visitor.getToken(), leadid, service, (err, result) => {
         if (err) {
             console.error(err);
         } else {
+            Session.set('custinfo', result.custinfo);
             if (!result.enabled) {
                 Triggers.setDisabled();
                 return parentCall('removeWidget');
@@ -120,15 +132,12 @@ Template.livechatWindow.onCreated(function() {
                 Livechat.title = result.title;
                 Livechat.onlineColor = result.color;
                 Livechat.online = true;
-                //Changes by PBChat
                 Livechat.transcript = result.transcript;
                 Livechat.transcriptMessage = result.transcriptMessage;
-                //Changes by PBChat
                 Livechat.welcome = result.welcome;
             }
             Livechat.videoCall = result.videoCall;
             Livechat.registrationForm = result.registrationForm;
-
             if (result.room) {
                 RoomHistoryManager.getMoreIfIsEmpty(result.room._id);
                 visitor.subscribeToRoom(result.room._id);
@@ -143,8 +152,6 @@ Template.livechatWindow.onCreated(function() {
             result.departments.forEach((department) => {
                 Department.insert(department);
             });
-
-            // Attachments information
             Session.set({ 'allowAttachments': result.allowAttachments });
             FileUpload.mediaTypeWhiteList = result.mediaTypeWhiteList;
             FileUpload.maxFileSize = result.maxFileSize;
