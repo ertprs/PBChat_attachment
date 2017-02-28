@@ -192,37 +192,99 @@ Template.visitorInfo.events({
     },
     'click .close-livechat' (event) {
         event.preventDefault();
-
-        swal({
-            title: t('Closing_chat'),
-            type: 'input',
-            inputPlaceholder: t('Please_add_a_comment'),
-            showCancelButton: true,
-            closeOnConfirm: false
-        }, (inputValue) => {
-            if (!inputValue) {
-                swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
-                return false;
-            }
-
-            if (s.trim(inputValue) === '') {
-                swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
-                return false;
-            }
-
-            Meteor.call('livechat:closeRoom', this.rid, inputValue, function(error /*, result*/ ) {
-                if (error) {
-                    return handleError(error);
+        var departmentname = localStorage.getItem('DepartmentName');
+        var IsService = departmentname.match("_Service");
+        if (IsService) {
+            var room = ChatRoom.findOne({ _id: this.rid });
+            var leadid = room.leadid;
+            swal({
+                title: 'Please Update BookingID Before closing chat!',
+                type: 'input',
+                inputPlaceholder: 'BookingID',
+                inputValue: leadid,
+                showCancelButton: true,
+                closeOnConfirm: false
+            }, (inputValue) => {
+                var newleadid = inputValue.trim();
+                var departmentname = localStorage.getItem('DepartmentName');
+                if (newleadid == "0") {
+                    var response = "no update needed";
+                } else if (!newleadid || s.trim(newleadid) === '') {
+                    swal.showInputError('Please enter a valid BookingID');
+                    return false;
+                } else if (!(newleadid.match(/^[0-9]+$/) != null) || !(newleadid.length >= 7 && newleadid.length <= 9)) {
+                    swal.showInputError('BookingID should contain digits only and consist of 7-9 digits! ');
+                    return true;
+                } else {
+                    Meteor.call('livechat:stackChatToLead', room._id, parseInt(newleadid), room.leadid, departmentname, function(error) {
+                        if (error) {
+                            console.log(error);
+                        }
+                    });
                 }
                 swal({
-                    title: t('Chat_closed'),
-                    text: t('Chat_closed_successfully'),
-                    type: 'success',
-                    timer: 1000,
-                    showConfirmButton: false
+                    title: t('Closing_chat'),
+                    type: 'input',
+                    inputPlaceholder: t('Please_add_a_comment'),
+                    showCancelButton: true,
+                    closeOnConfirm: false
+                }, (inputValue) => {
+                    if (!inputValue) {
+                        swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                        return false;
+                    }
+
+                    if (s.trim(inputValue) === '') {
+                        swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                        return false;
+                    }
+
+                    Meteor.call('livechat:closeRoom', this.rid, inputValue, function(error /*, result*/ ) {
+                        if (error) {
+                            return handleError(error);
+                        }
+                        swal({
+                            title: t('Chat_closed'),
+                            text: t('Chat_closed_successfully'),
+                            type: 'success',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                    });
                 });
             });
-        });
+        } else {
+            swal({
+                title: t('Closing_chat'),
+                type: 'input',
+                inputPlaceholder: t('Please_add_a_comment'),
+                showCancelButton: true,
+                closeOnConfirm: false
+            }, (inputValue) => {
+                if (!inputValue) {
+                    swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                    return false;
+                }
+
+                if (s.trim(inputValue) === '') {
+                    swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
+                    return false;
+                }
+
+                Meteor.call('livechat:closeRoom', this.rid, inputValue, function(error /*, result*/ ) {
+                    if (error) {
+                        return handleError(error);
+                    }
+                    swal({
+                        title: t('Chat_closed'),
+                        text: t('Chat_closed_successfully'),
+                        type: 'success',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                });
+            });
+        }
     },
 
     'click .return-inquiry' (event) {
@@ -261,8 +323,10 @@ Template.visitorInfo.events({
         if (!(leadid.trim())) {
             alert('Please fill valid Leadid!');
             return true;
-        } else if (!(leadid.match(/^[0-9]+$/) != null)) {
-            alert('Leadid should contain digits only! ');
+        } else if (leadid == "0") {
+            var repsonse = "no update needed";
+        } else if (!(leadid.match(/^[0-9]+$/) != null) || !(leadid.length >= 7 && leadid.length <= 9)) {
+            alert('Leadid should contain digits only and consist of 7-9 digits!  ');
             return true;
         } else {
             Meteor.call('livechat:stackChatToLead', room._id, parseInt(leadid), room.leadid, departmentname, function(error) {
