@@ -184,7 +184,13 @@ Template.visitorInfo.helpers({
 Template.visitorInfo.events({
     'click .edit-livechat' (event, instance) {
         event.preventDefault();
-        Meteor.call('livechat:getMatrixUrl', this.rid, function(error, result) {
+        var service = false;
+        var departmentname = localStorage.getItem('DepartmentName');
+        var IsService = departmentname.match("_Service");
+        if (IsService) {
+            service = true;
+        }
+        Meteor.call('livechat:getMatrixUrl', this.rid, service, function(error, result) {
             if (error) {
                 console.log(error);
             } else {
