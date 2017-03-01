@@ -72,7 +72,7 @@ Template.messages.events({
             if (!localStorage.visitorToken) {
                 localStorage.visitorToken = visitor.getToken();
             }
-            var $email, $name, $custid, departmentname, departmentId, leadid, country;
+            var $email, $name, $custid, departmentname, departmentId, leadid, country, invflag;
             if (Session.get('custinfo') != null && Session.get('custinfo').leadid != null) {
                 $name = Session.get('custinfo').name;
                 $email = Session.get('custinfo').email;
@@ -80,6 +80,9 @@ Template.messages.events({
                 departmentId = Session.get('custinfo').departmentid;
                 leadid = Session.get('custinfo').leadid;
                 country = Session.get('custinfo').country;
+                if (Session.get('custinfo').invflag) {
+                    invflag = Session.get('custinfo').invflag;
+                }
             } else {
                 return instance.showError(error.reason);
             }
@@ -99,7 +102,8 @@ Template.messages.events({
                     department: departmentId,
                     custid: $custid,
                     leadid: leadid,
-                    country: country
+                    country: country,
+                    invflag: invflag,
                 };
                 var k = event.which;
                 if (k == 13 && !Session.get('firstEnter')) {

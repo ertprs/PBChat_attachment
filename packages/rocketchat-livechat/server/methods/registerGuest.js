@@ -1,5 +1,5 @@
 Meteor.methods({
-    'livechat:registerGuest': function({ token, name, email, department, custid, leadid, country, mobilenumber } = {}) {
+    'livechat:registerGuest': function({ token, name, email, department, custid, leadid, country, mobilenumber, invflag } = {}) {
         var stampedToken = Accounts._generateStampedLoginToken();
         var hashStampedToken = Accounts._hashStampedToken(stampedToken);
         var username = "";
@@ -18,7 +18,8 @@ Meteor.methods({
             username: username,
             custid: custid,
             country: country,
-            mobilenumber: mobilenumber
+            mobilenumber: mobilenumber,
+            invflag: invflag
         });
 
         RocketChat.models.LivechatPageVisited.keepHistoryForToken(token);

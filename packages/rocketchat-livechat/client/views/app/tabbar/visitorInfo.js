@@ -15,9 +15,14 @@ Template.visitorInfo.helpers({
             } else {
                 user.osIcon = 'icon-' + ua.getOS().name.toLowerCase();
             }
+            if (user.invflag && user.invflag == 1) {
+                user.invalidflag = true;
+            }
             user.browser = ua.getBrowser().name + ' ' + ua.getBrowser().version;
             user.browserIcon = 'icon-' + ua.getBrowser().name.toLowerCase();
-            user.leadid = ChatRoom.findOne({ _id: this.rid }).leadid;
+            var room = ChatRoom.findOne({ _id: this.rid });
+            user.leadid = room.leadid;
+            user.label = room.label;
             if (user && user.country == '392') {
                 user.country = 'India';
             }

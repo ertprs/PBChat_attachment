@@ -10,7 +10,10 @@
 			<div class="about clearfix">
 				{{#with user}}
 					<div class="info">
-						<h3 title="{{name}}"><i class="status-{{status}}"></i> {{name}}</h3>
+						<h3 title="{{name}}"><i class="status-{{status}}"></i> {{label}}</h3>
+						{{#if invalidflag}}
+						<li> {{_ "Invalid Mobile Number Lead "}} </li>
+						{{/if}}
 						{{#if service}}
 						<li> 
 							{{_ "Stack Chat To Leadid: "}}

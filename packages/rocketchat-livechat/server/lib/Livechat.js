@@ -62,11 +62,12 @@ RocketChat.Livechat = {
     sendMessage({ guest, message, roomInfo, custinfo }) {
         let { room, newRoom } = this.getRoom(guest, message, roomInfo, custinfo);
         if (guest.name) {
-            message.alias = guest.name;
+            //message.alias = guest.name;
+            message.alias = custinfo.name;
         }
         return _.extend(RocketChat.sendMessage(guest, message, room), { newRoom: newRoom });
     },
-    registerGuest({ token, name, email, department, phone, loginToken, username, custid, country, mobilenumber } = {}) {
+    registerGuest({ token, name, email, department, phone, loginToken, username, custid, country, mobilenumber, invflag } = {}) {
         check(token, String);
         console.log(' RegisterGuest called for -  ' + custid);
         if (!username) {
@@ -146,6 +147,9 @@ RocketChat.Livechat = {
                     { address: email }
                 ];
             }
+        }
+        if (invflag && invflag == 1) {
+            updateUser.$set.invflag = invflag;
         }
 
         if (phone) {
