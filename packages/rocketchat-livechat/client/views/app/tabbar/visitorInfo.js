@@ -64,6 +64,15 @@ Template.visitorInfo.helpers({
             return false;
         }
     },
+    showBookingdetails() {
+        var departmentname = localStorage.getItem('DepartmentName');
+        var IsService = departmentname.match("_Service");
+        if (IsService) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     customFields() {
         let fields = [];
         let livechatData = {};
