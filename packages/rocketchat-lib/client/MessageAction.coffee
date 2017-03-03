@@ -38,7 +38,13 @@ RocketChat.MessageAction = new class
 
 	getButtons = (message, context) ->
 		allButtons = _.toArray buttons.get()
-		if message
+		if message && message.alias
+			allowedButtons = _.compact _.map allButtons, (button) ->
+				if not button.context? or button.context.indexOf(context) > -1
+					if not button.validation? or button.validation(message, context)
+						if  button.id !='edit-message'
+							return button
+		else if message 
 			allowedButtons = _.compact _.map allButtons, (button) ->
 				if not button.context? or button.context.indexOf(context) > -1
 					if not button.validation? or button.validation(message, context)
