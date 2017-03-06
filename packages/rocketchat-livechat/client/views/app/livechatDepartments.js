@@ -3,7 +3,12 @@ Template.livechatDepartments.helpers({
         if (localStorage.getItem("IsAdmin") === "true") {
             return LivechatDepartment.find();
         } else {
-            return LivechatDepartment.find({ _id: localStorage.getItem('DepartmentId') });
+            const departments = Template.instance().departments.get();
+            if (departments) {
+                return LivechatDepartment.find({ _id: { $in: departments } });
+            } else {
+                return LivechatDepartment.find({ _id: localStorage.getItem('DepartmentId') });
+            }
         }
     }
 });
@@ -45,5 +50,11 @@ Template.livechatDepartments.events({
 });
 
 Template.livechatDepartments.onCreated(function() {
+    this.departments = new ReactiveVar([]);
+    Meteor.call('livechat:getAgentDepartments', Meteor.userId(), (err, result) => {
+        if (result) {
+            this.departments.set(result);
+        }
+    });
     this.subscribe('livechat:departments');
 });

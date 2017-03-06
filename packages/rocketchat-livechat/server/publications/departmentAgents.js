@@ -1,11 +1,11 @@
-Meteor.publish('livechat:departmentAgents', function(departmentId) {
-	if (!this.userId) {
-		return this.error(new Meteor.Error('error-not-authorized', 'Not authorized', { publish: 'livechat:departmentAgents' }));
-	}
+Meteor.publish('livechat:departmentAgents', function(departmentId = null) {
+    if (!this.userId) {
+        return this.error(new Meteor.Error('error-not-authorized', 'Not authorized', { publish: 'livechat:departmentAgents' }));
+    }
+    if (departmentId) {
+        return RocketChat.models.LivechatDepartmentAgents.find({ departmentId: departmentId });
+    } else {
+        return RocketChat.models.LivechatDepartmentAgents.find();
+    }
 
-	// if (!RocketChat.authz.hasPermission(this.userId, 'view-livechat-rooms')) {
-	// 	return this.error(new Meteor.Error('error-not-authorized', 'Not authorized', { publish: 'livechat:departmentAgents' }));
-	// }
-
-	return RocketChat.models.LivechatDepartmentAgents.find({ departmentId: departmentId });
 });

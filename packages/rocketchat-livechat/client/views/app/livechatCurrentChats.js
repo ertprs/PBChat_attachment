@@ -3,8 +3,7 @@ Template.livechatCurrentChats.helpers({
         if (localStorage.getItem('IsAdmin') == "true") {
             return ChatRoom.find({ t: 'l' }, { sort: { ts: -1 } });
         } else {
-            department = localStorage.getItem('DepartmentId');
-            return ChatRoom.find({ t: 'l', department: department }, { sort: { ts: -1 } });
+            return ChatRoom.find({ t: 'l' }, { sort: { ts: -1 } });
         }
     },
     startedAt() {
@@ -30,7 +29,11 @@ Template.livechatCurrentChats.helpers({
         if (localStorage.getItem("IsAdmin") == "true") {
             return AgentUsers.find({}, { sort: { name: 1 } });
         } else {
-            return LivechatDepartmentAgents.find({}, { sort: { name: 1 } });
+            const departments = Template.instance().departmentlist.get();
+            var agents = LivechatDepartmentAgents.find({ departmentId: { $in: departments } }, { sort: { name: 1 } }, { username: 1, agentId: 1 }).fetch();
+            var distinctagents = _.uniq(agents, false, function(d) { return d.username });
+            console.log(distinctagents);
+            return distinctagents;
         }
     },
     IsAdmin() {
@@ -112,9 +115,9 @@ Template.livechatCurrentChats.events({
                 return handleError(error);
             } else {
                 if (Isblock) {
-                    alert('Customer has been blocked');
+                    swal('Customer has been blocked');
                 } else {
-                    alert('Customer has been unblocked');
+                    swal('Customer has been unblocked');
                 }
             }
         });
@@ -138,7 +141,6 @@ Template.livechatCurrentChats.events({
                 swal.showInputError(t('Please_add_a_comment_to_close_the_room'));
                 return false;
             }
-            console.log(this._id);
             Meteor.call('livechat:closeRoom', this._id, inputValue, function(error /*, result*/ ) {
                 if (error) {
                     return handleError(error);
@@ -157,17 +159,19 @@ Template.livechatCurrentChats.events({
 
 Template.livechatCurrentChats.onCreated(function() {
     this.limit = new ReactiveVar(20);
-    var departmentid = null;
+    this.departmentlist = new ReactiveVar([]);
     this.filter = new ReactiveVar({});
     this.blockedlist = new ReactiveVar();
     this.subscribe('livechat:agents');
-    this.subscribe('livechat:departmentAgents', localStorage.getItem("DepartmentId"));
-    //this.subscribe('livechat:BlockedVisitor');
-    if (localStorage.getItem('IsAdmin') == "false") {
-        departmentid = localStorage.getItem('DepartmentId');
-    }
+    this.subscribe('livechat:departmentAgents');
+    this.subscribe('livechat:BlockedVisitor');
+    Meteor.call('livechat:getAgentDepartments', Meteor.userId(), (err, result) => {
+        if (result) {
+            this.departmentlist.set(result);
+        }
+    });
     this.autorun(() => {
-        this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get(), departmentid);
+        this.subscribe('livechat:rooms', this.filter.get(), 0, this.limit.get(), null, localStorage.getItem('IsAdmin'));
     });
 });
 

@@ -1,4 +1,4 @@
-Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20, departmentid = null) {
+Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20, departmentid = null, IsAdmin = null) {
     if (!this.userId) {
         return this.error(new Meteor.Error('error-not-authorized', 'Not authorized', { publish: 'livechat:rooms' }));
     }
@@ -17,7 +17,14 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20, d
         department: Match.Maybe(String),
         waitingResponse: Match.Maybe(String)
     });
-
+    var departmentlist = null;
+    if (IsAdmin && IsAdmin == "false") {
+        Meteor.call('livechat:getAgentDepartments', this.userId, (err, result) => {
+            if (result) {
+                departmentlist = result;
+            }
+        });
+    }
     let query = {};
     if (filter.name) {
         query.label = new RegExp(filter.name, 'i');
@@ -51,6 +58,8 @@ Meteor.publish('livechat:rooms', function(filter = {}, offset = 0, limit = 20, d
         query["department"] = filter.department;
     } else if (departmentid) {
         query["department"] = departmentid;
+    } else if (departmentlist) {
+        query["department"] = { $in: departmentlist };
     }
     if (filter.waitingResponse == "true") {
         query["waitingResponse"] = true;

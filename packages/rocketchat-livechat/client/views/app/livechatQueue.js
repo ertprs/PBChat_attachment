@@ -142,14 +142,3 @@ Template.livechatQueue.onCreated(function() {
         this.subscribe('livechat:rooms', this.filter.get(), 0, 5000);
     });
 });
-
-// Template.livechatQueue.onRendered(function() {
-//     var rooms = ChatRoom.find();
-//     rooms.forEach(function(room) {
-//         if (room && room.servedBy && room.servedBy._id) {
-
-//         } else {
-
-//         }
-//     })
-// });

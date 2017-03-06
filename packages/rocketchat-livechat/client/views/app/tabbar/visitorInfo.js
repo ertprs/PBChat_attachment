@@ -341,12 +341,12 @@ Template.visitorInfo.events({
         const room = Template.instance().currentroom.get();
         var departmentname = localStorage.getItem('DepartmentName');
         if (!(leadid.trim())) {
-            alert('Please fill valid Leadid!');
+            swal('Please fill valid Leadid!');
             return true;
         } else if (leadid == "0") {
             var repsonse = "no update needed";
         } else if (!(leadid.match(/^[0-9]+$/) != null) || !(leadid.length >= 7 && leadid.length <= 9)) {
-            alert('Leadid should contain digits only and consist of 7-9 digits!  ');
+            swal('Leadid should contain digits only and consist of 7-9 digits!  ');
             return true;
         } else {
             Meteor.call('livechat:stackChatToLead', room._id, parseInt(leadid), room.leadid, departmentname, function(error) {

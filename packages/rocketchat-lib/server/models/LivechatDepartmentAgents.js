@@ -2,203 +2,208 @@
  * Livechat Department model
  */
 class LivechatDepartmentAgents extends RocketChat.models._Base {
-	constructor() {
-		super('livechat_department_agents');
-	}
+    constructor() {
+        super('livechat_department_agents');
+    }
 
-	findByDepartmentId(departmentId) {
-		return this.find({ departmentId: departmentId });
-	}
+    findByDepartmentId(departmentId) {
+        return this.find({ departmentId: departmentId });
+    }
 
-	findOneByAgentId(agentId) {
-		const query = { agentId : agentId };
-		return this.findOne(query);
-	}
+    findOneByAgentId(agentId) {
+        const query = { agentId: agentId };
+        return this.findOne(query);
+    }
 
-	saveAgent(agent) {
-		return this.upsert({
-			agentId: agent.agentId,
-			departmentId: agent.departmentId
-		}, {
-			$set: {
-				username: agent.username,
-				count: parseInt(agent.count),
-				order: parseInt(agent.order),
-				limit: parseInt(agent.limit)
-			}
-		});
-	}
+    findAllByAgentId(agentId) {
+        const query = { agentId: agentId };
+        return this.find(query);
+    }
 
-	removeByDepartmentIdAndAgentId(departmentId, agentId) {
-		this.remove({ departmentId: departmentId, agentId: agentId });
-	}
+    saveAgent(agent) {
+        return this.upsert({
+            agentId: agent.agentId,
+            departmentId: agent.departmentId
+        }, {
+            $set: {
+                username: agent.username,
+                count: parseInt(agent.count),
+                order: parseInt(agent.order),
+                limit: parseInt(agent.limit)
+            }
+        });
+    }
 
-	getNextAgentForDepartment(departmentId) {
-		var agents = this.findByDepartmentId(departmentId).fetch();
+    removeByDepartmentIdAndAgentId(departmentId, agentId) {
+        this.remove({ departmentId: departmentId, agentId: agentId });
+    }
 
-		if (agents.length === 0) {
-			return;
-		}
+    getNextAgentForDepartment(departmentId) {
+        var agents = this.findByDepartmentId(departmentId).fetch();
 
-		var onlineUsers = RocketChat.models.Users.findOnlineUserFromList(_.pluck(agents, 'username'));		
-		var onlineUsernames = _.pluck(onlineUsers.fetch(), 'username');
+        if (agents.length === 0) {
+            return;
+        }
 
-		var query = {
-			departmentId: departmentId,
-			username: {
-				$in: onlineUsernames
-			},
-			 $where: "this.limit > this.count" 
-		};
-		var sort = {
-			count: 1,
-			order: 1
-		};
-		var update = {
-			$inc: {
-				count: 1
-			}
-		};
+        var onlineUsers = RocketChat.models.Users.findOnlineUserFromList(_.pluck(agents, 'username'));
+        var onlineUsernames = _.pluck(onlineUsers.fetch(), 'username');
 
-		var collectionObj = this.model.rawCollection();
-		var findAndModify = Meteor.wrapAsync(collectionObj.findAndModify, collectionObj);
+        var query = {
+            departmentId: departmentId,
+            username: {
+                $in: onlineUsernames
+            },
+            $where: "this.limit > this.count"
+        };
+        var sort = {
+            count: 1,
+            order: 1
+        };
+        var update = {
+            $inc: {
+                count: 1
+            }
+        };
 
-		var agent = findAndModify(query, sort, update);
-		if (agent && agent.value) {
-			return {
-				agentId: agent.value.agentId,
-				username: agent.value.username
-			};
-		} else {
-			// var LivechatManager = RocketChat.models.Users.findLivechatManagerFromList(_.pluck(agents, 'username'));
-			// console.log( 'LivechatManager' + LivechatManager.agentId);
-			// return {
-			// 	agentId: LivechatManager.agentId,
-			// 	username: LivechatManager.username
-			// };
-			return 'Guest_Pool';
-		}
-	}
+        var collectionObj = this.model.rawCollection();
+        var findAndModify = Meteor.wrapAsync(collectionObj.findAndModify, collectionObj);
 
-	//Added by PBChat
-	reduceLivechatCount(departmentid,agentid){
-		var query = {
-			departmentId: departmentid,
-			agentId: agentid,
-			count: { $gt: 0}
-		};
+        var agent = findAndModify(query, sort, update);
+        if (agent && agent.value) {
+            return {
+                agentId: agent.value.agentId,
+                username: agent.value.username
+            };
+        } else {
+            // var LivechatManager = RocketChat.models.Users.findLivechatManagerFromList(_.pluck(agents, 'username'));
+            // console.log( 'LivechatManager' + LivechatManager.agentId);
+            // return {
+            // 	agentId: LivechatManager.agentId,
+            // 	username: LivechatManager.username
+            // };
+            return 'Guest_Pool';
+        }
+    }
 
-		var update = {
-			$inc: {
-				count: -1
-			}
-		};
-		this.update(query,update);
-	}	
+    //Added by PBChat
+    reduceLivechatCount(departmentid, agentid) {
+        var query = {
+            departmentId: departmentid,
+            agentId: agentid,
+            count: { $gt: 0 }
+        };
 
-//Added by PBChat
-	increaseLivechatCount(departmentid,agentid){
-		var query = {
-			departmentId: departmentid,
-			agentId: agentid,
-		};
+        var update = {
+            $inc: {
+                count: -1
+            }
+        };
+        this.update(query, update);
+    }
 
-		var update = {
-			$inc: {
-				count: 1
-			}
-		};
-		this.update(query,update);
-	}	
+    //Added by PBChat
+    increaseLivechatCount(departmentid, agentid) {
+        var query = {
+            departmentId: departmentid,
+            agentId: agentid,
+        };
 
-	getOnlineForDepartment(departmentId) {
-		var agents = this.findByDepartmentId(departmentId).fetch();
+        var update = {
+            $inc: {
+                count: 1
+            }
+        };
+        this.update(query, update);
+    }
 
-		if (agents.length === 0) {
-			return;
-		}
+    getOnlineForDepartment(departmentId) {
+        var agents = this.findByDepartmentId(departmentId).fetch();
 
-		var onlineUsers = RocketChat.models.Users.findOnlineUserFromList(_.pluck(agents, 'username'));
+        if (agents.length === 0) {
+            return;
+        }
 
-		var onlineUsernames = _.pluck(onlineUsers.fetch(), 'username');
+        var onlineUsers = RocketChat.models.Users.findOnlineUserFromList(_.pluck(agents, 'username'));
 
-		var query = {
-			departmentId: departmentId,
-			username: {
-				$in: onlineUsernames
-			}
-		};
+        var onlineUsernames = _.pluck(onlineUsers.fetch(), 'username');
 
-		var depAgents = this.find(query);
+        var query = {
+            departmentId: departmentId,
+            username: {
+                $in: onlineUsernames
+            }
+        };
 
-		if (depAgents) {
-			return depAgents;
-		} else {
-			return null;
-		}
-	}
+        var depAgents = this.find(query);
 
-	findUsersInQueue(usersList) {
-		let query = {};
+        if (depAgents) {
+            return depAgents;
+        } else {
+            return null;
+        }
+    }
 
-		if (!_.isEmpty(usersList)) {
-			query.username = {
-				$in: usersList
-			};
-		}
+    findUsersInQueue(usersList) {
+        let query = {};
 
-		let options = {
-			sort: {
-				departmentId: 1,
-				count: 1,
-				order: 1,
-				username: 1
-			}
-		};
+        if (!_.isEmpty(usersList)) {
+            query.username = {
+                $in: usersList
+            };
+        }
 
-		return this.find(query, options);
-	}
-	
-	// added by PBChat
-	findByAgentId(agentId) {
-		return this.find({ agentId: agentId });
-	}
-	
-	findSameDepartmentAgentsByAgentId(agentId) {	
-		var departments = this.findByAgentId(agentId).fetch();
+        let options = {
+            sort: {
+                departmentId: 1,
+                count: 1,
+                order: 1,
+                username: 1
+            }
+        };
 
-		if (departments.length === 0) {
-			return;
-		}				
+        return this.find(query, options);
+    }
 
-		var departmentIds = _.pluck(departments, 'departmentId');		
+    // added by PBChat
+    findByAgentId(agentId) {
+        return this.find({ agentId: agentId });
+    }
 
-		var options = {			
-			fields: {
-				agentId: 1
-			}
-		};
+    findSameDepartmentAgentsByAgentId(agentId) {
+        var departments = this.findByAgentId(agentId).fetch();
 
-		var query = {		
-		departmentId: {
-			$in: departmentIds
-			}
-		};
+        if (departments.length === 0) {
+            return;
+        }
 
-		return this.find(query,options);				
-	}
+        var departmentIds = _.pluck(departments, 'departmentId');
 
-	updateLivechatCountAtDayend(departmentid,agentlist){
-		var query = {
-			departmentId: departmentid
-		};
-		const update = {
-			$set: {
-				"count": 0
-			}
-		};
-		this.update(query,update,{ multi: true });
-	}	
+        var options = {
+            fields: {
+                agentId: 1
+            }
+        };
+
+        var query = {
+            departmentId: {
+                $in: departmentIds
+            }
+        };
+
+        return this.find(query, options);
+    }
+
+    updateLivechatCountAtDayend(departmentid, agentlist) {
+        var query = {
+            departmentId: departmentid
+        };
+        const update = {
+            $set: {
+                "count": 0
+            }
+        };
+        this.update(query, update, { multi: true });
+    }
 }
 
 RocketChat.models.LivechatDepartmentAgents = new LivechatDepartmentAgents();
