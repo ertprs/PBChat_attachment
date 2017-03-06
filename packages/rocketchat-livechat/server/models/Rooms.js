@@ -213,6 +213,21 @@ RocketChat.models.Rooms.changeAgentByRoomId = function(roomId, newUsernames, new
     this.update(query, update);
 };
 
+RocketChat.models.Rooms.markRoomAsTransfered = function(roomId, departmentid, departmentname) {
+    const query = {
+        _id: roomId
+    };
+    const update = {
+        $set: {
+            transfer: 1,
+            department: departmentid,
+            departmentname: departmentname
+        }
+    };
+
+    this.update(query, update);
+};
+
 RocketChat.models.Rooms.saveCRMDataByRoomId = function(roomId, crmData) {
     const query = {
         _id: roomId

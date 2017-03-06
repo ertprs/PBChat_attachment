@@ -16,7 +16,15 @@ Template.accountBox.helpers
 			_id: Meteor.userId()
 			username: username
 		}
-
+	
+	isNotService: ->
+		departmentname = localStorage.getItem('DepartmentName')
+		IsService = departmentname.match('_Service')
+		if IsService
+			return false
+		else 
+			return true
+         
 	showAdminOption: ->
 		return RocketChat.authz.hasAtLeastOnePermission( ['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting' ]) or RocketChat.AdminBox.getOptions().length > 0
 
@@ -35,12 +43,17 @@ Template.accountBox.events
 	'click #logout': (event) ->
 		event.preventDefault()
 		user = Meteor.user()
-		Meteor.logout ->
-			RocketChat.callbacks.run 'afterLogoutCleanUp', user
-			Meteor.call('logoutCleanUp', user)
-			Meteor.call('changeUserStatus', user._id)
-			FlowRouter.go 'home'
-		Meteor.call 'createLoginHistory' ,  user._id,localStorage.getItem('DepartmentName'),'logout'	
+		Meteor.call 'checkOpenRoomBeforeLogout' ,  user._id, localStorage.getItem('DepartmentName'), (error, result) ->
+			if result
+				swal 'Close All Existing Chats before Logging out!'
+				return false
+			else
+				Meteor.logout ->
+					RocketChat.callbacks.run 'afterLogoutCleanUp', user
+					Meteor.call('logoutCleanUp', user)
+					Meteor.call('changeUserStatus', user._id)
+					FlowRouter.go 'home'
+				Meteor.call 'createLoginHistory' ,  user._id,localStorage.getItem('DepartmentName'),'logout'	
 
 	'click #avatar': (event) ->
 		FlowRouter.go 'changeAvatar'

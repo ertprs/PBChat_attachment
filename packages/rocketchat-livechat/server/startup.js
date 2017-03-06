@@ -17,7 +17,8 @@ Meteor.startup(() => {
             leadid: 1,
             departmentname: 1,
             department: 1,
-            custid: 1
+            custid: 1,
+            transfer: 1
         });
     });
 

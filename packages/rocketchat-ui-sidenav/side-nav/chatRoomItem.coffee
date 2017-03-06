@@ -19,6 +19,12 @@ Template.chatRoomItem.helpers
 
 	name: ->
 		return this.name
+	
+	hideEye: ->
+		if this.open
+			return false
+		else
+			return true
 
 	roomIcon: ->
 		return RocketChat.roomTypes.getIcon this.t
