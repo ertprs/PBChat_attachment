@@ -138,6 +138,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/methods/getShortcuts.js', 'server');
 	api.addFiles('server/methods/getuserdepartment.js', 'server');
 	api.addFiles('server/methods/logoutPreviousTokens.js', 'server');
+	api.addFiles('server/methods/chkInternalIP.js', 'server');
 	api.addFiles('server/methods/changeUserStatus.js', 'server');
 	api.addFiles('server/methods/createLoginHistory.js', 'server');
 	//Added by PBChat

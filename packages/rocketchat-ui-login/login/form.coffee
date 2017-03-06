@@ -112,34 +112,40 @@ Template.loginForm.events
 						else if error?.error is 'error-user-is-not-activated'
 							instance.state.set 'wait-activation'
 
-			else
-				loginMethod = 'loginWithPassword'
-				if RocketChat.settings.get('LDAP_Enable')
-					loginMethod = 'loginWithLDAP'
-				if RocketChat.settings.get('CROWD_Enable')
-					loginMethod = 'loginWithCrowd'
-				Meteor[loginMethod] s.trim(formData.emailOrUsername), formData.pass, (error) ->
-					RocketChat.Button.reset(button)
-					if error?
-						if error.error is 'no-valid-email'
-							instance.state.set 'email-verification'
-						else
-							toastr.error t 'User_not_found_or_incorrect_password'
-						return
-					#Added by PBChat
-					agentid = Meteor.userId()
-					Meteor.call 'logoutPreviousTokens' ,  agentid,localStorage.getItem('DepartmentName'), (error) ->	
-						if error?
-							toastr.error t 'Error logging off'
-					Meteor.call 'getuserdepartment' ,  agentid, (error,result) ->
-						if result != 'null'
-							localStorage.setItem('DepartmentId', result._id)
-							localStorage.setItem('DepartmentName',  result.name);
-					localStorage.setItem('IsAdmin', RocketChat.authz.hasRole(Meteor.userId(), 'admin'))					
-					#Added by PBChat					
-					localStorage.setItem('userLanguage', Meteor.user()?.language)
-					setLanguage(Meteor.user()?.language)
-					Meteor.call 'createLoginHistory' ,  agentid,localStorage.getItem('DepartmentName'),'login'
+			else				
+				Meteor.call 'chkInternalIP',s.trim(formData.emailOrUsername) ,(error,result) ->
+					console.log 'method called success'
+					if result==false
+						swal("unauthorized login");
+					else		
+						console.log	'else condition'				
+						loginMethod = 'loginWithPassword'
+						if RocketChat.settings.get('LDAP_Enable')
+							loginMethod = 'loginWithLDAP'
+						if RocketChat.settings.get('CROWD_Enable')
+							loginMethod = 'loginWithCrowd'
+						Meteor[loginMethod] s.trim(formData.emailOrUsername), formData.pass, (error) ->
+							RocketChat.Button.reset(button)
+							if error?
+								if error.error is 'no-valid-email'
+									instance.state.set 'email-verification'
+								else
+									toastr.error t 'User_not_found_or_incorrect_password'
+								return
+							#Added by PBChat
+							agentid = Meteor.userId()
+							Meteor.call 'logoutPreviousTokens' ,  agentid,localStorage.getItem('DepartmentName'), (error) ->	
+								if error?
+									toastr.error t 'Error logging off'
+							Meteor.call 'getuserdepartment' ,  agentid, (error,result) ->
+								if result != 'null'
+									localStorage.setItem('DepartmentId', result._id)
+									localStorage.setItem('DepartmentName',  result.name);
+							localStorage.setItem('IsAdmin', RocketChat.authz.hasRole(Meteor.userId(), 'admin'))					
+							#Added by PBChat					
+							localStorage.setItem('userLanguage', Meteor.user()?.language)
+							setLanguage(Meteor.user()?.language)
+							Meteor.call 'createLoginHistory' ,  agentid,localStorage.getItem('DepartmentName'),'login'
 
 	'click .register': ->
 		Template.instance().state.set 'register'
