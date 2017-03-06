@@ -187,7 +187,6 @@ Package.onUse(function(api) {
     api.export('RocketChat');
 
     api.imply('tap:i18n');
->>>>>>> f29a0a624d37036f11154e4ff3515d8bdb7e8b96
 });
 
 
