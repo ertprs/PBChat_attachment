@@ -58,7 +58,7 @@ Template.visitorInfo.helpers({
         const room = Template.instance().currentroom.get();
         if (IsService) {
             return true;
-        } else if (departmentname != room.departmentname) {
+        } else if (room && room.transfer == 1) {
             return true;
         } else {
             return false;

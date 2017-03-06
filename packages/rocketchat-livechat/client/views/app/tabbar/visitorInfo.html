@@ -34,7 +34,7 @@
 							{{#each emails}} <li>{{_ " EmailId "}}<i class="icon-mail"></i><input type="text" value={{address}} style="width: 200px;height: 30px;" readonly> {{#if verified}}&nbsp;<i class="icon-ok"></i>{{/if}}</li> {{/each}}
 							{{#if country}}<li>{{_ "Country- "}} <input type="text" value={{country}} style="width: 200px;height: 30px;" readonly></li>{{/if}}
 							{{#if utc}}<li><i class="icon-clock"></i><input type="text" value={{userTime}} style="width: 200px;height: 30px;" readonly> (UTC {{utc}})</li>{{/if}}
-							{{#if mobile}} <li>{{_ " Mobile No "}}<i class="icon-phone"></i> <input type="text" value={{mobile}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
+							<!--{{#if mobile}} <li>{{_ " Mobile No "}}<i class="icon-phone"></i> <input type="text" value={{mobile}} style="width: 200px;height: 30px;" readonly></li> {{/if}}-->
 							{{#if lastLogin}} <li><i class="icon-calendar"></i> {{_ "Created_at"}}: <input type="text" value={{createdAt}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
 							{{#if lastLogin}} <li><i class="icon-calendar"></i> {{_ "Last_login"}}: <input type="text" value={{lastLogin}} style="width: 200px;height: 30px;" readonly></li> {{/if}}
 							{{#if ip}}<li><i class="icon-laptop"></i><span>{{ip}}</span></li>{{/if}}

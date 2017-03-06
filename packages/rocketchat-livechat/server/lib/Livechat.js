@@ -334,10 +334,11 @@ RocketChat.Livechat = {
             if (room.servedBy) {
                 RocketChat.models.Subscriptions.removeByRoomIdAndUserId(room._id, room.servedBy._id);
             }
-
+            var transferredDepartment = Meteor.call('getuserdepartment', agent.agentId);
             RocketChat.models.Subscriptions.insert(subscriptionData);
 
             RocketChat.models.Rooms.changeAgentByRoomId(room._id, room.usernames, agent);
+            RocketChat.models.Rooms.markRoomAsTransfered(room._id, transferredDepartment._id, transferredDepartment.name);
 
             if (room.servedBy) {
                 RocketChat.models.LivechatDepartmentAgents.reduceLivechatCount(room.department, room.servedBy._id);

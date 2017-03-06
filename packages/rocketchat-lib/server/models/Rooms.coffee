@@ -102,6 +102,17 @@ RocketChat.models.Rooms = new class extends RocketChat.models._Base
 
 		return @find query, options
 
+	findByServerByAndOpen: (servedby) ->
+		starttime = new Date()
+		starttime.setHours(1)
+		query =
+			'servedBy._id' : servedby 
+			ts: 
+			 	$gte : starttime  
+			open: true
+
+		return @find query
+
 	findByNameContainingTypesWithUsername: (name, types, options) ->
 		nameRegex = new RegExp s.trim(s.escapeRegExp(name)), "i"
 

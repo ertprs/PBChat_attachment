@@ -17,6 +17,8 @@ Meteor.methods({
 
         const user = RocketChat.models.Users.findOneById(Meteor.userId());
 
+        RocketChat.models.LivechatDepartmentAgents.increaseLivechatCount(room.department, user._id);
+
         const agent = {
             agentId: user._id,
             username: user.username
@@ -53,7 +55,6 @@ Meteor.methods({
 
         // mark inquiry as taken
         RocketChat.models.LivechatInquiry.takeInquiry(inquiry._id);
-
 
         var assigntoMatrixagent = RocketChat.settings.get('Livechat_AssignToMatrixAgent_Department');
         var departmentsToAssign = assigntoMatrixagent.split(/\s*,\s*/);
