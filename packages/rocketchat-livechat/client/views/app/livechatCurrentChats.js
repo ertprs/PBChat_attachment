@@ -164,7 +164,6 @@ Template.livechatCurrentChats.onCreated(function() {
     this.blockedlist = new ReactiveVar();
     this.subscribe('livechat:agents');
     this.subscribe('livechat:departmentAgents');
-    this.subscribe('livechat:BlockedVisitor');
     Meteor.call('livechat:getAgentDepartments', Meteor.userId(), (err, result) => {
         if (result) {
             this.departmentlist.set(result);
