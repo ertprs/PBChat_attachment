@@ -21,7 +21,8 @@ Template.chatRoomItem.helpers
 		return this.name
 	
 	hideEye: ->
-		if this.open
+		room = ChatRoom.findOne({_id : this.rid})
+		if room && room.open == true
 			return false
 		else
 			return true
