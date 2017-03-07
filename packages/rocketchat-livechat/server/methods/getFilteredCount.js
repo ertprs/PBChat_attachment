@@ -1,6 +1,6 @@
 //new method added by PBChat
 Meteor.methods({
-    'livechat:getFilteredCount' (filter, departmentid) {
+    'livechat:getFilteredCount' (filter, isAdmin = null) {
         this.unblock();
         //Changes by PBChat
         check(filter, {
@@ -13,7 +13,14 @@ Meteor.methods({
             department: Match.Maybe(String),
             waitingResponse: Match.Maybe(String)
         });
-
+        var departmentlist = null;
+        if (isAdmin && isAdmin == "false") {
+            Meteor.call('livechat:getAgentDepartments', this.userId, (err, result) => {
+                if (result) {
+                    departmentlist = result;
+                }
+            });
+        }
         let query = {};
         if (filter.name) {
             query.label = new RegExp(filter.name, 'i');
@@ -45,9 +52,12 @@ Meteor.methods({
         }
         if (filter.department) {
             query["department"] = filter.department;
-        } else if (departmentid) {
-            query["department"] = departmentid;
+        } else if (isAdmin == "true") {
+            var response = "admin";
+        } else if (departmentlist) {
+            query["department"] = { $in: departmentlist };
         }
+
         if (filter.waitingResponse == "true") {
             query["waitingResponse"] = true;
         } else if (filter.waitingResponse == "false") {

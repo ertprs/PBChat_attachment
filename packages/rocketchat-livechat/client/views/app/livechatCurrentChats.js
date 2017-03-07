@@ -88,7 +88,7 @@ Template.livechatCurrentChats.events({
         instance.limit.set(20);
 
         //Method Call for count
-        Meteor.call('livechat:getFilteredCount', filter, localStorage.getItem("DepartmentId"), function(error, result) {
+        Meteor.call('livechat:getFilteredCount', filter, localStorage.getItem('IsAdmin'), function(error, result) {
             if (error) {
                 return handleError(error);
             } else {
