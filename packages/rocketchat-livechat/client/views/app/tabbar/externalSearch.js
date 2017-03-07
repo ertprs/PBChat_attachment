@@ -1,6 +1,5 @@
 Template.externalSearch.helpers({
     messages() {
-        console.log(Shortcuts.find().fetch());
         return Shortcuts.find().fetch();
     }
 });
@@ -16,7 +15,6 @@ Template.externalSearch.events({
 
 Template.externalSearch.onCreated(function() {
     this.roomId = null;
-    // console.log('externalSearch.this ->',this);
     this.autorun(() => {
         this.roomId = Template.currentData().rid;
         //this.subscribe('livechat:externalMessages', Template.currentData().rid);

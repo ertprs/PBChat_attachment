@@ -114,11 +114,9 @@ Template.loginForm.events
 
 			else				
 				Meteor.call 'chkInternalIP',s.trim(formData.emailOrUsername) ,(error,result) ->
-					console.log 'method called success'
 					if result==false
 						swal("unauthorized login");
-					else		
-						console.log	'else condition'				
+					else					
 						loginMethod = 'loginWithPassword'
 						if RocketChat.settings.get('LDAP_Enable')
 							loginMethod = 'loginWithLDAP'

@@ -32,7 +32,6 @@ Template.livechatCurrentChats.helpers({
             const departments = Template.instance().departmentlist.get();
             var agents = LivechatDepartmentAgents.find({ departmentId: { $in: departments } }, { sort: { name: 1 } }, { username: 1, agentId: 1 }).fetch();
             var distinctagents = _.uniq(agents, false, function(d) { return d.username });
-            console.log(distinctagents);
             return distinctagents;
         }
     },
@@ -91,7 +90,6 @@ Template.livechatCurrentChats.events({
         //Method Call for count
         Meteor.call('livechat:getFilteredCount', filter, localStorage.getItem("DepartmentId"), function(error, result) {
             if (error) {
-                console.log('inside error');
                 return handleError(error);
             } else {
                 if (result) {

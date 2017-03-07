@@ -28,7 +28,6 @@ RocketChat.models.Users.updateBlockCustomer = function(_id, Isblock) {
  * @return
  */
 RocketChat.models.Users.findblockedvisitors = function() {
-    console.log('user model');
     var query = {
         blocked: 'true',
         roles: 'livechat-guest',
