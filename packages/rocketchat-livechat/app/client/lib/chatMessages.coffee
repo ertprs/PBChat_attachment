@@ -85,7 +85,19 @@ class @ChatMessages
 						ChatMessage.update result._id, _.omit(result, '_id')
 						visitor.subscribeToRoom(result.rid)
 						visitor.setRoom(result.rid)
-
+						console.log 'before getResponseFromapiai'
+						Meteor.call 'getResponseFromapiai',msg , rid, (error, result) ->
+							if error
+								console.log error
+							else
+								console.log result
+					else
+						console.log 'else'
+						Meteor.call 'getResponseFromapiai',msg , rid, (error, result) ->
+							if error
+								console.log error
+							else
+								console.log result
 			if not Meteor.userId()
 				console.log('if not Meteor.userId()')
 				# Meteor.call 'livechat:registerGuest', { token: visitor.getToken() }, (error, result) ->
@@ -99,6 +111,7 @@ class @ChatMessages
 				# 		sendMessage()
 			else
 				sendMessage()
+			
 
 	deleteMsg: (message) ->
 		Meteor.call 'deleteMessage', message, (error, result) ->

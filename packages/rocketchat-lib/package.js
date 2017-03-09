@@ -11,7 +11,7 @@ Npm.depends({
     'bugsnag': '1.8.0'
 });
 
-Package.onUse(function(api) {	
+Package.onUse(function(api) {
     api.use('rate-limit');
     api.use('reactive-var');
     api.use('reactive-dict');
@@ -138,10 +138,11 @@ Package.onUse(function(api) {
     api.addFiles('server/methods/getShortcuts.js', 'server');
     api.addFiles('server/methods/getuserdepartment.js', 'server');
     api.addFiles('server/methods/logoutPreviousTokens.js', 'server');
-	api.addFiles('server/methods/chkInternalIP.js', 'server');
+    api.addFiles('server/methods/chkInternalIP.js', 'server');
     api.addFiles('server/methods/changeUserStatus.js', 'server');
     api.addFiles('server/methods/createLoginHistory.js', 'server');
     api.addFiles('server/methods/checkOpenRoomBeforeLogout.js', 'server');
+    api.addFiles('server/methods/getResponseFromapiai.js', 'server');
     //Added by PBChat
     api.addFiles('server/methods/filterATAllTag.js', 'server');
     api.addFiles('server/methods/getDepartmentAgents.js', 'server'); // Added by PBChat

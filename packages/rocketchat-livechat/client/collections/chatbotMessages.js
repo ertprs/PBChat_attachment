@@ -1,0 +1,1 @@
+this.LivechatChatbotMessages = new Mongo.Collection('rocketchat_apiai');

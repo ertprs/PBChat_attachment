@@ -1,7 +1,7 @@
 Meteor.methods
 	sendMessage: (message) ->
 		check message, Object
-
+		
 		if message.ts
 			tsDiff = Math.abs(moment(message.ts).diff())
 			if tsDiff > 60000
@@ -16,10 +16,18 @@ Meteor.methods
 
 		if not Meteor.userId()
 			throw new Meteor.Error('error-invalid-user', "Invalid user", { method: 'sendMessage' })
-
-		user = RocketChat.models.Users.findOneById Meteor.userId(), fields: username: 1, name: 1
-
-		room = Meteor.call 'canAccessRoom', message.rid, user._id
+		
+		
+		user = RocketChat.models.Users.findOneById Meteor.userId(), fields: username: 1, name: 1, type: 1
+		
+		if(user.type == "visitor")
+			user = RocketChat.models.Users.findOneById 'rocket.cat', fields: username: 1, name: 1, type:1
+		
+		if(user.type == "bot")
+			room = RocketChat.models.Rooms.findOneById message.rid
+		else
+			room = Meteor.call 'canAccessRoom', message.rid, user._id
+		
 
 		if not room
 			return false
@@ -36,6 +44,7 @@ Meteor.methods
 		message.alias = user.name if not message.alias? and RocketChat.settings.get 'Message_SetNameToAliasEnabled'
 		if Meteor.settings.public.sandstorm
 			message.sandstormSessionId = this.connection.sandstormSessionId()
+		
 
 		RocketChat.sendMessage user, message, room
 

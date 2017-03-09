@@ -1,0 +1,15 @@
+<template name="chatbot">
+	<div class="content">
+		<div class="title">
+			<h2>{{_ "Chatbot"}}</h2>
+		</div>
+		<div class="external-messages">
+			{{#each messages}}
+				<div class="external-message">
+					<button class="pick-message"><i class="icon-edit"></i></button>
+					{{botreply}}
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</template>

@@ -54,7 +54,8 @@ Package.onUse(function(api) {
     api.addAssets('client/stylesheets/livechat.less', 'server');
     api.addFiles('client/stylesheets/load.js', 'server');
 
-    // collections
+    // collections 
+    api.addFiles('client/collections/chatbotMessages.js', 'client');
     api.addFiles('client/collections/AgentUsers.js', 'client');
     api.addFiles('client/collections/LivechatCustomField.js', 'client');
     api.addFiles('client/collections/LivechatDepartment.js', 'client');
@@ -67,7 +68,6 @@ Package.onUse(function(api) {
     api.addFiles('client/collections/livechatOfficeHour.js', 'client');
     api.addFiles('client/methods/changeLivechatStatus.js', 'client');
     api.addFiles('client/collections/BlockedVisitor.js', 'client'); //PbChat
-
     // client views
     api.addFiles('client/views/app/livechatAppearance.html', 'client');
     api.addFiles('client/views/app/livechatAppearance.js', 'client');
@@ -97,6 +97,8 @@ Package.onUse(function(api) {
     api.addFiles('client/views/app/livechatOfficeHours.js', 'client');
 
     api.addFiles('client/views/app/tabbar/externalSearch.html', 'client');
+    api.addFiles('client/views/app/tabbar/chatbot.html', 'client');
+    api.addFiles('client/views/app/tabbar/chatbot.js', 'client');
     api.addFiles('client/views/app/tabbar/externalSearch.js', 'client');
     api.addFiles('client/views/app/tabbar/visitorHistory.html', 'client');
     api.addFiles('client/views/app/tabbar/visitorHistory.js', 'client');
@@ -179,6 +181,7 @@ Package.onUse(function(api) {
     api.addFiles('server/models/Users.js', 'server');
     api.addFiles('server/models/Rooms.js', 'server');
     api.addFiles('server/models/LivechatExternalMessage.js', ['client', 'server']);
+    api.addFiles('server/models/LivechatChatbotMessages.js', ['client', 'server']);
     api.addFiles('server/models/LivechatCustomField.js', 'server');
     // api.addFiles('server/models/LivechatDepartment.js', 'server');
     // api.addFiles('server/models/LivechatDepartmentAgents.js', 'server');
@@ -199,7 +202,7 @@ Package.onUse(function(api) {
     api.addFiles('server/sendMessageBySMS.js', 'server');
     api.addFiles('server/unclosedLivechats.js', 'server');
 
-    // publications
+    // publications  
     api.addFiles('server/publications/customFields.js', 'server');
     api.addFiles('server/publications/departmentAgents.js', 'server');
     api.addFiles('server/publications/externalMessages.js', 'server');
@@ -216,6 +219,7 @@ Package.onUse(function(api) {
     api.addFiles('server/publications/livechatOfficeHours.js', 'server');
     api.addFiles('server/publications/departmentAgentsbyAgentId.js', 'server'); //PBChat
     api.addFiles('server/publications/livechatBlockedVisitor.js', 'server'); //PBChat
+    api.addFiles('server/publications/chatbotMessages.js', 'server');
 
     // REST endpoints
     api.addFiles('server/api.js', 'server');
