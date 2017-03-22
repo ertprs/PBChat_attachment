@@ -304,7 +304,43 @@ RocketChat.Livechat = {
                 username: user.username
             };
         } else {
-            agent = RocketChat.Livechat.getNextAgent(transferData.departmentId);
+            //agent = RocketChat.Livechat.getNextAgent(transferData.departmentId);
+            var inquiry = RocketChat.models.LivechatInquiry.getEnquiryByRoomId(room._id);
+            var agents = RocketChat.Livechat.getAgents(transferData.deparmentId);
+            var agentIds = [];
+            agents.forEach((agent) => {
+                agentIds.push(agent.agentId)
+            });
+            if (inquiry) {
+                RocketChat.models.LivechatInquiry.openInquiryAndUpadteAgents(inquiry._id, agentIds);
+            } else {
+                var inquiry = {
+                    rid: room._id,
+                    message: 'Transferred Chat',
+                    name: room.label,
+                    ts: new Date(),
+                    code: room.code,
+                    department: transferData.deparmentId,
+                    agents: agentIds,
+                    status: 'open',
+                    t: 'l',
+                    leadid: room.leadid,
+                    custid: room.custid
+                };
+                RocketChat.models.LivechatInquiry.insert(inquiry);
+            }
+            if (room.servedBy) {
+                room.usernames = _.without(room.usernames, room.servedBy.username);
+            }
+            if (room.servedBy) {
+                var transferredDepartment = RocketChat.models.LivechatDepartment.findOneById(transferData.deparmentId);
+                RocketChat.models.Subscriptions.removeByRoomIdAndUserId(room._id, room.servedBy._id);
+                RocketChat.models.LivechatDepartmentAgents.reduceLivechatCount(room.department, room.servedBy._id);
+                RocketChat.models.Messages.createUserLeaveWithRoomIdAndUser(room._id, { _id: room.servedBy._id, username: room.servedBy.username });
+                RocketChat.models.Rooms.markRoomAsTransfered(room._id, transferredDepartment._id, transferredDepartment.name);
+            }
+            RocketChat.models.Rooms.removeAgentFromRoom(room._id, room.usernames);
+            return true;
         }
 
         if (agent) {
@@ -313,7 +349,6 @@ RocketChat.Livechat = {
             } else {
                 room.usernames = _.without(room.usernames).concat(agent.username);
             }
-
 
             let subscriptionData = {
                 rid: room._id,

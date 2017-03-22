@@ -213,6 +213,20 @@ RocketChat.models.Rooms.changeAgentByRoomId = function(roomId, newUsernames, new
     this.update(query, update);
 };
 
+RocketChat.models.Rooms.removeAgentFromRoom = function(roomId, newUsernames) {
+    const query = {
+        _id: roomId
+    };
+    const update = {
+        $set: {
+            usernames: newUsernames,
+            servedBy: {}
+        }
+    };
+
+    this.update(query, update);
+};
+
 RocketChat.models.Rooms.markRoomAsTransfered = function(roomId, departmentid, departmentname) {
     const query = {
         _id: roomId

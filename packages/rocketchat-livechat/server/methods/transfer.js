@@ -1,28 +1,22 @@
 /* eslint new-cap: [2, {"capIsNewExceptions": ["Match.Optional"]}] */
 Meteor.methods({
-	'livechat:transfer'(transferData) {
-		if (!Meteor.userId() || !RocketChat.authz.hasPermission(Meteor.userId(), 'view-l-room')) {
-			throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:transfer' });
-		}
+    'livechat:transfer' (transferData) {
+        if (!Meteor.userId() || !RocketChat.authz.hasPermission(Meteor.userId(), 'view-l-room')) {
+            throw new Meteor.Error('error-not-allowed', 'Not allowed', { method: 'livechat:transfer' });
+        }
 
-		check(transferData, {
-			roomId: String,
-			userId: Match.Optional(String),
-			deparmentId: Match.Optional(String)
-		});
+        check(transferData, {
+            roomId: String,
+            userId: Match.Optional(String),
+            deparmentId: Match.Optional(String)
+        });
 
-		const room = RocketChat.models.Rooms.findOneById(transferData.roomId);
+        const room = RocketChat.models.Rooms.findOneById(transferData.roomId);
 
-		const guest = RocketChat.models.Users.findOneById(room.v._id);
+        const guest = RocketChat.models.Users.findOneById(room.v._id);
 
-		const user = Meteor.user();
+        const user = Meteor.user();
 
-		//Commented by PBChat
-		// if (room.usernames.indexOf(user.username) === -1) {
-		// 	throw new Meteor.Error('error-not-authorized', 'Not authorized', { method: 'livechat:transfer' });
-		// }
-		//Commented by PBChat
-		
-		return RocketChat.Livechat.transfer(room, guest, transferData);
-	}
+        return RocketChat.Livechat.transfer(room, guest, transferData);
+    }
 });
