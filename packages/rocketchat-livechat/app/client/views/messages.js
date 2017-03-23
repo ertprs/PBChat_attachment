@@ -65,7 +65,7 @@ Template.messages.events({
         instance.updateMessageInputHeight(event.currentTarget);
     },
     //Changes by PBChat
-    'keydown .input-message': function(event, instance) {
+    'keydown .input-message': function(event, instance) {        
         if (!Meteor.userId()) {
             //Added By PBChat
 
@@ -147,12 +147,88 @@ Template.messages.events({
         }
     },
     //Changes by PBChat
-    'click .send-button': function(event, instance) {
+    'click .send-button': function(event, instance) {       
         let input = instance.find('.input-message');
-        let sent = instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
-        input.focus();
-        instance.updateMessageInputHeight(input);
-        return sent;
+        if (!Meteor.userId()) {
+            //Added By PBChat            
+            if (!localStorage.visitorToken) {
+                localStorage.visitorToken = visitor.getToken();
+            }
+            var $email, $name, $custid, departmentname, departmentId, leadid, country, invflag;
+            if (Session.get('custinfo') != null && Session.get('custinfo').leadid != null) {
+                $name = Session.get('custinfo').name;
+                $email = Session.get('custinfo').email;
+                $custid = Session.get('custinfo').custid;
+                departmentId = Session.get('custinfo').departmentid;
+                leadid = Session.get('custinfo').leadid;
+                country = Session.get('custinfo').country;
+                if (Session.get('custinfo').invflag) {
+                    invflag = Session.get('custinfo').invflag;
+                }
+            } else {
+                return instance.showError(error.reason);
+            }
+            if (!($name.trim() && !$email.trim()) && !$custid) {
+                return instance.showError(TAPi18n.__('Please_fill_name_and_email'));
+            } else {
+                if (!departmentId) {
+                    var department = Department.findOne();
+                    if (department) {
+                        departmentId = department._id;
+                    }
+                }
+                var guest = {
+                    token: visitor.getToken(),
+                    name: $name,
+                    email: $email,
+                    department: departmentId,
+                    custid: $custid,
+                    leadid: leadid,
+                    country: country,
+                    invflag: invflag,
+                };
+                if (!Session.get('firstEnter')) {                    
+                    Meteor.call('livechat:registerGuest', guest, function(error, result) {
+                        if (error != null) {
+                            return instance.showError(error.reason);
+                        }
+                        Meteor.loginWithToken(result.token, function(error) {                               
+                            if (error) {
+                                return instance.showError(error.reason);
+                            }
+                            // start();
+                            else {
+                                //$(".welcome").hide();                                
+                                Session.set('firstEnter', true);
+                                let sent = instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
+                                input.focus();
+                                return sent;
+                            }
+                        });
+                    });
+                }
+            }
+        } else {                            
+            Meteor.call('IsCustomerBlocked', (error, result) => {
+                if (result == true) {
+                    //localStorage.clear();
+                    alert('Sorry for the inconvenience, You have been blocked!');
+                    return true;
+                } else {
+                    //$(".welcome").hide();
+                    localStorage.setItem('currentTime', new Date());
+                    let sent =  instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
+                    input.focus();
+                    return sent;
+                }
+            });
+             
+        }
+        // let input = instance.find('.input-message');
+        // let sent = instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
+        // input.focus();
+        // instance.updateMessageInputHeight(input);
+        // return sent;
     },
     'click .new-message': function(event, instance) {
         instance.atBottom = true;

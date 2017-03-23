@@ -129,7 +129,7 @@
         chatWidget.style.height = '30px';
         chatWidget.style.borderTopLeftRadius = '5px';
         chatWidget.style.borderTopRightRadius = '5px';
-        chatWidget.style.bottom = '0';
+        chatWidget.style.bottom = '5px';
         chatWidget.style.right = '50px';
         chatWidget.style.zIndex = '12345';
 

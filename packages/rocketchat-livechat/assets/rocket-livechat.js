@@ -9,7 +9,7 @@
     var isonline = true;
     setInterval(function() {
         if (widget != undefined && widget != null && widget.dataset.state === 'closed' && Ispopup === false && isonline === true) {
-            openWidget();
+            openWidget("Auto");
         }
     }, 5000);
 
@@ -19,10 +19,13 @@
         callHook('widgetClosed');
     };
 
-    var openWidget = function() {
+    var openWidget = function(trigger) {
         Ispopup = true;
         widget.dataset.state = 'opened';
-        widget.style.height = '345px';
+        if(trigger=="Auto")
+            widget.style.height = '230px';
+        else    
+            widget.style.height = '345px';
         callHook('widgetOpened');
     };
 
