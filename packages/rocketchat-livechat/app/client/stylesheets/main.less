@@ -3,6 +3,12 @@
 @import "utils/_reset.import.less";
 @import "utils/_keyframes.import.less";
 
+// @media all and (-ms-high-contrast:none)
+// {
+// *::-ms-backdrop, .title {position:relative; }
+// *::-ms-backdrop, .toolbar{ position:absolute; top:-63px; right:0;}
+// }
+
 * {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -166,6 +172,7 @@ input:focus {
 				width: 14px;
 				margin: 0 2px;
 				vertical-align: middle;
+				height: 10px;
 			}
 		}
 	}
@@ -388,7 +395,7 @@ input:focus {
 		}
 	}
 	.footer {
-		flex: 1 0 @footer-min-height;
+		//flex: 1 0 @footer-min-height;
 
 		z-index: 10;
 

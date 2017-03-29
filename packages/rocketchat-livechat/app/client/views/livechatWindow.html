@@ -1,6 +1,7 @@
 <template name="livechatWindow">
 	{{#if livechatStarted}}
 		<div class="livechat-room {{#if popoutActive}}popout{{/if}}">
+			{{#unless mobileapp}}
 			<div class="title" style="background-color:{{color}}; color: {{fontColor}}">
 				<div class="toolbar">
 					&nbsp;
@@ -24,6 +25,7 @@
 				</div>
 				<h1>{{title}}</h1>
 			</div>
+			{{/unless}}
 			{{#if livechatOnline}}
 				{{#if showRegisterForm}}
 					{{> register}}
@@ -35,7 +37,9 @@
 					{{> offlineForm (offlineData)}}
 				</div>
 			{{/if}}
+			{{#unless mobileapp}}
 			{{> poweredBy }}
+			{{/unless}}
 		</div>
 	{{/if}}
 	{{#if videoCalling}}

@@ -13,6 +13,9 @@ Template.messages.helpers({
             }
         });
     },
+    mobileapp(){            
+        return FlowRouter.getQueryParam('mobileapp')=="1"?true:false; 
+    },
     customername() {
         if (Session.get('custinfo') && Session.get('custinfo').name) {
             var name = (Session.get('custinfo').name).trim();
@@ -107,18 +110,19 @@ Template.messages.events({
                 };
                 var k = event.which;
                 if (k == 13 && !Session.get('firstEnter')) {
+                    Session.set('firstEnter', true);
                     Meteor.call('livechat:registerGuest', guest, function(error, result) {
                         if (error != null) {
                             return instance.showError(error.reason);
                         }
                         Meteor.loginWithToken(result.token, function(error) {
-                            if (error) {
+                            if (error) {                                
                                 return instance.showError(error.reason);
                             }
                             // start();
                             else {
                                 //$(".welcome").hide();
-                                Session.set('firstEnter', true);
+                                Session.set('firstEnter', false);
                                 return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
                             }
                         });
