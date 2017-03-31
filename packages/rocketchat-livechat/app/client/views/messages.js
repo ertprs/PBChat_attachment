@@ -191,7 +191,8 @@ Template.messages.events({
                     country: country,
                     invflag: invflag,
                 };
-                if (!Session.get('firstEnter')) {                    
+                if (!Session.get('firstEnter')) { 
+                    Session.set('firstEnter', true);                   
                     Meteor.call('livechat:registerGuest', guest, function(error, result) {
                         if (error != null) {
                             return instance.showError(error.reason);
@@ -203,7 +204,7 @@ Template.messages.events({
                             // start();
                             else {
                                 //$(".welcome").hide();                                
-                                Session.set('firstEnter', true);
+                                Session.set('firstEnter', false);
                                 let sent = instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
                                 input.focus();
                                 return sent;
