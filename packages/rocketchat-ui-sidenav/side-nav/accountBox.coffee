@@ -24,6 +24,14 @@ Template.accountBox.helpers
 			return false
 		else 
 			return true
+	
+	isNotMotor: ->
+		departmentname = localStorage.getItem('DepartmentName')
+		isNotMotor = departmentname.match('_Service')
+		if departmentname == 'NewCar'
+			return false
+		else 
+			return true
          
 	showAdminOption: ->
 		return RocketChat.authz.hasAtLeastOnePermission( ['view-statistics', 'view-room-administration', 'view-user-administration', 'view-privileged-setting' ]) or RocketChat.AdminBox.getOptions().length > 0

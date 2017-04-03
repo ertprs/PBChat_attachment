@@ -15,9 +15,11 @@
 				<div class="wrapper">
 					<button data-status="online" class="status online"><span>{{_ "Online"}}</span></button>
 					{{#if isNotService}}
-					<button data-status="away" class="status away"><span>{{_ "Away" context="male"}}</span></button>
-					<button data-status="busy" class="status busy"><span>{{_ "Busy" context="male"}}</span></button>
+						{{#if isNotMotor}}
+							<button data-status="away" class="status away"><span>{{_ "Away" context="male"}}</span></button>
+							<button data-status="busy" class="status busy"><span>{{_ "Busy" context="male"}}</span></button>
 					<!--<button data-status="offline" class="status offline"><span>{{_ "Invisible"}}</span></button>-->
+						{{/if}}
 					{{/if}}
 					<button id="account" class='account-link'><i class="icon-sliders"></i><span>{{_ "My_Account"}}</span></button>
 					{{#each registeredMenus}}
