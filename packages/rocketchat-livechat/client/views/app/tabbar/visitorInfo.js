@@ -27,7 +27,7 @@ Template.visitorInfo.helpers({
                 user.country = 'India';
             }
             var departmentname = localStorage.getItem('DepartmentName');
-            if (departmentname == 'NewCar') {
+            if (departmentname == 'NewCar' || departmentname == 'NewCar_Renewal') {
                 if (cardetails && cardetails.ModelName && cardetails.MakeName && cardetails.PreviousPolicyExpiryDate) {
                     user.carMake = cardetails.ModelName;
                     user.carModel = cardetails.MakeName;
@@ -386,7 +386,7 @@ Template.visitorInfo.onCreated(function() {
             var roomdetails = ChatRoom.findOne({ _id: currentData.rid })
             var departmentname = localStorage.getItem('DepartmentName');
             this.currentroom.set(roomdetails);
-            if (roomdetails.departmentname == 'NewCar') {
+            if (roomdetails.departmentname == 'NewCar' || roomdetails.departmentname == 'NewCar_Renewal') {
                 Meteor.call('livechat:getCarDetails', roomdetails.leadid, (err, result) => {
                     if (result) {
                         this.cardetails.set(result);
