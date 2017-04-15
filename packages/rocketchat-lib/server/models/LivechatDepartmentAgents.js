@@ -27,7 +27,7 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
         }, {
             $set: {
                 username: agent.username,
-                count: parseInt(agent.count),
+                //count: parseInt(agent.count),
                 order: parseInt(agent.order),
                 limit: parseInt(agent.limit)
             }
