@@ -224,6 +224,7 @@ Package.onUse(function(api) {
     api.addAssets('assets/demo.html', 'client');
     api.addAssets('assets/rocket-livechat.js', 'client');
     api.addAssets('assets/rocket-livechat-mobile.js', 'client');
+    api.addAssets('assets/rocket-livechat-service.js', 'client');
     api.addAssets('assets/ScriptLiveChat.js', 'client');
     api.addAssets('public/head.html', 'server');
 });
