@@ -4,9 +4,9 @@ RocketChat.models.Rooms = new class extends RocketChat.models._Base
 
 		# @tryEnsureIndex { 'name': 1 }, { unique: 1, sparse: 1 }
 		# @tryEnsureIndex { 'default': 1 }
-		@tryEnsureIndex { 'usernames': 1 }
-		@tryEnsureIndex { 't': 1 }
-		@tryEnsureIndex { 'u._id': 1 }
+		#@tryEnsureIndex { 'usernames': 1 }
+		#@tryEnsureIndex { 't': 1 }
+		#@tryEnsureIndex { 'u._id': 1 }
 
 
 	# FIND ONE
