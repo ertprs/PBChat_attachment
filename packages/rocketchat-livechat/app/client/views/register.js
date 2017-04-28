@@ -4,11 +4,6 @@ Template.register.helpers({
     error() {
         return Template.instance().error.get();
     },
-    // customername() {
-    //     var name = (Session.get('custinfo').name).trim();
-    //     var array = name.split(/\s+/);
-    //     return 'Hi ' + array[0] + ' ! ';
-    // },
     greeting() {
         var dt = new Date().getHours();
         var greeting;
@@ -39,11 +34,19 @@ Template.register.helpers({
         } else {
             return true;
         }
+    },
+    isService() {
+        if (FlowRouter.getQueryParam('service') == '1') {
+            return true;
+        } else {
+            return false;
+        }
     }
 });
 
 Template.register.events({
     'submit #livechat-registration' (e, instance) {
+        var isProduct;
         document.getElementById('btnEntrar').setAttribute('disabled', true);
         if (!localStorage.visitorToken) {
             localStorage.visitorToken = visitor.getToken();
@@ -61,18 +64,22 @@ Template.register.events({
             mobilenumber: null
         };
         e.preventDefault();
-
-        // let start = () => {
-        //     instance.hideError();
-        //     if (instance.request === 'video') {
-        //         LivechatVideoCall.request();
-        //     }
-        // };
         $name = instance.$('input[name=name]').val();
         $email = instance.$('input[name=email]').val();
         mobilenumber = instance.$('input[name=mobilenumber]').val();
-        departmentId = instance.$('select[name=department]').val();
-        departmentname = instance.$('select[name=department] option:selected').text();
+
+        if (FlowRouter.getQueryParam('product') == 'twowheeler') {
+            var department = Department.find({ name: 'Twowheeler' }).fetch();
+            console.log(department[0]);
+            departmentId = department[0]._id;
+            departmentname = department[0].name;
+            console.log(departmentId);
+            console.log(departmentname);
+            isProduct = true
+        } else {
+            departmentId = instance.$('select[name=department]').val();
+            departmentname = instance.$('select[name=department] option:selected').text();
+        }
 
         if (!($name.trim() && $email.trim() && mobilenumber.trim() && departmentId.trim())) {
             document.getElementById('btnEntrar').removeAttribute('disabled');
@@ -84,7 +91,11 @@ Template.register.events({
             custinfo.name = $name;
             custinfo.email = $email;
             custinfo.mobilenumber = mobilenumber;
-            custinfo.departmentname = departmentname + '_Service';
+            if (isProduct) {
+                custinfo.departmentname = departmentname;
+            } else {
+                custinfo.departmentname = departmentname + '_Service';
+            }
             custinfo.departmentId = departmentId;
             custinfo.leadid = 0;
             custinfo.custid = 0;
@@ -127,7 +138,6 @@ Template.register.events({
                     if (error) {
                         return instance.showError(error.reason);
                     }
-                    //start();
                     Livechat.registrationForm = false;
                 });
             });

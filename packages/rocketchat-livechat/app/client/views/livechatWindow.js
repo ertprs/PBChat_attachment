@@ -10,8 +10,8 @@ Template.livechatWindow.helpers({
     fontColor() {
         return Livechat.fontColor;
     },
-    mobileapp(){            
-        return FlowRouter.getQueryParam('mobileapp')=="1"?true:false; 
+    mobileapp() {
+        return FlowRouter.getQueryParam('mobileapp') == "1" ? true : false;
     },
     popoutActive() {
         return FlowRouter.getQueryParam('mode') === 'popout';
@@ -22,7 +22,7 @@ Template.livechatWindow.helpers({
     showRegisterForm() {
         if (Meteor.userId()) {
             return false;
-        } else if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
+        } else if ((FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") || (FlowRouter.getQueryParam('product') == "twowheeler")) {
             return Livechat.registrationForm;
         } else {
             return false;
@@ -85,18 +85,23 @@ Template.livechatWindow.onCreated(function() {
     const defaultAppLanguage = () => {
         let lng = window.navigator.userLanguage || window.navigator.language || 'en';
         let regexp = /([a-z]{2}-)([a-z]{2})/;
-        if (regexp.test(lng)) {            
-                lng = lng.replace(regexp, function(match, ...parts) {
+        if (regexp.test(lng)) {
+            lng = lng.replace(regexp, function(match, ...parts) {
                 return parts[0] + parts[1].toUpperCase();
             });
         }
         return lng;
     };
-
+    //getInitialData
     if (FlowRouter.getQueryParam('service')) {
         var service = 1;
     } else {
         var service = 0;
+    }
+    if (FlowRouter.getQueryParam('product')) {
+        var product = 'twowheeler';
+    } else {
+        var product = '';
     }
     if (FlowRouter.getQueryParam('leadid')) {
         var leadid = FlowRouter.getQueryParam('leadid');
@@ -104,7 +109,7 @@ Template.livechatWindow.onCreated(function() {
         var leadid = 0;
     }
 
-    Meteor.call('livechat:getInitialData', visitor.getToken(), leadid, service, (err, result) => {
+    Meteor.call('livechat:getInitialData', visitor.getToken(), leadid, service, product, (err, result) => {
         if (err) {
             console.error(err);
         } else {

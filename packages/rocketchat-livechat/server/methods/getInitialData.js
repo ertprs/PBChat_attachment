@@ -1,5 +1,5 @@
 Meteor.methods({
-    'livechat:getInitialData' (visitorToken, leadid, service) {
+    'livechat:getInitialData' (visitorToken, leadid, service, product) {
         var info = {
             enabled: null,
             title: null,
@@ -42,7 +42,7 @@ Meteor.methods({
         if (room && room.length > 0) {
             info.room = room[0];
         }
-        if (service == 0) {
+        if (leadid && service == 0 && product == '') {
             var leaddata;
             Meteor.call('livechat:getDetailsForService', leadid, function(error, result) {
                 if (error) {
@@ -51,8 +51,6 @@ Meteor.methods({
                     leaddata = result;
                 }
             });
-            // var url = RocketChat.settings.get('COMMAPI') + "/ChatService.svc/getCustInfo/" + leadid;
-            // var leaddata = HTTP.call("GET", url, { headers: { "accept": "application/json" } }).data;
             info.custinfo.name = leaddata.CustomerName;
             info.custinfo.email = leaddata.EmailId;
             info.custinfo.custid = leaddata.CustID;
@@ -66,7 +64,9 @@ Meteor.methods({
             if (leaddata && leaddata.invflag) {
                 info.custinfo.invflag = leaddata.invflag;
             }
-            if (info.custinfo.departmentname == 'Investments' && (info.custinfo.subproduct == 'CHILD' || info.custinfo.subproduct == 'GROWTH' || info.custinfo.subproduct == 'RETIREMENT')) {
+            if (info.custinfo.departmentname == 'Investments' && info.custinfo.country && info.custinfo.country == 'NRI') {
+                info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname + '_' + info.custinfo.country);
+            } else if (info.custinfo.departmentname == 'Investments' && (info.custinfo.subproduct == 'CHILD' || info.custinfo.subproduct == 'GROWTH' || info.custinfo.subproduct == 'RETIREMENT')) {
                 info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname + '_' + info.custinfo.subproduct);
             } else {
                 info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname);
@@ -90,6 +90,12 @@ Meteor.methods({
             }
             var openingtime = RocketChat.settings.get('Livechat_Widget_OpeningTiming_' + info.custinfo.departmentname);
             var closingtime = RocketChat.settings.get('Livechat_Widget_ClosingTiming_' + info.custinfo.departmentname);
+        } else if (service == 0 && product != '') {
+            info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_Twowheeler');
+            var r = 'Livechat_offline_message_Twowheeler';
+            info.offlineMessage = RocketChat.settings.get(r);
+            var openingtime = RocketChat.settings.get('Livechat_Widget_OpeningTiming_Twowheeler');
+            var closingtime = RocketChat.settings.get('Livechat_Widget_ClosingTiming_Twowheeler');
         } else {
             info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage');
             var r = 'Livechat_offline_message';

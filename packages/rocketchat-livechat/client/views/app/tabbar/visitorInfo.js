@@ -52,13 +52,15 @@ Template.visitorInfo.helpers({
     joinTags() {
         return this.tags && this.tags.join(', ');
     },
-    service() {
+    showStackOption() {
         var departmentname = localStorage.getItem('DepartmentName');
         var IsService = departmentname.match("_Service");
         const room = Template.instance().currentroom.get();
         if (IsService) {
             return true;
         } else if (room && room.transfer == 1) {
+            return true;
+        } else if (room.leadid == 0) {
             return true;
         } else {
             return false;
