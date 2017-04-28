@@ -269,3 +269,18 @@ RocketChat.models.Rooms.changeLeadidtByRoomId = function(roomId, newleadid, prev
     }
     this.update(query, update);
 };
+
+
+RocketChat.models.Rooms.getOpenRoomByCustID = function(CustID) {
+    const query = {
+        custid: CustID,
+        open: true
+    };
+
+    let options = {
+        sort:{
+            ts:-1
+        }
+    };    
+   return this.findOne(query, options);
+};

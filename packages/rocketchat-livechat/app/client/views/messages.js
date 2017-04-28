@@ -68,14 +68,16 @@ Template.messages.events({
         instance.updateMessageInputHeight(event.currentTarget);
     },
     //Changes by PBChat
-    'keydown .input-message': function(event, instance) {        
+    'keydown .input-message': function(event, instance) { 
+        console.log("keydown")
         if (!Meteor.userId()) {
             //Added By PBChat
-
+            console.log("userId")
             if (!localStorage.visitorToken) {
                 localStorage.visitorToken = visitor.getToken();
             }
             var $email, $name, $custid, departmentname, departmentId, leadid, country, invflag;
+            
             if (Session.get('custinfo') != null && Session.get('custinfo').leadid != null) {
                 $name = Session.get('custinfo').name;
                 $email = Session.get('custinfo').email;
@@ -89,6 +91,7 @@ Template.messages.events({
             } else {
                 return instance.showError(error.reason);
             }
+            console.log($name)
             if (!($name.trim() && !$email.trim()) && !$custid) {
                 return instance.showError(TAPi18n.__('Please_fill_name_and_email'));
             } else {
@@ -97,6 +100,7 @@ Template.messages.events({
                     if (department) {
                         departmentId = department._id;
                     }
+                    console.log(department)
                 }
                 var guest = {
                     token: visitor.getToken(),
@@ -108,8 +112,10 @@ Template.messages.events({
                     country: country,
                     invflag: invflag,
                 };
+                console.log(guest)
                 var k = event.which;
                 if (k == 13 && !Session.get('firstEnter')) {
+                    console.log(guest);
                     Session.set('firstEnter', true);
                     Meteor.call('livechat:registerGuest', guest, function(error, result) {
                         if (error != null) {
@@ -132,6 +138,7 @@ Template.messages.events({
         } else {
             var k = event.which;
             if (k == 13) {
+                console.log("keydown 13")
                 Meteor.call('IsCustomerBlocked', (error, result) => {
                     if (result == true) {
                         //localStorage.clear();
@@ -145,6 +152,7 @@ Template.messages.events({
                 });
             } else {
                 //$(".welcome").hide();
+                console.log(visitor.getRoom());
                 return instance.chatMessages.keydown(visitor.getRoom(), event, instance, Session.get('custinfo'));
             }
 
@@ -222,7 +230,9 @@ Template.messages.events({
                 } else {
                     //$(".welcome").hide();
                     localStorage.setItem('currentTime', new Date());
+                    
                     let sent =  instance.chatMessages.send(visitor.getRoom(), input, Session.get('custinfo'));
+                    console.log(sent);
                     input.focus();
                     return sent;
                 }

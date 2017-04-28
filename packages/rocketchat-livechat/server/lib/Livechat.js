@@ -34,12 +34,10 @@ RocketChat.Livechat = {
     getRoom(guest, message, roomInfo, custinfo) {
         var room = RocketChat.models.Rooms.findOneById(message.rid);
         var newRoom = false;
-
         if (room && !room.open) {
             message.rid = Random.id();
             room = null;
         }
-
         if (room == null) {
             if (!guest.department) {
                 var departments = RocketChat.models.LivechatDepartment.findEnabledWithAgents();
@@ -56,11 +54,11 @@ RocketChat.Livechat = {
         if (!room) {
             throw new Meteor.Error('cannot-acess-room');
         }
-
         return { room, newRoom };
     },
     sendMessage({ guest, message, roomInfo, custinfo }) {
         let { room, newRoom } = this.getRoom(guest, message, roomInfo, custinfo);
+       
         if (guest.name) {
             //message.alias = guest.name;
             message.alias = custinfo.name;
