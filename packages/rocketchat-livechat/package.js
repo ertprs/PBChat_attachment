@@ -173,6 +173,7 @@ Package.onUse(function(api) {
     //Added by PBChat for Livechat Transcript
     api.addFiles('server/methods/sendTranscript.js', 'server');
     api.addFiles('server/methods/blocklivechatcustomer.js', 'server');
+    api.addFiles('server/methods/getUserId.js', 'server');
     //Added by PBChat for Livechat Transcript
 
     // models
