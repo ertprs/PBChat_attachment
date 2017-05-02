@@ -146,6 +146,7 @@ Package.onUse(function(api) {
     api.addFiles('server/methods/stackChatToLead.js', 'server');
     api.addFiles('server/methods/getDetailsForService.js', 'server');
     api.addFiles('server/methods/getAgentDepartments.js', 'server');
+    api.addFiles('server/methods/createLead.js', 'server');
     //added a new api method jitendra PBChat
     api.addFiles('server/methods/pageVisited.js', 'server');
     api.addFiles('server/methods/registerGuest.js', 'server');

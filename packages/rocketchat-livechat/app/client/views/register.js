@@ -53,7 +53,7 @@ Template.register.events({
         }
         var $email, $name, leadid = 0,
             $custid = 0,
-            departmentname, departmentId, mobilenumber;
+            departmentname, departmentId, mobilenumber, enquiry;
         var custinfo = {
             name: null,
             email: null,
@@ -70,12 +70,22 @@ Template.register.events({
 
         if (FlowRouter.getQueryParam('product') == 'twowheeler') {
             var department = Department.find({ name: 'Twowheeler' }).fetch();
-            console.log(department[0]);
             departmentId = department[0]._id;
             departmentname = department[0].name;
-            console.log(departmentId);
-            console.log(departmentname);
-            isProduct = true
+            isProduct = true;
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == 'enquiryid') {
+                    if (pair.length > 1) {
+                        for (var i = 2; i < pair.length; i++) {
+                            pair[1] = pair[1] + '='
+                        }
+                    }
+                    enquiry = pair[1];
+                }
+            }
         } else {
             departmentId = instance.$('select[name=department]').val();
             departmentname = instance.$('select[name=department] option:selected').text();
@@ -99,22 +109,41 @@ Template.register.events({
             custinfo.departmentId = departmentId;
             custinfo.leadid = 0;
             custinfo.custid = 0;
-            var customerdetails;
-            Meteor.call('livechat:getDetailsForService', leadid, 1, mobilenumber, departmentname, function(error, result) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    customerdetails = result;
-                    if (customerdetails && customerdetails.LeadID && customerdetails.CustID) {
-                        custinfo.leadid = customerdetails.LeadID;
-                        custinfo.custid = customerdetails.CustID;
-                        Session.set('custinfo', custinfo);
-                    }
-
-                }
-            });
             Session.set('custinfo', custinfo);
-
+            if (enquiry && enquiry != '') {
+                Meteor.call('livechat:createLead', enquiry, custinfo.name, custinfo.mobilenumber, custinfo.email, function(error, result) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        leadid = window.btoa(result);
+                        Meteor.call('livechat:getDetailsForService', leadid, 1, mobilenumber, departmentname, function(error, result) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                var customerdetails = result;
+                                if (customerdetails && customerdetails.LeadID && customerdetails.CustID) {
+                                    custinfo.leadid = customerdetails.LeadID;
+                                    custinfo.custid = customerdetails.CustID;
+                                    Session.set('custinfo', custinfo);
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                Meteor.call('livechat:getDetailsForService', leadid, 1, mobilenumber, departmentname, function(error, result) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        var customerdetails = result;
+                        if (customerdetails && customerdetails.LeadID && customerdetails.CustID) {
+                            custinfo.leadid = customerdetails.LeadID;
+                            custinfo.custid = customerdetails.CustID;
+                            Session.set('custinfo', custinfo);
+                        }
+                    }
+                });
+            }
             if (!departmentId) {
                 var department = Department.findOne();
                 if (department) {
