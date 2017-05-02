@@ -18,30 +18,35 @@ RocketChat.API.v1.addRoute('livechat/wa-incoming', { authRequired: false }, {
             departmentname: sms.department,
             waflag: 1
         };
-        if (userId && userId != null) {
-            visitor = RocketChat.models.Users.findOneById(userId);
-            guest = visitor;
-            VisitorToken = visitor.profile.token;
-        } else {
-            VisitorToken = Random.id();
-            guest = {
-                token: VisitorToken,
-                name: sms.name,
-                //username: sms.name + "-" + sms.custid,
-                email: sms.emailid,
-                department: sms.departmentid,
-                custid: sms.custid,
-                leadid: LeadID,
-                mobilenumber: sms.mobileno
-            };
-            userId = RocketChat.Livechat.registerGuest(guest);
-            guest._id = userId;
-        }
+        guest = {
+            name: sms.name,
+            //username: sms.name + "-" + sms.custid,
+            email: sms.emailid,
+            department: sms.departmentid,
+            custid: sms.custid,
+            leadid: LeadID,
+            mobilenumber: sms.mobileno
+        };
+
         if (sms.roomid) {
-            roomInfo = RocketChat.models.Rooms.findOneById(sms.roomid);
-            message.rid = roomInfo._id;
+
+            message.rid = sms.roomid;
+            guest._id = userId;
+            VisitorToken = sms.token
         } else {
-            message.rid = Random.id();
+            roomInfo = RocketChat.models.Rooms.getOpenRoomByCustIDAndDep(sms.custid, sms.departmentid);
+            if (roomInfo && roomInfo != null) {
+                message.rid = roomInfo._id;
+                guest._id = roomInfo.v._id;
+                VisitorToken = roomInfo.v.token;
+            } else {
+                message.rid = Random.id();
+                VisitorToken = Random.id();
+                guest.token = VisitorToken;
+                userId = RocketChat.Livechat.registerGuest(guest);
+                guest._id = userId;
+
+            }
         }
 
         message.token = VisitorToken;
