@@ -42,9 +42,9 @@ Meteor.methods({
         if (room && room.length > 0) {
             info.room = room[0];
         }
-        if (leadid && service == 0 && product == '') {
+        if (leadid) {
             var leaddata;
-            Meteor.call('livechat:getDetailsForService', leadid, function(error, result) {
+            Meteor.call('livechat:getDetailsForService', leadid,service, function(error, result) {
                 if (error) {
                     console.log(error);
                 } else {

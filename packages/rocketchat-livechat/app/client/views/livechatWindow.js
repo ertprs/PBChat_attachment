@@ -22,7 +22,7 @@ Template.livechatWindow.helpers({
     showRegisterForm() {
         if (Meteor.userId()) {
             return false;
-        } else if ((FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") || (FlowRouter.getQueryParam('product') == "twowheeler")) {
+        } else if (!FlowRouter.getQueryParam('leadid')) {
             return Livechat.registrationForm;
         } else {
             return false;
