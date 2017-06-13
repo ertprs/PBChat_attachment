@@ -19,9 +19,9 @@ Meteor.setInterval(function() {
             var username = 'admin';
             var user = RocketChat.models.Users.findOneByUsername(username);
             rooms.forEach((room) => {
-                if (room && room.servedBy && room.servedBy._id) {
+                if (room && room.servedBy && room.servedBy._id && room.cb != 1) {
                     const agentDepartment = RocketChat.models.LivechatDepartmentAgents.findOneByAgentId(room.servedBy._id);
-                    if (department._id == agentDepartment.departmentId) {
+                    if (department && department._id && agentDepartment && agentDepartment.departmentId && department._id == agentDepartment.departmentId) {
                         RocketChat.Livechat.closeRoom({
                             user: user,
                             room: room,

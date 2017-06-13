@@ -4,13 +4,13 @@ RocketChat.QueueMethods = {
      * default method where the agent with the least number
      * of open chats is paired with the incoming livechat
      */
-    'Least_Amount': function(guest, message, roomInfo, custinfo) { //custinfo added by PBChat
-        const agent = RocketChat.Livechat.getNextAgent(guest.department);
+    'Least_Amount': function(guest, message, roomInfo, custinfo) {
+        const agent = RocketChat.Livechat.getNextAgent(custinfo.departmentid);
         if (agent === 'Guest_Pool') {
             return RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
         } else {
             var date = new Date();
-            var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
+            var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(custinfo.departmentid, options);
             var departmentname = Departmentinfo.name;
             var IsService = departmentname.match("_Service");
             if (IsService) {
@@ -37,7 +37,6 @@ RocketChat.QueueMethods = {
                 msgs: 1,
                 lm: new Date(),
                 code: roomCode,
-                //label: guest.name || guest.username,
                 label: custinfo.name,
                 usernames: [agent.username, guest.username],
                 t: 'l',
@@ -53,12 +52,10 @@ RocketChat.QueueMethods = {
                 cl: false,
                 open: true,
                 waitingResponse: true,
-                //Added By PBChat         
                 leadid: custinfo.leadid,
                 custid: custinfo.custid,
-                department: guest.department,
+                department: custinfo.departmentid,
                 departmentname: departmentname,
-                //Added By PBChat 	
             }, roomInfo);
             let subscriptionData = {
                 rid: message.rid,
@@ -105,13 +102,12 @@ RocketChat.QueueMethods = {
      * only the client until paired with an agent
      */
     'Guest_Pool': function(guest, message, roomInfo, custinfo) {
-        //let agents = RocketChat.Livechat.getOnlineAgents(guest.department);
-        let agents = RocketChat.Livechat.getAgents(guest.department);
+        let agents = RocketChat.Livechat.getAgents(custinfo.departmentid);
         var date = new Date();
         if (agents.count() === 0 && RocketChat.settings.get('Livechat_guest_pool_with_no_agents')) {
-            agents = RocketChat.Livechat.getAgents(guest.department);
+            agents = RocketChat.Livechat.getAgents(custinfo.departmentid);
         }
-        var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(guest.department, options);
+        var Departmentinfo = RocketChat.models.LivechatDepartment.findOneById(custinfo.departmentid, options);
         var departmentname = Departmentinfo.name;
         var IsService = departmentname.match("_Service");
         if (agents.count() === 0) {
@@ -134,13 +130,12 @@ RocketChat.QueueMethods = {
         let options = {
             sort: { _id: 1 }
         };
-        //Added By PBChat
         const roomCode = RocketChat.models.Rooms.getNextLivechatRoomCode();
 
         const agentIds = [];
 
         agents.forEach((agent) => {
-            if (guest.department) {
+            if (custinfo.departmentid) {
                 agentIds.push(agent.agentId);
             } else {
                 agentIds.push(agent._id);
@@ -150,25 +145,21 @@ RocketChat.QueueMethods = {
         var inquiry = {
             rid: message.rid,
             message: message.msg,
-            //name: guest.name || guest.username,
             name: custinfo.name,
             ts: new Date(),
             code: roomCode,
-            department: guest.department,
+            department: custinfo.departmentid,
             agents: agentIds,
             status: 'open',
             t: 'l',
-            //Added By PBChat         
             leadid: custinfo.leadid,
             custid: custinfo.custid
-                //Added By PBChat
         };
         const room = _.extend({
             _id: message.rid,
             msgs: 1,
             lm: new Date(),
             code: roomCode,
-            //label: guest.name || guest.username,
             label: custinfo.name,
             usernames: [guest.username],
             t: 'l',
@@ -180,12 +171,10 @@ RocketChat.QueueMethods = {
             cl: false,
             open: true,
             waitingResponse: true,
-            //Added By PBChat         
             leadid: custinfo.leadid,
             custid: custinfo.custid,
-            department: guest.department,
+            department: custinfo.departmentid,
             departmentname: departmentname,
-            //Added By PBChat 	
         }, roomInfo);
         RocketChat.models.LivechatInquiry.insert(inquiry);
         RocketChat.models.Rooms.insert(room);

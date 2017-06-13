@@ -64,7 +64,9 @@ Meteor.methods({
             if (leaddata && leaddata.invflag) {
                 info.custinfo.invflag = leaddata.invflag;
             }
-            if (info.custinfo.departmentname == 'Investments' && info.custinfo.country && info.custinfo.country == 'NRI') {
+            if (leaddata && leaddata.welcomemessage) {
+                info.welcome = leaddata.welcomemessage;
+            } else if (info.custinfo.departmentname == 'Investments' && info.custinfo.country && info.custinfo.country == 'NRI') {
                 info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname + '_' + info.custinfo.country);
             } else if (info.custinfo.departmentname == 'Investments' && (info.custinfo.subproduct == 'CHILD' || info.custinfo.subproduct == 'GROWTH' || info.custinfo.subproduct == 'RETIREMENT')) {
                 info.welcome = RocketChat.settings.get('Livechat_WelcomeMessage_' + info.custinfo.departmentname + '_' + info.custinfo.subproduct);
