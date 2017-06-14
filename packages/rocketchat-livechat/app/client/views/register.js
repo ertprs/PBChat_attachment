@@ -53,12 +53,12 @@ Template.register.events({
         }
         var $email, $name, leadid = 0,
             $custid = 0,
-            departmentname, departmentId, mobilenumber, enquiry;
+            departmentname, departmentid, mobilenumber, enquiry;
         var custinfo = {
             name: null,
             email: null,
             custid: null,
-            departmentId: null,
+            departmentid: null,
             leadid: null,
             departmentname: null,
             mobilenumber: null
@@ -70,7 +70,7 @@ Template.register.events({
 
         if (FlowRouter.getQueryParam('product') == 'twowheeler') {
             var department = Department.find({ name: 'Twowheeler' }).fetch();
-            departmentId = department[0]._id;
+            departmentid = department[0]._id;
             departmentname = department[0].name;
             isProduct = true;
             var query = window.location.search.substring(1);
@@ -87,11 +87,11 @@ Template.register.events({
                 }
             }
         } else {
-            departmentId = instance.$('select[name=department]').val();
+            departmentid = instance.$('select[name=department]').val();
             departmentname = instance.$('select[name=department] option:selected').text();
         }
 
-        if (!($name.trim() && $email.trim() && mobilenumber.trim() && departmentId.trim())) {
+        if (!($name.trim() && $email.trim() && mobilenumber.trim() && departmentid.trim())) {
             document.getElementById('btnEntrar').removeAttribute('disabled');
             return instance.showError('Please fill Name,Email,Mobile number and concerned Department!');
         } else if (!(mobilenumber.match(/^[0-9]+$/) != null)) {
@@ -106,7 +106,7 @@ Template.register.events({
             } else {
                 custinfo.departmentname = departmentname + '_Service';
             }
-            custinfo.departmentId = departmentId;
+            custinfo.departmentid = departmentid;
             custinfo.leadid = 0;
             custinfo.custid = 0;
             Session.set('custinfo', custinfo);
@@ -144,17 +144,17 @@ Template.register.events({
                     }
                 });
             }
-            if (!departmentId) {
+            if (!departmentid) {
                 var department = Department.findOne();
                 if (department) {
-                    departmentId = department._id;
+                    departmentid = department._id;
                 }
             }
             var guest = {
                 token: visitor.getToken(),
                 name: custinfo.name,
                 email: custinfo.email,
-                department: custinfo.departmentId,
+                department: custinfo.departmentid,
                 custid: custinfo.custid,
                 leadid: custinfo.leadid,
                 mobilenumber: custinfo.mobilenumber
