@@ -57,11 +57,13 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
         };
         var sort = {
             count: 1,
+            assigned: 1,
             order: 1
         };
         var update = {
             $inc: {
-                count: 1
+                count: 1,
+                assigned: 1
             }
         };
 
@@ -199,7 +201,9 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
         };
         const update = {
             $set: {
-                "count": 0
+                "count": 0,
+                "assigned": 0
+
             }
         };
         this.update(query, update, { multi: true });
