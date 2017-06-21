@@ -10,7 +10,7 @@ Template.visitorForward.helpers({
     },
     agents() {
         var agents = _.pluck(LivechatDepartmentAgents.find({ agentId: { $ne: Meteor.userId() } }).fetch(), 'agentId');
-        return Meteor.users.find({ _id: { $in: agents, status: "online" } }, { sort: { name: 1, username: 1 } });
+        return Meteor.users.find({ _id: { $in: agents }, status: "online" }, { sort: { name: 1, username: 1 } });
         // return AgentUsers.find({ _id: { $ne: Meteor.userId() } }, { sort: { name: 1, username: 1 } });		
     },
     agentName() {
