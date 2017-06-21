@@ -21,17 +21,31 @@ class LivechatDepartmentAgents extends RocketChat.models._Base {
     }
 
     saveAgent(agent) {
-        return this.upsert({
-            agentId: agent.agentId,
-            departmentId: agent.departmentId
-        }, {
-            $set: {
-                username: agent.username,
-                //count: parseInt(agent.count),
-                order: parseInt(agent.order),
-                limit: parseInt(agent.limit)
-            }
-        });
+        if (agent && agent.count == 0) {
+            return this.upsert({
+                agentId: agent.agentId,
+                departmentId: agent.departmentId
+            }, {
+                $set: {
+                    username: agent.username,
+                    count: parseInt(agent.count),
+                    order: parseInt(agent.order),
+                    limit: parseInt(agent.limit)
+                }
+            });
+        } else {
+            return this.upsert({
+                agentId: agent.agentId,
+                departmentId: agent.departmentId
+            }, {
+                $set: {
+                    username: agent.username,
+                    //count: parseInt(agent.count),
+                    order: parseInt(agent.order),
+                    limit: parseInt(agent.limit)
+                }
+            });
+        }
     }
 
     removeByDepartmentIdAndAgentId(departmentId, agentId) {

@@ -16,7 +16,21 @@ Template.accountBox.helpers
 			_id: Meteor.userId()
 			username: username
 		}
-	
+
+	showaway: ->
+		user = Meteor.user()
+		roles = user.roles
+		isManager = roles.indexOf("livechat-manager")
+		departmentname = localStorage.getItem('DepartmentName')
+		isAdmin = localStorage.getItem('IsAdmin')
+		IsService = departmentname.match('_Service')
+		if isManager > -1 || isAdmin == "true"
+			return true 
+		else if IsService
+			return false
+		else
+			return true
+
 	isNotService: ->
 		departmentname = localStorage.getItem('DepartmentName')
 		IsService = departmentname.match('_Service')
