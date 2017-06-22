@@ -93,13 +93,13 @@ Template.livechatWindow.onCreated(function() {
         return lng;
     };
     //getInitialData
-    if (FlowRouter.getQueryParam('service')) {
+    if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
         var service = 1;
     } else {
         var service = 0;
     }
     if (FlowRouter.getQueryParam('product')) {
-        var product = 'twowheeler';
+        var product = FlowRouter.getQueryParam('product');
     } else {
         var product = '';
     }
