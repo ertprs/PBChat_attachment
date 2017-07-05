@@ -149,7 +149,7 @@ Template.livechatWindow.onCreated(function() {
             Livechat.videoCall = result.videoCall;
             Livechat.registrationForm = result.registrationForm;
             if (result.room) {
-                RoomHistoryManager.getMoreIfIsEmpty(result.room._id);
+                RoomHistoryManager.getMoreIfIsEmpty(result.room._id, 1);
                 visitor.subscribeToRoom(result.room._id);
                 visitor.setRoom(result.room._id);
             }
