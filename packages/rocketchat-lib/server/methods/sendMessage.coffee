@@ -39,6 +39,36 @@ Meteor.methods
 
 		RocketChat.sendMessage user, message, room
 
+		# changes for whatsapp		
+		if room && room.waflag == 1
+			objParam =
+				"RoomID": room._id
+				"Message": message.msg
+				"MobileNo": ""
+				"UserID": room.v._id
+				"CustID": room.custid
+
+			url = RocketChat.settings.get('COMMAPI') + '/ChatService.svc/SendWhatsAppMessage'
+
+			HTTP.call 'POST', url, {
+				data: 
+					"_id": message._id
+					"RoomID": room._id
+					"Message": message.msg
+					"attachments": message.attachments
+					"MobileNo": ""
+					"UserID": room.v._id
+					"CustID": room.custid
+					"read" : false
+				headers: 'accept': 'application/json'
+				}, (error, result) ->
+				if !error
+				else	
+				return
+				console.log url
+
+
+			
 # Limit a user to sending 20 msgs/second
 DDPRateLimiter.addRule
 	type: 'method'
