@@ -44,7 +44,7 @@ Meteor.methods({
         }
         if (leadid) {
             var leaddata;
-            Meteor.call('livechat:getDetailsForService', leadid,service, function(error, result) {
+            Meteor.call('livechat:getDetailsForService', leadid, service, function(error, result) {
                 if (error) {
                     console.log(error);
                 } else {

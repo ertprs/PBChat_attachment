@@ -93,13 +93,13 @@ Template.livechatWindow.onCreated(function() {
         return lng;
     };
     //getInitialData
-    if (FlowRouter.getQueryParam('service')) {
+    if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
         var service = 1;
     } else {
         var service = 0;
     }
     if (FlowRouter.getQueryParam('product')) {
-        var product = 'twowheeler';
+        var product = FlowRouter.getQueryParam('product');
     } else {
         var product = '';
     }
@@ -149,7 +149,7 @@ Template.livechatWindow.onCreated(function() {
             Livechat.videoCall = result.videoCall;
             Livechat.registrationForm = result.registrationForm;
             if (result.room) {
-                RoomHistoryManager.getMoreIfIsEmpty(result.room._id);
+                RoomHistoryManager.getMoreIfIsEmpty(result.room._id, 1);
                 visitor.subscribeToRoom(result.room._id);
                 visitor.setRoom(result.room._id);
             }

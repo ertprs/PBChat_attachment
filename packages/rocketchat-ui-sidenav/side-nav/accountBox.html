@@ -14,7 +14,7 @@
 			<nav class="options animated-hidden">
 				<div class="wrapper">
 					<button data-status="online" class="status online"><span>{{_ "Online"}}</span></button>
-					{{#if isNotService}}
+					{{#if showaway}}
 						<button data-status="away" class="status away"><span>{{_ "Away" context="male"}}</span></button>
 						{{#if isNotMotor}}
 							<button data-status="busy" class="status busy"><span>{{_ "Busy" context="male"}}</span></button>

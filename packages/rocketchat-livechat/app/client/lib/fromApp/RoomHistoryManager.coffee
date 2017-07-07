@@ -3,6 +3,7 @@
 
 	histories = {}
 
+
 	getRoom = (rid) ->
 		if not histories[rid]?
 			histories[rid] =
@@ -12,7 +13,7 @@
 
 		return histories[rid]
 
-	getMore = (rid, limit=defaultLimit) ->
+	getMore = (rid, limit=defaultLimit,end=0) ->
 		room = getRoom rid
 		if room.hasMore.curValue isnt true
 			return
@@ -23,8 +24,9 @@
 		# ScrollListener.setLoader true
 		lastMessage = ChatMessage.findOne({rid: rid}, {sort: {ts: 1}})
 		# lastMessage ?= ChatMessage.findOne({rid: rid}, {sort: {ts: 1}})
-
-		if lastMessage?
+		if(end==1)
+		   ts=null	
+		else if lastMessage?
 			ts = lastMessage.ts
 		else
 			ts = new Date
@@ -45,11 +47,10 @@
 
 		return room.hasMore.get()
 
-	getMoreIfIsEmpty = (rid) ->
-		room = getRoom rid
-
+	getMoreIfIsEmpty = (rid,end=0) ->
+		room = getRoom rid		
 		if room.loaded is 0
-			getMore rid
+			getMore rid,defaultLimit,end
 
 	isLoading = (rid) ->
 		room = getRoom rid
