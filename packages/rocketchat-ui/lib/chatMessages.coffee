@@ -202,6 +202,8 @@ class @ChatMessages
 				Meteor.call 'sendMessage', msgObject
 				done()
 
+				
+				
 		# If edited message was emptied we ask for deletion
 		else if this.editing.element
 			message = this.getMessageById this.editing.id

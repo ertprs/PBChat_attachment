@@ -57,6 +57,9 @@ RocketChat.QueueMethods = {
                 department: custinfo.departmentid,
                 departmentname: departmentname,
             }, roomInfo);
+            if (custinfo.waflag == 1) {
+                room.waflag = 1;
+            }
             let subscriptionData = {
                 rid: message.rid,
                 name: guest.name || guest.username,
@@ -176,6 +179,10 @@ RocketChat.QueueMethods = {
             department: custinfo.departmentid,
             departmentname: departmentname,
         }, roomInfo);
+        if (custinfo.waflag == 1) {
+            room.waflag = 1;
+        }
+
         RocketChat.models.LivechatInquiry.insert(inquiry);
         RocketChat.models.Rooms.insert(room);
 

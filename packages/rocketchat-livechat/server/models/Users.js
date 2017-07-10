@@ -274,3 +274,15 @@ RocketChat.models.Users.logoutDayend = function(agentList) {
     };
     return RocketChat.models.Users.update(query, update, { multi: true });
 };
+
+/**
+ * Find a visitor by their phone number
+ * @return {object} User from db
+ */
+RocketChat.models.Users.findOneVisitorByCustId = function(custid) {
+    const query = {
+        'custid': custid
+    };
+
+    return this.findOne(query);
+};

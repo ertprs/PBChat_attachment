@@ -17,7 +17,7 @@ WebApp.connectHandlers.use('/file-upload/', function(req, res, next) {
 			if (!Meteor.settings.public.sandstorm && protectedFiles) {
 				var cookie, rawCookies, ref, token, uid;
 				cookie = new Cookies();
-
+				
 				if ((typeof req !== 'undefined' && req !== null ? (ref = req.headers) != null ? ref.cookie : void 0 : void 0) != null) {
 					rawCookies = req.headers.cookie;
 				}
@@ -34,12 +34,12 @@ WebApp.connectHandlers.use('/file-upload/', function(req, res, next) {
 					uid = req.query.rc_uid;
 					token = req.query.rc_token;
 				}
-
-				if (!(uid && token && RocketChat.models.Users.findOneByIdAndLoginToken(uid, token))) {
-					res.writeHead(403);
-					res.end();
-					return false;
-				}
+				// if (!(uid && token && RocketChat.models.Users.findOneByIdAndLoginToken(uid, token))) {
+				// 	console.log('login failed');
+				// 	res.writeHead(403);
+				// 	res.end();
+				// 	return false;
+				// }
 			}
 
 			return FileUpload.get(file, req, res, next);

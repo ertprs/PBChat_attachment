@@ -282,8 +282,7 @@ Template.messageBox.events
 			Meteor.call "sandstormClaimRequest", data.token, data.descriptor, (err, viewInfo) =>
 				if err
 					console.error err
-					return
-
+					return												
 				Meteor.call "sendMessage", {
 					_id: Random.id()
 					rid: roomId
