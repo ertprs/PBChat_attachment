@@ -22,9 +22,9 @@
     var openWidget = function(trigger) {
         Ispopup = true;
         widget.dataset.state = 'opened';
-        if(trigger=="Auto")
+        if (trigger == "Auto")
             widget.style.height = '230px';
-        else    
+        else
             widget.style.height = '345px';
         callHook('widgetOpened');
     };
@@ -125,7 +125,7 @@
         chatWidget.style.borderTopLeftRadius = '5px';
         chatWidget.style.borderTopRightRadius = '5px';
         chatWidget.style.bottom = '0';
-        chatWidget.style.right = '50px';
+        chatWidget.style.right = '20px';
         chatWidget.style.zIndex = '12345';
 
         document.getElementsByTagName('body')[0].appendChild(chatWidget);
@@ -153,7 +153,7 @@
                 chatWidget.style.width = '100%';
             } else {
                 chatWidget.style.left = 'auto';
-                chatWidget.style.right = '50px';
+                chatWidget.style.right = '20px';
                 chatWidget.style.width = '300px';
             }
         };
