@@ -5,6 +5,13 @@ RocketChat.QueueMethods = {
      * of open chats is paired with the incoming livechat
      */
     'Least_Amount': function(guest, message, roomInfo, custinfo) {
+        //console.log(custinfo);
+        var childleadid;
+        if (custinfo && custinfo.chatleadid) {
+            childleadid = custinfo.chatleadid;
+        } else {
+            childleadid = custinfo.leadid;
+        }
         const agent = RocketChat.Livechat.getNextAgent(custinfo.departmentid);
         if (agent === 'Guest_Pool') {
             return RocketChat.QueueMethods['Guest_Pool'](guest, message, roomInfo, custinfo);
@@ -19,7 +26,7 @@ RocketChat.QueueMethods = {
                 var url = RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
                 StartDate = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString() + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();
                 HTTP.call("POST", url, {
-                        data: { "item": { "Data": { "LeadId": custinfo.leadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
+                        data: { "item": { "Data": { "LeadId": childleadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
                         headers: { "Authorization": "cG9saWN5 YmF6YWFy" }
                     },
                     function(error, result) {
@@ -105,6 +112,12 @@ RocketChat.QueueMethods = {
      * only the client until paired with an agent
      */
     'Guest_Pool': function(guest, message, roomInfo, custinfo) {
+        var childleadid;
+        if (custinfo && custinfo.chatleadid) {
+            childleadid = custinfo.chatleadid;
+        } else {
+            childleadid = custinfo.leadid;
+        }
         let agents = RocketChat.Livechat.getAgents(custinfo.departmentid);
         var date = new Date();
         if (agents.count() === 0 && RocketChat.settings.get('Livechat_guest_pool_with_no_agents')) {
@@ -122,7 +135,7 @@ RocketChat.QueueMethods = {
                 var url = RocketChat.settings.get('MRSAPI') + "/CustomerInteraction/SetCustInteraction";
                 StartDate = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString() + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString();
                 HTTP.call("POST", url, {
-                        data: { "item": { "Data": { "LeadId": custinfo.leadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
+                        data: { "item": { "Data": { "LeadId": childleadid, "CustId": custinfo.custid, "StartDate": StartDate, "IntractionType": "1" } } },
                         headers: { "Authorization": "cG9saWN5 YmF6YWFy" }
                     },
                     function(error, result) {

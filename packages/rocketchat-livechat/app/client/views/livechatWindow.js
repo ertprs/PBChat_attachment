@@ -108,11 +108,14 @@ Template.livechatWindow.onCreated(function() {
     } else {
         var leadid = 0;
     }
-
+    var chatleadid = window.btoa(leadid);
     Meteor.call('livechat:getInitialData', visitor.getToken(), leadid, service, product, (err, result) => {
         if (err) {
             console.error(err);
         } else {
+            if (leadid) {
+                result.custinfo.chatleadid = parseInt(atob(leadid));
+            }
             Session.set('custinfo', result.custinfo);
             if (!result.enabled) {
                 Triggers.setDisabled();
