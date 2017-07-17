@@ -93,20 +93,26 @@ Template.livechatWindow.onCreated(function() {
         return lng;
     };
     //getInitialData
+    var service, product, leadid, source;
     if (FlowRouter.getQueryParam('service') && FlowRouter.getQueryParam('service') == "1") {
-        var service = 1;
+        service = 1;
     } else {
-        var service = 0;
+        service = 0;
     }
-    if (FlowRouter.getQueryParam('product')) {
-        var product = FlowRouter.getQueryParam('product');
+    if (FlowRouter.getQueryParam('product') && FlowRouter.getQueryParam('product') != "") {
+        product = FlowRouter.getQueryParam('product');
     } else {
-        var product = '';
+        product = '';
     }
-    if (FlowRouter.getQueryParam('leadid')) {
-        var leadid = FlowRouter.getQueryParam('leadid');
+    if (FlowRouter.getQueryParam('leadid') && FlowRouter.getQueryParam('leadid') != "") {
+        leadid = FlowRouter.getQueryParam('leadid');
     } else {
-        var leadid = 0;
+        leadid = 0;
+    }
+    if (FlowRouter.getQueryParam('source') && FlowRouter.getQueryParam('source') != "") {
+        source = FlowRouter.getQueryParam('source');
+    } else {
+        source = '';
     }
     var chatleadid = window.btoa(leadid);
     Meteor.call('livechat:getInitialData', visitor.getToken(), leadid, service, product, (err, result) => {
@@ -115,6 +121,9 @@ Template.livechatWindow.onCreated(function() {
         } else {
             if (leadid) {
                 result.custinfo.chatleadid = parseInt(atob(leadid));
+            }
+            if (source && source != '') {
+                result.custinfo.source = source;
             }
             Session.set('custinfo', result.custinfo);
             if (!result.enabled) {

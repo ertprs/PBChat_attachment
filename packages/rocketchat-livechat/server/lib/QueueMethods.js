@@ -5,7 +5,6 @@ RocketChat.QueueMethods = {
      * of open chats is paired with the incoming livechat
      */
     'Least_Amount': function(guest, message, roomInfo, custinfo) {
-        //console.log(custinfo);
         var childleadid;
         if (custinfo && custinfo.chatleadid) {
             childleadid = custinfo.chatleadid;
@@ -66,6 +65,9 @@ RocketChat.QueueMethods = {
             }, roomInfo);
             if (custinfo.waflag == 1) {
                 room.waflag = 1;
+            }
+            if (custinfo.source && custinfo.source != '') {
+                room.source = custinfo.source;
             }
             let subscriptionData = {
                 rid: message.rid,
@@ -195,7 +197,9 @@ RocketChat.QueueMethods = {
         if (custinfo.waflag == 1) {
             room.waflag = 1;
         }
-
+        if (custinfo.source && custinfo.source != '') {
+            room.source = custinfo.source;
+        }
         RocketChat.models.LivechatInquiry.insert(inquiry);
         RocketChat.models.Rooms.insert(room);
 

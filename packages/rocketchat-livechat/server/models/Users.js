@@ -39,7 +39,7 @@ RocketChat.models.Users.findblockedvisitors = function() {
 
 RocketChat.models.Users.findOneGuestByEmailAddress = function(emailAddress) {
     const query = {
-        'visitorEmails.address': new RegExp('^' + s.escapeRegExp(emailAddress) + '$', 'i')
+        'emails.address': new RegExp('^' + s.escapeRegExp(emailAddress) + '$', 'i')
     };
 
     return this.findOne(query);

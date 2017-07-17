@@ -18,7 +18,8 @@ Meteor.startup(() => {
             departmentname: 1,
             department: 1,
             custid: 1,
-            transfer: 1
+            transfer: 1,
+            waflag: 1
         });
     });
 

@@ -20,7 +20,7 @@ Template.visitorInfo.helpers({
             }
             user.browser = ua.getBrowser().name + ' ' + ua.getBrowser().version;
             user.browserIcon = 'icon-' + ua.getBrowser().name.toLowerCase();
-            var room = ChatRoom.findOne({ _id: this.rid });
+            var room = Template.instance().currentroom.get();
             user.leadid = room.leadid;
             user.label = room.label;
             if (user && user.country == '392') {
@@ -46,7 +46,7 @@ Template.visitorInfo.helpers({
         return user;
     },
     room() {
-        return ChatRoom.findOne({ _id: this.rid });
+        return Template.instance().currentroom.get();
     },
 
     joinTags() {
@@ -160,9 +160,17 @@ Template.visitorInfo.helpers({
     },
 
     roomOpen() {
-        const room = ChatRoom.findOne({ _id: this.rid });
-
+        const room = Template.instance().currentroom.get();
         return room.open;
+    },
+
+    isWhatsApp() {
+        const room = Template.instance().currentroom.get();
+        if (room && room.waflag && room.waflag == 1) {
+            return true;
+        } else {
+            return false;
+        }
     },
 
     guestPool() {
@@ -217,7 +225,7 @@ Template.visitorInfo.events({
         var departmentname = localStorage.getItem('DepartmentName');
         var IsService = departmentname.match("_Service");
         if (IsService) {
-            var room = ChatRoom.findOne({ _id: this.rid });
+            var room = Template.instance().currentroom.get();
             var leadid = room.leadid;
             swal({
                 title: 'Please Update BookingID Before closing chat!',
@@ -368,6 +376,7 @@ Template.visitorInfo.onCreated(function() {
     this.cardetails = new ReactiveVar();
     this.healthdetails = new ReactiveVar();
     this.currentroom = new ReactiveVar();
+
 
     Meteor.call('livechat:getCustomFields', (err, customFields) => {
         if (customFields) {

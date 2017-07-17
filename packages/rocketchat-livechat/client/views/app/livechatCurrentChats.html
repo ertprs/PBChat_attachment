@@ -85,7 +85,7 @@
 			</thead>
 			<tbody>
 				{{#each livechatRoom}}
-					<tr>
+					<tr class="{{#if isWhatsApp}} iswhastapp {{/if}}">
 						<td class="row-link" style=" cursor:pointer;">{{label}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{leadid}}</td>
 						<td class="row-link" style=" cursor:pointer;">{{departmentname}}</td>

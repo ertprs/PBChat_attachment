@@ -58,7 +58,7 @@ RocketChat.Livechat = {
     },
     sendMessage({ guest, message, roomInfo, custinfo }) {
         let { room, newRoom } = this.getRoom(guest, message, roomInfo, custinfo);
-       
+
         if (guest.name) {
             //message.alias = guest.name;
             message.alias = custinfo.name;
@@ -103,6 +103,9 @@ RocketChat.Livechat = {
                         loginTokens: [loginToken]
                     }
                 };
+            }
+            if (mobilenumber) {
+                updateUser.$set.mobile = mobilenumber;
             }
             if (email && email.trim() !== '' && !existingUser.emails) {
                 updateUser.$set.emails = [

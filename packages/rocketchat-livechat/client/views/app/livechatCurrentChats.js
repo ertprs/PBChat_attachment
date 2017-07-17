@@ -19,6 +19,13 @@ Template.livechatCurrentChats.helpers({
     lastMessage() {
         return moment(this.lm).fromNow();
     },
+    isWhatsApp() {
+        if (this.waflag == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     servedBy() {
         return this.servedBy && this.servedBy.username;
     },
