@@ -62,6 +62,7 @@ RocketChat.QueueMethods = {
                 custid: custinfo.custid,
                 department: custinfo.departmentid,
                 departmentname: departmentname,
+                chatleadid: childleadid
             }, roomInfo);
             if (custinfo.waflag == 1) {
                 room.waflag = 1;
@@ -193,6 +194,7 @@ RocketChat.QueueMethods = {
             custid: custinfo.custid,
             department: custinfo.departmentid,
             departmentname: departmentname,
+            chatleadid: childleadid
         }, roomInfo);
         if (custinfo.waflag == 1) {
             room.waflag = 1;
