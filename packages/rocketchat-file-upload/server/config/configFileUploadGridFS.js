@@ -4,6 +4,7 @@ var zlib = Npm.require('zlib');
 
 // code from: https://github.com/jalik/jalik-ufs/blob/master/ufs-server.js#L91
 var readFromGridFS = function(storeName, fileId, file, headers, req, res) {
+	console.log('readFromGridFS');
 	var store = UploadFS.getStore(storeName);
 	var rs = store.getReadStream(fileId, file);
 	var ws = new stream.PassThrough();
@@ -47,6 +48,7 @@ var readFromGridFS = function(storeName, fileId, file, headers, req, res) {
 
 FileUpload.addHandler('rocketchat_uploads', {
 	get(file, req, res) {
+		console.log('FileUpload.addHandler');
 		file = FileUpload.addExtensionTo(file);
 		let headers = {
 			'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`,

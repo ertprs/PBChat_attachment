@@ -76,6 +76,7 @@ livedata@1.0.18
 localstorage@1.0.12
 logging@1.1.16
 matb33:collection-hooks@0.8.4
+matrix:app@0.0.1
 mdg:validation-error@0.5.1
 meteor@1.6.0
 meteor-base@1.0.4
@@ -102,6 +103,7 @@ mongo@1.1.14
 mongo-id@1.0.6
 mongo-livedata@1.0.12
 mrt:bootstrap-3@0.3.8
+mrt:jquery-easing@1.3.0
 mrt:moment@2.8.1
 mrt:moment-timezone@0.2.1
 mrt:reactive-store@0.0.1
@@ -245,6 +247,7 @@ tmeasday:crypto-md5@3.1.2
 todda00:friendly-slugs@0.6.0
 tracker@1.1.1
 tsega:bootstrap3-datetimepicker@4.17.37_1
+twbs:bootstrap@3.3.6
 twitter@1.1.13
 ui@1.0.12
 underscore@1.0.10

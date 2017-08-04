@@ -47,7 +47,6 @@ if Meteor.isCordova
 				host = notification.payload.host.replace /\/$/, ''
 				if Servers.serverExists(host) isnt true
 					return
-
 				Servers.startServer host, path, (err, url) ->
 					if err?
 						# TODO err

@@ -117,3 +117,9 @@ FlowRouter.route '/register/:hash',
 		# 			BlazeLayout.render 'logoLayout', { render: 'invalidSecretURL' }
 		# else
 		# 	BlazeLayout.render 'logoLayout', { render: 'invalidSecretURL' }
+
+FlowRouter.route '/tasks',
+	name: 'tasks'
+
+	action: ->		
+		BlazeLayout.render 'Revist'
