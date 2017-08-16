@@ -48,7 +48,10 @@ Template.visitorForward.events({
         const transferData = {
             roomId: instance.room.get()._id
         };
-
+		if (!(instance.find('#forwardUser').value) && !(instance.find('#forwardDepartment').value) && instance.find('#forwardDepartment').value != null && instance.find('#forwardDepartment').value != undefined && instance.find('#forwardUser').value != null && instance.find('#forwardUser').value != undefined) {
+            toastr.success(t('Please Select Options from the list'));
+            return true;
+        }
         if (instance.find('#forwardUser').value) {
             transferData.userId = instance.find('#forwardUser').value;
         } else if (instance.find('#forwardDepartment').value) {
