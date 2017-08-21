@@ -70,6 +70,9 @@ RocketChat.QueueMethods = {
             if (custinfo.source && custinfo.source != '') {
                 room.source = custinfo.source;
             }
+            if (custinfo.mobile && custinfo.mobile != '') {
+                room.mobile = custinfo.mobile;
+            }
             let subscriptionData = {
                 rid: message.rid,
                 name: guest.name || guest.username,
@@ -201,6 +204,9 @@ RocketChat.QueueMethods = {
         }
         if (custinfo.source && custinfo.source != '') {
             room.source = custinfo.source;
+        }
+        if (custinfo.mobile && custinfo.mobile != '') {
+            room.mobile = custinfo.mobile;
         }
         RocketChat.models.LivechatInquiry.insert(inquiry);
         RocketChat.models.Rooms.insert(room);

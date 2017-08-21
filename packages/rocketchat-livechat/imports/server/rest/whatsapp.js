@@ -17,7 +17,8 @@ RocketChat.API.v1.addRoute('livechat/wa-incoming', { authRequired: false }, {
             leadid: LeadID,
             departmentid: sms.departmentid,
             departmentname: sms.department,
-            waflag: 1
+            waflag: 1,
+            mobile: sms.mobileno
         };
         guest = {
             name: sms.name,

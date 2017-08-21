@@ -19,7 +19,9 @@ Meteor.startup(() => {
             department: 1,
             custid: 1,
             transfer: 1,
-            waflag: 1
+            waflag: 1,
+            servedBy: 1,
+            mobile: 1
         });
     });
 

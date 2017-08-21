@@ -18,7 +18,12 @@ Template.chatRoomItem.helpers
 			return false
 
 	name: ->
-		return this.name
+		room = ChatRoom.findOne({_id : this.rid})
+		if room && room.waflag && room.waflag == 1 && room.mobile
+			return room.mobile
+		else
+			return this.name
+		
 	
 	hideEye: ->
 		room = ChatRoom.findOne({_id : this.rid})
