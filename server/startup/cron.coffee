@@ -7,14 +7,14 @@ SyncedCron.config
 	collectionName: 'rocketchat_cron_history'
 
 generateStatistics = ->
-	statistics = RocketChat.statistics.save()
-	statistics.host = Meteor.absoluteUrl()
-	if RocketChat.settings.get 'Statistics_reporting'
-		try
-			HTTP.post 'https://collector.rocket.chat/',
-				data: statistics
-		catch e
-			logger.warn('Failed to send usage report')
+	#statistics = RocketChat.statistics.save()
+	#statistics.host = Meteor.absoluteUrl()
+	#if RocketChat.settings.get 'Statistics_reporting'
+	#	try
+	#		HTTP.post 'https://collector.rocket.chat/',
+	#			data: statistics
+	#	catch e
+	#		logger.warn('Failed to send usage report')
 	return
 
 Meteor.startup ->
